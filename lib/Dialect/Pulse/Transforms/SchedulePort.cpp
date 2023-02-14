@@ -109,15 +109,12 @@ uint SchedulePortPass::processCallee(Operation *module,
   // timepoints
   sequenceOp->walk([&](DelayOp op) { op->erase(); });
 
-  sortOpsByTimepoint(sequenceOp);
-
-  // clean up
   sequenceOp->walk([&](arith::ConstantOp op) {
     if (op->getUsers().empty())
-      removeList.push_back(op);
+      op->erase();
   });
 
-  removePendingOps();
+  sortOpsByTimepoint(sequenceOp);
 
   // assign timepoint to return
   // TODO: check for a better way to do this with getTerminator or back()
@@ -145,11 +142,12 @@ SchedulePortPass::buildMixedFrameMap(CallSequenceOp &callSequenceOp,
   for (auto const &argumentResult :
        llvm::enumerate(sequenceOp.getArguments())) {
     auto index = argumentResult.index();
-    auto mixFrameOp = callSequenceOp.getOperand(index).getDefiningOp<MixFrameOp>();
+    auto mixFrameOp =
+        callSequenceOp.getOperand(index).getDefiningOp<MixFrameOp>();
     if (mixFrameOp) {
-        auto portOp = mixFrameOp.port().getDefiningOp<Port_CreateOp>();
-        numMixedFrames++;
-        mixedFrameSequences[portOp] = {};
+      auto portOp = mixFrameOp.port().getDefiningOp<Port_CreateOp>();
+      numMixedFrames++;
+      mixedFrameSequences[portOp] = {};
     }
   }
 
@@ -180,13 +178,13 @@ SchedulePortPass::buildMixedFrameMap(CallSequenceOp &callSequenceOp,
           else if (isa<SetAmplitudeOp>(op))
             target = dyn_cast<SetAmplitudeOp>(op).target();
 
+          auto blockArg = target.cast<BlockArgument>();
+          auto index = blockArg.getArgNumber();
+          auto mixFrameOp =
+              callSequenceOp.getOperand(index).getDefiningOp<MixFrameOp>();
+          auto portOp = mixFrameOp.port().getDefiningOp<Port_CreateOp>();
 
-        auto blockArg = target.cast<BlockArgument>();
-        auto index = blockArg.getArgNumber();
-        auto mixFrameOp = callSequenceOp.getOperand(index).getDefiningOp<MixFrameOp>();
-        auto portOp = mixFrameOp.port().getDefiningOp<Port_CreateOp>();
-
-        mixedFrameSequences[portOp].push_back(&op);
+          mixedFrameSequences[portOp].push_back(&op);
         }
       }
     }
@@ -271,24 +269,11 @@ void SchedulePortPass::runOnOperation() {
 
   INDENT_DEBUG("===== SchedulePortPass - start ==========\n");
 
-  removeList.clear();
-
   module->walk([&](CallSequenceOp op) { processCall(module, op); });
 
   INDENT_DEBUG("=====  SchedulePortPass - end ===========\n");
 
 } // runOnOperation
-
-void SchedulePortPass::removePendingOps() {
-  // remove any ops that were scheduled to be removed above.
-  while (!removeList.empty()) {
-    auto *op = removeList.front();
-    INDENT_DEBUG("Removing ");
-    LLVM_DEBUG(op->dump());
-    removeList.pop_front();
-    op->erase();
-  }
-}
 
 llvm::StringRef SchedulePortPass::getArgument() const {
   return "pulse-schedule-port";
