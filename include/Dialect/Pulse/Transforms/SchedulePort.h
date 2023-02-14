@@ -25,7 +25,6 @@
 #include "Utils/DebugIndent.h"
 #include "mlir/Pass/Pass.h"
 
-#include <deque>
 #include <set>
 
 namespace mlir::pulse {
