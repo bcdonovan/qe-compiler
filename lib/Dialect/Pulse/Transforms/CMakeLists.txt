@@ -11,6 +11,7 @@ add_mlir_dialect_library(MLIRPulseTransforms
         Passes.cpp
         PortGroupPrune.cpp
         RemoveUnusedArguments.cpp
+        SchedulePort.cpp
         SchedulePortModule.cpp
         SchedulePortSequence.cpp
         Scheduling.cpp
