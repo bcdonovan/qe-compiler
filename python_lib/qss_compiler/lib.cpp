@@ -78,8 +78,16 @@ py::tuple py_compile_by_args(const std::vector<std::string> &args,
 
 #ifndef NDEBUG
   std::cout << "params passed from python to C++:\n";
-  for (auto &str : args)
+  bool skipNext = false;
+  for (auto &str : args) {
+    if (skipNext) {
+      skipNext = false;
+      std::cout << "<program suppressed>" << '\n';
+      continue;
+    }
+    skipNext = (str == "--direct");
     std::cout << str << '\n';
+  }
 #endif
 
   // TODO: need a C++ interface into the compiler with fewer detours. the python
