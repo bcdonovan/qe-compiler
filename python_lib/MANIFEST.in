@@ -1,4 +1,4 @@
-graft qss_compiler
-prune qss_compiler/CMakeFiles/*
+graft qe_compiler
+prune qe_compiler/CMakeFiles/*
 global-exclude CMakeLists.txt
 global-exclude cmake_install.cmake

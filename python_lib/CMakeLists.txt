@@ -77,6 +77,6 @@ endforeach()
 
 configure_file(pyproject.toml.in ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml)
 
-add_subdirectory(qss_compiler)
+add_subdirectory(qe_compiler)
 add_custom_target(copy_python_files DEPENDS ${PY_LIB_FILES})
 add_dependencies(py_qssc copy_python_files)

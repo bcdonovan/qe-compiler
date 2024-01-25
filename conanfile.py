@@ -23,9 +23,9 @@ def get_version():
 
 
 class QSSCompilerConan(ConanFile):
-    name = "qss-compiler"
+    name = "qe-compiler"
     version = get_version()
-    url = "https://github.com/qiskit/qss-compiler"
+    url = "https://github.com/qiskit/qe-compiler"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "pythonlib": [True, False]}
     default_options = {"shared": False, "pythonlib": True}
