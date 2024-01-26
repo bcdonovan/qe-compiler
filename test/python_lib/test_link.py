@@ -15,8 +15,8 @@ Unit tests for the linker API.
 """
 import pytest
 
-from qss_compiler import link_file
-from qss_compiler.exceptions import QSSLinkerNotImplemented
+from qe_compiler import link_file
+from qe_compiler.exceptions import QSSLinkerNotImplemented
 
 
 def test_linker_not_implemented(tmp_path):

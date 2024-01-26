@@ -14,8 +14,8 @@
 Unit tests for the compiler API.
 """
 import pytest
-import qss_compiler
-from qss_compiler import (
+import qe_compiler
+from qe_compiler import (
     compile_file,
     compile_str,
     ErrorCategory,
@@ -23,7 +23,7 @@ from qss_compiler import (
     OutputType,
     Severity,
 )
-from qss_compiler.exceptions import QSSCompilationFailure
+from qe_compiler.exceptions import QSSCompilationFailure
 
 
 def check_mlir_string(mlir):
@@ -33,7 +33,7 @@ def check_mlir_string(mlir):
 
 
 def test_attributes():
-    assert qss_compiler.__doc__ == "Python bindings for the QSS Compiler."
+    assert qe_compiler.__doc__ == "Python bindings for the QSS Compiler."
 
 
 def test_compile_file_to_mlir(example_qasm3_tmpfile):
