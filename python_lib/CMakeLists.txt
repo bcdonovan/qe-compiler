@@ -29,7 +29,7 @@ endmacro()
 macro(python_pkg_add_target_file file lib)
     set(src_file ${file})
     get_filename_component(barename ${file} NAME)
-    set(dest_file ${CMAKE_CURRENT_BINARY_DIR}/qss_compiler/${barename})
+    set(dest_file ${CMAKE_CURRENT_BINARY_DIR}/qe_compiler/${barename})
     add_custom_command(OUTPUT ${dest_file}
       COMMAND ${CMAKE_COMMAND} -E copy
         ${src_file}
