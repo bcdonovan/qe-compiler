@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This file defines the linker interface for the qss_compiler
+This file defines the linker interface for the qe_compiler
 package.
 
 """
