@@ -195,7 +195,7 @@ class _CompilationManager:
         # bundled under the directory resources/. Since python's functions for
         # looking up resources only treat files as resources, use the generated
         # python source _version.py to look up the path to the python package.
-        with importlib_resources.path("qss_compiler", "_version.py") as version_py_path:
+        with importlib_resources.path("qe_compiler", "_version.py") as version_py_path:
             resources_path = version_py_path.parent / "resources"
             os_environ["QSSC_RESOURCES"] = str(resources_path)
             success, output = self._compile_call(args, on_diagnostic)
