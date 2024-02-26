@@ -97,7 +97,7 @@ class OutputType(Enum):
 class CompileOptions:
     """Options to the compiler backend.
 
-    Most correspond directly to qss-compiler CLI arguments.
+    Most correspond directly to qe-compiler CLI arguments.
     """
 
     """Input source type."""
@@ -190,7 +190,7 @@ class _CompilationManager:
         args = options.prepare_compiler_option_args()
         output_as_return = False if options.output_file else True
 
-        # The qss-compiler expects the path to static resources in the environment
+        # The qe-compiler expects the path to static resources in the environment
         # variable QSSC_RESOURCES. In the python package, those resources are
         # bundled under the directory resources/. Since python's functions for
         # looking up resources only treat files as resources, use the generated
@@ -316,7 +316,7 @@ class _CompilationManager:
             raise exceptions.QSSCompilerError(
                 "It's likely that you've hit a bug in the QSS Compiler. Please "
                 "submit an issue to the team with relevant information "
-                "(https://github.com/Qiskit/qss-compiler/issues):\n"
+                "(https://github.com/openqasm/qe-compiler/issues):\n"
                 f"{e}",
                 return_diagnostics=self.return_diagnostics,
             )

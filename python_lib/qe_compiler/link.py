@@ -116,7 +116,7 @@ def link_file(
     # taking care of the execution in a separate process. For the linker tool,
     # we aim at avoiding that right from the start!
 
-    # The qss-compiler expects the path to static resources in the environment
+    # The qe-compiler expects the path to static resources in the environment
     # variable QSSC_RESOURCES. In the python package, those resources are
     # bundled under the directory resources/. Since python's functions for
     # looking up resources only treat files as resources, use the generated
