@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Declaration of the QSSC target system info.
+//  Declaration of the QEC target system info.
 //
 //===----------------------------------------------------------------------===//
 #ifndef TARGETSYSTEMINFO_H
@@ -19,14 +19,14 @@
 #include "Plugin/PluginInfo.h"
 #include "Support/Pimpl.h"
 
-namespace qssc::hal::registry {
+namespace qec::hal::registry {
 
 /// Class to group info about a registered target. Such as how to invoke
 /// and a description.
 class TargetSystemInfo
-    : public qssc::plugin::registry::PluginInfo<qssc::hal::TargetSystem> {
+    : public qec::plugin::registry::PluginInfo<qec::hal::TargetSystem> {
   using PluginInfo =
-      qssc::plugin::registry::PluginInfo<qssc::hal::TargetSystem>;
+      qec::plugin::registry::PluginInfo<qec::hal::TargetSystem>;
   using PassesFunction = std::function<llvm::Error()>;
   using PassPipelinesFunction = std::function<llvm::Error()>;
 
@@ -40,7 +40,7 @@ public:
   ~TargetSystemInfo();
 
   /// Create the target system and register it under the given context.
-  llvm::Expected<qssc::hal::TargetSystem *>
+  llvm::Expected<qec::hal::TargetSystem *>
   createTarget(mlir::MLIRContext *context,
                std::optional<PluginInfo::PluginConfiguration> configuration);
 
@@ -48,27 +48,27 @@ public:
   /// a target registered exactly for the given context. If no such context is
   /// found, checks if a target is registered under nullptr, and returns
   /// that. If no target is found, an error is returned.
-  llvm::Expected<qssc::hal::TargetSystem *>
+  llvm::Expected<qec::hal::TargetSystem *>
   getTarget(mlir::MLIRContext *context) const;
 
-  /// Register this target's MLIR passes with the QSSC system.
+  /// Register this target's MLIR passes with the QEC system.
   /// Should only be called once on initialization.
   llvm::Error registerTargetPasses() const;
 
-  /// Register this target's MLIR passe pipelines with the QSSC system.
+  /// Register this target's MLIR passe pipelines with the QEC system.
   /// Should only be called once on initialization.
   llvm::Error registerTargetPassPipelines() const;
 
 private:
   struct Impl;
 
-  qssc::support::Pimpl<Impl> impl;
+  qec::support::Pimpl<Impl> impl;
 
   PassesFunction passRegistrar;
 
   PassPipelinesFunction passPipelineRegistrar;
 };
 
-} // namespace qssc::hal::registry
+} // namespace qec::hal::registry
 
 #endif

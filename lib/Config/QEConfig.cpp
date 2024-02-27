@@ -1,4 +1,4 @@
-//===- QSSConfig.cpp - Config info --------------------*- C++ -*-----------===//
+//===- QEConfig.cpp - Config info --------------------*- C++ -*-----------===//
 //
 // (C) Copyright IBM 2023.
 //
@@ -8,11 +8,11 @@
 //
 //===----------------------------------------------------------------------===//
 ///
-///  This file implements standard handling of QSSConfiguration options.
+///  This file implements standard handling of QEConfiguration options.
 ///
 //===----------------------------------------------------------------------===//
 
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
 #include "Config/CLIConfig.h"
 #include "Config/EnvVarConfig.h"
@@ -35,7 +35,7 @@
 #include <string>
 #include <utility>
 
-using namespace qssc::config;
+using namespace qec::config;
 
 /// Verbosity levels for logging output
 /// Error - Only error messages will be logged
@@ -46,7 +46,7 @@ const std::array<const std::string, _VerbosityCnt> verbosityToStr = {
     "Error", "Warn", "Info", "Debug"};
 
 // For now emit in a pseudo-TOML format.
-void qssc::config::QSSConfig::emit(llvm::raw_ostream &os) const {
+void qec::config::QEConfig::emit(llvm::raw_ostream &os) const {
   // Compiler configuration
   os << "[compiler]\n";
   os << "inputType: " << to_string(getInputType()) << "\n";
@@ -98,13 +98,13 @@ void qssc::config::QSSConfig::emit(llvm::raw_ostream &os) const {
 }
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
-                              const qssc::config::QSSConfig &config) {
+                              const qec::config::QEConfig &config) {
   config.emit(os);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os,
-                         const qssc::config::QSSConfig &config) {
+                         const qec::config::QEConfig &config) {
   llvm::raw_os_ostream raw_os(os);
   config.emit(raw_os);
   return os;
@@ -113,20 +113,20 @@ std::ostream &operator<<(std::ostream &os,
 namespace {
 /// Mapping of registered MLIRContext configurations.
 /// QUESTION: Rather than a global registry it seems like it would be much
-/// better to inherit the MLIRContext as QSSContext and set the configuration on
-/// this? Alternatively the QSSContext could own the MLIRContext?
-static llvm::ManagedStatic<llvm::DenseMap<mlir::MLIRContext *, QSSConfig>>
+/// better to inherit the MLIRContext as QEContext and set the configuration on
+/// this? Alternatively the QEContext could own the MLIRContext?
+static llvm::ManagedStatic<llvm::DenseMap<mlir::MLIRContext *, QEConfig>>
     contextConfigs{};
 
 } // anonymous namespace
 
-void qssc::config::setContextConfig(mlir::MLIRContext *context,
-                                    const QSSConfig &config) {
+void qec::config::setContextConfig(mlir::MLIRContext *context,
+                                    const QEConfig &config) {
   (*contextConfigs)[context] = config;
 }
 
-llvm::Expected<const QSSConfig &>
-qssc::config::getContextConfig(mlir::MLIRContext *context) {
+llvm::Expected<const QEConfig &>
+qec::config::getContextConfig(mlir::MLIRContext *context) {
   auto it = contextConfigs->find(context);
   if (it != contextConfigs->end())
     return it->getSecond();
@@ -136,8 +136,8 @@ qssc::config::getContextConfig(mlir::MLIRContext *context) {
       "Error: no config registered for the given context.\n");
 }
 
-llvm::Expected<QSSConfig> QSSConfigBuilder::buildConfig() {
-  QSSConfig config;
+llvm::Expected<QEConfig> QEConfigBuilder::buildConfig() {
+  QEConfig config;
   if (auto e = populateConfig(config))
     // Explicit move required for some systems as automatic move
     // is not recognized.
@@ -145,9 +145,9 @@ llvm::Expected<QSSConfig> QSSConfigBuilder::buildConfig() {
   return config;
 }
 
-std::string qssc::config::to_string(const EmitAction &inAction) {
+std::string qec::config::to_string(const EmitAction &inAction) {
   switch (inAction) {
-  case qssc::config::EmitAction::AST:
+  case qec::config::EmitAction::AST:
     return "ast";
     break;
   case EmitAction::ASTPretty:
@@ -178,7 +178,7 @@ std::string qssc::config::to_string(const EmitAction &inAction) {
   return "undetected";
 }
 
-std::string qssc::config::to_string(const FileExtension &inExt) {
+std::string qec::config::to_string(const FileExtension &inExt) {
   switch (inExt) {
   case FileExtension::AST:
     return "ast";
@@ -211,7 +211,7 @@ std::string qssc::config::to_string(const FileExtension &inExt) {
   return "none";
 }
 
-std::string qssc::config::to_string(const InputType &inputType) {
+std::string qec::config::to_string(const InputType &inputType) {
   switch (inputType) {
   case InputType::QASM:
     return "qasm";
@@ -230,7 +230,7 @@ std::string qssc::config::to_string(const InputType &inputType) {
 }
 
 FileExtension
-qssc::config::inputTypeToFileExtension(const InputType &inputType) {
+qec::config::inputTypeToFileExtension(const InputType &inputType) {
   switch (inputType) {
   case InputType::QASM:
     return FileExtension::QASM;
@@ -247,7 +247,7 @@ qssc::config::inputTypeToFileExtension(const InputType &inputType) {
   return FileExtension::None;
 }
 
-InputType qssc::config::fileExtensionToInputType(const FileExtension &inExt) {
+InputType qec::config::fileExtensionToInputType(const FileExtension &inExt) {
   switch (inExt) {
   case FileExtension::QASM:
     return InputType::QASM;
@@ -264,7 +264,7 @@ InputType qssc::config::fileExtensionToInputType(const FileExtension &inExt) {
   return InputType::Undetected;
 }
 
-EmitAction qssc::config::fileExtensionToAction(const FileExtension &inExt) {
+EmitAction qec::config::fileExtensionToAction(const FileExtension &inExt) {
   switch (inExt) {
   case FileExtension::AST:
     return EmitAction::AST;
@@ -293,7 +293,7 @@ EmitAction qssc::config::fileExtensionToAction(const FileExtension &inExt) {
   return EmitAction::Undetected;
 }
 
-FileExtension qssc::config::strToFileExtension(const llvm::StringRef extStr) {
+FileExtension qec::config::strToFileExtension(const llvm::StringRef extStr) {
   if (extStr == "ast" || extStr == "AST")
     return FileExtension::AST;
   if (extStr == "ast-pretty" || extStr == "AST-PRETTY")
@@ -313,7 +313,7 @@ FileExtension qssc::config::strToFileExtension(const llvm::StringRef extStr) {
   return FileExtension::None;
 }
 
-FileExtension qssc::config::getExtension(const llvm::StringRef inStr) {
+FileExtension qec::config::getExtension(const llvm::StringRef inStr) {
   auto pos = inStr.find_last_of('.');
   if (pos < inStr.size())
     return strToFileExtension(inStr.substr(pos + 1));
@@ -321,7 +321,7 @@ FileExtension qssc::config::getExtension(const llvm::StringRef inStr) {
 }
 
 mlir::LogicalResult
-qssc::config::loadDialectPlugin(const std::string &pluginPath,
+qec::config::loadDialectPlugin(const std::string &pluginPath,
                                 mlir::DialectRegistry &registry) {
   auto plugin = mlir::DialectPlugin::load(pluginPath);
   if (!plugin)
@@ -332,7 +332,7 @@ qssc::config::loadDialectPlugin(const std::string &pluginPath,
 }
 
 mlir::LogicalResult
-qssc::config::loadPassPlugin(const std::string &pluginPath) {
+qec::config::loadPassPlugin(const std::string &pluginPath) {
   auto plugin = mlir::PassPlugin::load(pluginPath);
   if (!plugin)
     return mlir::failure();
@@ -340,8 +340,8 @@ qssc::config::loadPassPlugin(const std::string &pluginPath) {
   return mlir::success();
 }
 
-llvm::Expected<qssc::config::QSSConfig>
-qssc::config::buildToolConfig(llvm::StringRef inputFilename,
+llvm::Expected<qec::config::QEConfig>
+qec::config::buildToolConfig(llvm::StringRef inputFilename,
                               llvm::StringRef outputFilename) {
   // First populate the configuration from default values then
   // environment variables.

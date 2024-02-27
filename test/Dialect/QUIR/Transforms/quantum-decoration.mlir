@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir %s --quantum-decorate | FileCheck %s
+// RUN: qe-compiler -X=mlir %s --quantum-decorate | FileCheck %s
 
 //
 // This code is part of Qiskit.

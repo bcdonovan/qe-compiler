@@ -21,12 +21,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef QSS_OPT_PIMPL_H
-#define QSS_OPT_PIMPL_H
+#ifndef QE_OPT_PIMPL_H
+#define QE_OPT_PIMPL_H
 
 #include <memory>
 
-namespace qssc::support {
+namespace qec::support {
 
 template <typename T>
 class Pimpl {
@@ -39,6 +39,6 @@ private:
   std::unique_ptr<T> impl;
 };
 
-} // namespace qssc::support
+} // namespace qec::support
 
-#endif // QSS_OPT_PIMPL_H
+#endif // QE_OPT_PIMPL_H

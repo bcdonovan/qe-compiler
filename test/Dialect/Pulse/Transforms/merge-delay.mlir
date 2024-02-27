@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir -pass-pipeline='any(pulse.sequence(pulse-merge-delay))' %s | FileCheck %s
+// RUN: qe-compiler -X=mlir -pass-pipeline='any(pulse.sequence(pulse-merge-delay))' %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

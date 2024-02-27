@@ -23,15 +23,15 @@
 
 #include "llvm/Support/Error.h"
 
-namespace qssc::hal {
+namespace qec::hal {
 /// Register all registered MLIR passes
 /// for the registered Targets with the
-/// QSSC system.
+/// QEC system.
 llvm::Error registerTargetPasses();
 /// Register all registered MLIR pass pipelines
 /// for the registered Targets with the
-/// QSSC system.
+/// QEC system.
 llvm::Error registerTargetPipelines();
-} // namespace qssc::hal
+} // namespace qec::hal
 
 #endif // PASSREGISTRATION_H

@@ -14,7 +14,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Declaration of the QSSC payload registry system.
+//  Declaration of the QEC payload registry system.
 //
 //===----------------------------------------------------------------------===//
 #ifndef PAYLOADREGISTRY_H
@@ -25,11 +25,11 @@
 #include "Plugin/PluginInfo.h"
 #include "Plugin/PluginRegistry.h"
 
-namespace qssc::payload::registry {
+namespace qec::payload::registry {
 
 using PayloadInfo = plugin::registry::PluginInfo<Payload>;
 using PayloadRegistry = plugin::registry::PluginRegistry<PayloadInfo>;
 
-} // namespace qssc::payload::registry
+} // namespace qec::payload::registry
 
 #endif

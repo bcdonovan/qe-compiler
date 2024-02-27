@@ -37,10 +37,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
-      - name: Export QSSC_VERSION from Git version tag
+      - name: Export QEC_VERSION from Git version tag
         run: |
           version=`python -c "from setuptools_scm import get_version; print(get_version())"`
-          echo "QSSC_VERSION=$version" >> $GITHUB_ENV
+          echo "QEC_VERSION=$version" >> $GITHUB_ENV
       - name: Prepare Conan
         run: |
           conan profile new default --detect || true

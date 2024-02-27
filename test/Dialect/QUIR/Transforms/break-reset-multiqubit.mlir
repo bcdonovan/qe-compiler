@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --break-reset %s | FileCheck %s
-// RUN: qss-compiler -X=mlir --break-reset='numIterations=2 delayCycles=500' %s | FileCheck %s --check-prefix DELAYITER
+// RUN: qe-compiler -X=mlir --break-reset %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --break-reset='numIterations=2 delayCycles=500' %s | FileCheck %s --check-prefix DELAYITER
 
 //
 // This code is part of Qiskit.

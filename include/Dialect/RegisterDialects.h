@@ -29,14 +29,14 @@
 #include "Dialect/QCS/IR/QCSDialect.h"
 #include "Dialect/QUIR/IR/QUIRDialect.h"
 
-namespace qssc::dialect {
+namespace qec::dialect {
 
-/// Register all qss-compiler dialects returning a dialect registry
+/// Register all qe-compiler dialects returning a dialect registry
 inline void registerDialects(mlir::DialectRegistry &registry) {
   mlir::registerAllDialects(registry);
   registry.insert<mlir::oq3::OQ3Dialect, mlir::quir::QUIRDialect,
                   mlir::pulse::PulseDialect, mlir::qcs::QCSDialect>();
 }
-} // namespace qssc::dialect
+} // namespace qec::dialect
 
 #endif

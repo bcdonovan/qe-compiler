@@ -64,7 +64,7 @@ using namespace mlir;
 using namespace mlir::quir;
 using namespace mlir::qcs;
 using namespace mlir::oq3;
-namespace mock = qssc::targets::systems::mock;
+namespace mock = qec::targets::systems::mock;
 using namespace mock;
 
 namespace {

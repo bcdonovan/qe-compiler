@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --quir-eliminate-variables %s --canonicalize| FileCheck %s --implicit-check-not '!quir.cbit' --implicit-check-not variable --implicit-check-not alloc --implicit-check-not store
+// RUN: qe-compiler -X=mlir --quir-eliminate-variables %s --canonicalize| FileCheck %s --implicit-check-not '!quir.cbit' --implicit-check-not variable --implicit-check-not alloc --implicit-check-not store
 //
 // This test verifies store-forwarding for multi-bit registers.
 

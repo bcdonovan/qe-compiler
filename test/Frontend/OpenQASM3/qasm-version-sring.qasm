@@ -1,6 +1,6 @@
 OPENQASM 3;
 
-// RUN: qss-compiler -X=qasm --emit=mlir %s
+// RUN: qe-compiler -X=qasm --emit=mlir %s
 
 //
 // This code is part of Qiskit.

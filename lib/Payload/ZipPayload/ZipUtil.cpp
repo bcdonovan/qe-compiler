@@ -27,7 +27,7 @@
 #include <zip.h>
 #include <zipconf.h>
 
-char *qssc::payload::read_zip_src_to_buffer(zip_source_t *zip_src,
+char *qec::payload::read_zip_src_to_buffer(zip_source_t *zip_src,
                                             zip_int64_t &sz) {
   //===---- Reopen for copying ----===//
   // reopen the archive stored in the new_archive_src

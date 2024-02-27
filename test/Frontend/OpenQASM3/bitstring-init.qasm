@@ -1,5 +1,5 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=mlir %s | FileCheck %s --check-prefix MLIR
+// RUN: qe-compiler -X=qasm --emit=mlir %s | FileCheck %s --check-prefix MLIR
 
 //
 // This code is part of Qiskit.

@@ -72,19 +72,19 @@
 using namespace mlir;
 using namespace mlir::quir;
 
-using namespace qssc::hal;
-using namespace qssc::targets::systems::mock;
+using namespace qec::hal;
+using namespace qec::targets::systems::mock;
 
 namespace {
 // The space below at the front of the string causes this category to be printed
 // first
 llvm::cl::OptionCategory
-    mockCat(" QSS Compiler Options for the Mock target",
-            "Options that control Mock-specific behavior of the Mock QSS "
+    mockCat(" QE Compiler Options for the Mock target",
+            "Options that control Mock-specific behavior of the Mock QE "
             "Compiler target");
 } // anonymous namespace
 
-int qssc::targets::systems::mock::init() {
+int qec::targets::systems::mock::init() {
   bool const registered =
       registry::TargetSystemRegistry::registerPlugin<MockSystem>(
           "mock", "Mock system for testing the targeting infrastructure.",
@@ -226,7 +226,7 @@ llvm::Error MockSystem::addPasses(mlir::PassManager &pm) {
 } // MockSystem::addPasses
 
 llvm::Error MockSystem::emitToPayload(mlir::ModuleOp moduleOp,
-                                      qssc::payload::Payload &payload) {
+                                      qec::payload::Payload &payload) {
   return llvm::Error::success();
 } // MockSystem::emitToPayload
 
@@ -249,7 +249,7 @@ llvm::Error MockController::addPasses(mlir::PassManager &pm) {
 } // MockController::addPasses
 
 llvm::Error MockController::emitToPayload(mlir::ModuleOp moduleOp,
-                                          qssc::payload::Payload &payload) {
+                                          qec::payload::Payload &payload) {
 
   auto *mlirStr = payload.getFile(name + ".mlir");
   llvm::raw_string_ostream mlirOStream(*mlirStr);
@@ -262,7 +262,7 @@ llvm::Error MockController::emitToPayload(mlir::ModuleOp moduleOp,
 } // MockController::emitToPayload
 
 llvm::Error MockController::buildLLVMPayload(mlir::ModuleOp controllerModule,
-                                             qssc::payload::Payload &payload) {
+                                             qec::payload::Payload &payload) {
   auto timer = getTimer("build-llvm-payload");
 
   // Register LLVM dialect and all infrastructure required for translation to
@@ -393,7 +393,7 @@ llvm::Error MockAcquire::addPasses(mlir::PassManager &pm) {
 } // MockAcquire::addPasses
 
 llvm::Error MockAcquire::emitToPayload(mlir::ModuleOp moduleOp,
-                                       qssc::payload::Payload &payload) {
+                                       qec::payload::Payload &payload) {
   std::string mlirStr;
   llvm::raw_string_ostream mlirOStream(mlirStr);
   mlirOStream << moduleOp;
@@ -416,7 +416,7 @@ llvm::Error MockDrive::addPasses(mlir::PassManager &pm) {
 } // MockDrive::addPasses
 
 llvm::Error MockDrive::emitToPayload(mlir::ModuleOp moduleOp,
-                                     qssc::payload::Payload &payload) {
+                                     qec::payload::Payload &payload) {
 
   std::string mlirStr;
   llvm::raw_string_ostream mlirOStream(mlirStr);

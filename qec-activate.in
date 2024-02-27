@@ -1,0 +1,13 @@
+# Use with "source qec-activate" to prepare variables for build envronment.
+# Do not run it directly.
+
+qec-deactivate() {
+    # unset environment variables
+    if [ -n "${QEC_RESOURCES:-}" ]; then
+        unset QEC_RESOURCES
+    fi
+    unset -f qec-deactivate
+}
+
+QEC_RESOURCES="@QEC_RESOURCES_OUTPUT_INTDIR@"
+export QEC_RESOURCES

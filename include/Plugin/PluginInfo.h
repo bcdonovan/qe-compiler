@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Declaration of the QSSC plugin info.
+//  Declaration of the QEC plugin info.
 //
 //===----------------------------------------------------------------------===//
 #ifndef PLUGININFO_H
@@ -17,7 +17,7 @@
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Error.h"
 
-namespace qssc::plugin::registry {
+namespace qec::plugin::registry {
 
 template <typename TPluginType>
 class PluginInfo {
@@ -62,6 +62,6 @@ void printHelpStr(const PluginInfo<TPluginType> &pluginInfo, size_t indent,
       << pluginInfo.getDescription() << '\n';
 }
 
-} // namespace qssc::plugin::registry
+} // namespace qec::plugin::registry
 
 #endif

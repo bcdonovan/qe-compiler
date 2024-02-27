@@ -18,8 +18,8 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef QSS_COMPILER_ERROR_H
-#define QSS_COMPILER_ERROR_H
+#ifndef QE_COMPILER_ERROR_H
+#define QE_COMPILER_ERROR_H
 
 #include "llvm/Support/Error.h"
 
@@ -28,25 +28,25 @@
 #include <optional>
 #include <string>
 
-namespace qssc {
+namespace qec {
 
 enum class ErrorCategory {
   OpenQASM3ParseFailure,
-  QSSCompilerError,
-  QSSCompilerNoInputError,
-  QSSCompilerCommunicationFailure,
-  QSSCompilerEOFFailure,
-  QSSCompilerNonZeroStatus,
-  QSSCompilerSequenceTooLong,
-  QSSCompilationFailure,
-  QSSLinkerNotImplemented,
-  QSSLinkSignatureWarning,
-  QSSLinkSignatureError,
-  QSSLinkAddressError,
-  QSSLinkSignatureNotFound,
-  QSSLinkArgumentNotFoundWarning,
-  QSSLinkInvalidPatchTypeError,
-  QSSControlSystemResourcesExceeded,
+  QECompilerError,
+  QECompilerNoInputError,
+  QECompilerCommunicationFailure,
+  QECompilerEOFFailure,
+  QECompilerNonZeroStatus,
+  QECompilerSequenceTooLong,
+  QECompilationFailure,
+  QELinkerNotImplemented,
+  QELinkSignatureWarning,
+  QELinkSignatureError,
+  QELinkAddressError,
+  QELinkSignatureNotFound,
+  QELinkArgumentNotFoundWarning,
+  QELinkInvalidPatchTypeError,
+  QEControlSystemResourcesExceeded,
   UncategorizedError,
 };
 
@@ -83,6 +83,6 @@ llvm::Error emitDiagnostic(const OptDiagnosticCallback &onDiagnostic,
                            std::string message,
                            std::error_code ec = llvm::inconvertibleErrorCode());
 
-} // namespace qssc
+} // namespace qec
 
-#endif // QSS_COMPILER_ERROR_H
+#endif // QE_COMPILER_ERROR_H

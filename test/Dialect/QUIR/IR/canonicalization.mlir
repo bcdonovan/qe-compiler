@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --canonicalize %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --canonicalize %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

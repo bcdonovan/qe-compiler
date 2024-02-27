@@ -20,14 +20,14 @@ This file contains all the exception subclasses.
 
 from typing import List, Optional
 
-from .py_qssc import Diagnostic
+from .py_qec import Diagnostic
 
 
 def _diagnostics_to_str(diagnostics):
     return "\n".join([str(diag) for diag in diagnostics])
 
 
-class QSSCompilerError(Exception):
+class QECompilerError(Exception):
     """Raised on errors invoking the compiler or when the interaction between
     Python interface and native backend code fails."""
 
@@ -49,69 +49,69 @@ class QSSCompilerError(Exception):
         return "\n".join([self.message])
 
 
-class QSSCompilerNoInputError(QSSCompilerError):
+class QECompilerNoInputError(QECompilerError):
     """Raised when no input file or string is provided"""
 
 
-class QSSCompilerCommunicationFailure(QSSCompilerError):
+class QECompilerCommunicationFailure(QECompilerError):
     """Raised on compilation communication failure."""
 
 
-class QSSCompilerEOFFailure(QSSCompilerError):
+class QECompilerEOFFailure(QECompilerError):
     """Raised in case of EOF error."""
 
 
-class QSSCompilerNonZeroStatus(QSSCompilerError):
+class QECompilerNonZeroStatus(QECompilerError):
     """Raised when non-zero status is returned."""
 
 
-class QSSCompilerSequenceTooLong(QSSCompilerError):
+class QECompilerSequenceTooLong(QECompilerError):
     """Raised when input sequence is too long."""
 
 
-class QSSCompilationFailure(QSSCompilerError):
+class QECompilationFailure(QECompilerError):
     """Raised during other compilation failure."""
 
 
-class QSSLinkingFailure(QSSCompilerError):
+class QELinkingFailure(QECompilerError):
     """Raised on linking failure."""
 
 
-class QSSLinkerNotImplemented(QSSCompilerError):
+class QELinkerNotImplemented(QECompilerError):
     """Raised on linking failure."""
 
 
-class QSSArgumentInputTypeError(QSSLinkingFailure):
+class QEArgumentInputTypeError(QELinkingFailure):
     """Raised when argument type is invalid"""
 
 
-class QSSLinkSignatureError(QSSLinkingFailure):
+class QELinkSignatureError(QELinkingFailure):
     """Raised when signature file format is invalid"""
 
 
-class QSSLinkSignatureWarning(QSSLinkingFailure, Warning):
+class QELinkSignatureWarning(QELinkingFailure, Warning):
     """Raised when signature file format is invalid but may still be processed"""
 
 
-class QSSLinkAddressError(QSSLinkingFailure):
+class QELinkAddressError(QELinkingFailure):
     """Raised when signature link address is invalid"""
 
 
-class QSSLinkSignatureNotFound(QSSLinkingFailure):
+class QELinkSignatureNotFound(QELinkingFailure):
     """Raised when argument signature file is not found"""
 
 
-class QSSLinkArgumentNotFoundWarning(QSSLinkingFailure, Warning):
+class QELinkArgumentNotFoundWarning(QELinkingFailure, Warning):
     """Raised when parameter name in signature is not found in arguments"""
 
 
-class QSSLinkInvalidPatchTypeError(QSSLinkingFailure):
+class QELinkInvalidPatchTypeError(QELinkingFailure):
     """Raised when parameter patch type is invalid"""
 
 
-class QSSLinkInvalidArgumentError(QSSLinkingFailure):
+class QELinkInvalidArgumentError(QELinkingFailure):
     """Raised when argument is invalid"""
 
 
-class QSSControlSystemResourcesExceeded(QSSCompilerError):
+class QEControlSystemResourcesExceeded(QECompilerError):
     """Raised when control system resources (such as instruction memory) are exceeded."""

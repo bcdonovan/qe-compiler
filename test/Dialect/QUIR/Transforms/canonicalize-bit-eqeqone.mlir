@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --canonicalize %s | FileCheck %s --implicit-check-not extui --implicit-check-not cmpi --implicit-check-not cast
+// RUN: qe-compiler -X=mlir --canonicalize %s | FileCheck %s --implicit-check-not extui --implicit-check-not cmpi --implicit-check-not cast
 //
 // This test case validates that comparisons between zero-extended i1 and
 // constant 1 for equality are simplified.

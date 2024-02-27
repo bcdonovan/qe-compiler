@@ -40,7 +40,7 @@
 #include <zip.h>
 #include <zipconf.h>
 
-namespace qssc::payload {
+namespace qec::payload {
 
 llvm::Expected<std::string> readFileFromZip(zip_t *zip, zip_stat_t &zs) {
   auto *zipFile = zip_fopen_index(zip, zs.index, 0);
@@ -203,7 +203,7 @@ llvm::Error PatchableZipPayload::writeString(std::string *outputString) {
     // read from in memory source
     zip_int64_t sz;
     char *outbuffer =
-        qssc::payload::read_zip_src_to_buffer(inMemoryZipSource, sz);
+        qec::payload::read_zip_src_to_buffer(inMemoryZipSource, sz);
     if (outbuffer) {
       ostream->write(outbuffer, sz);
       free(outbuffer);
@@ -287,4 +287,4 @@ PatchableZipPayload::~PatchableZipPayload() {
     zip_discard(zip);
 }
 
-} // namespace qssc::payload
+} // namespace qec::payload

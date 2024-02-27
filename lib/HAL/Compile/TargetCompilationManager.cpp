@@ -33,7 +33,7 @@
 #include "llvm/Support/ManagedStatic.h"
 #include "llvm/Support/raw_ostream.h"
 
-using namespace qssc::hal::compile;
+using namespace qec::hal::compile;
 
 namespace {
 struct TargetCompilationManagerOptions {
@@ -63,12 +63,12 @@ llvm::ManagedStatic<TargetCompilationManagerOptions> options;
 
 } // anonymous namespace
 
-void qssc::hal::compile::registerTargetCompilationManagerCLOptions() {
+void qec::hal::compile::registerTargetCompilationManagerCLOptions() {
   // Make sure that the options struct has been constructed.
   *options;
 }
 
-mlir::LogicalResult qssc::hal::compile::applyTargetCompilationManagerCLOptions(
+mlir::LogicalResult qec::hal::compile::applyTargetCompilationManagerCLOptions(
     TargetCompilationManager &scheduler) {
   if (!options.isConstructed())
     return mlir::failure();
@@ -83,7 +83,7 @@ mlir::LogicalResult qssc::hal::compile::applyTargetCompilationManagerCLOptions(
 }
 
 TargetCompilationManager::TargetCompilationManager(
-    qssc::hal::TargetSystem &target, mlir::MLIRContext *context)
+    qec::hal::TargetSystem &target, mlir::MLIRContext *context)
     : target(target), context(context) {}
 
 llvm::Error TargetCompilationManager::walkTargetModules(

@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-get_property(qssc_api_libs GLOBAL PROPERTY QSSC_API_LIBS)
+get_property(qec_api_libs GLOBAL PROPERTY QEC_API_LIBS)
 
 set(llvm_code_gen_libraries
     LLVMPowerPCCodeGen
@@ -35,7 +35,7 @@ if ("LLVMAArch64CodeGen" IN_LIST LLVM_AVAILABLE_LIBS)
     message(STATUS "Adding AArch64 libraries to llvm_code_gen_libraries")
 endif ()
 
-qssc_add_plugin(QSSCTargetMock QSSC_TARGET_PLUGIN
+qec_add_plugin(QECTargetMock QEC_TARGET_PLUGIN
 Conversion/QUIRToStandard/QUIRToStandard.cpp
 MockTarget.cpp
 MockUtils.cpp
@@ -43,11 +43,11 @@ Transforms/QubitLocalization.cpp
 
 ADDITIONAL_HEADER_DIRS
 ${CMAKE_CURRENT_SOURCE_DIR}
-${QSSC_INCLUDE_DIR}/HAL
+${QEC_INCLUDE_DIR}/HAL
 
 LINK_LIBS
-${qssc_api_libs}
-QSSCHAL
+${qec_api_libs}
+QECHAL
 MLIRExecutionEngine
 MLIROptLib
 MLIRLLVMDialect

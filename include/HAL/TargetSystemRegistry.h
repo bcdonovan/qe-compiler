@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Declaration of the QSSC target registry system.
+//  Declaration of the QEC target registry system.
 //
 //===----------------------------------------------------------------------===//
 #ifndef TARGETSYSTEMREGISTRY_H
@@ -19,18 +19,18 @@
 #include "Plugin/PluginRegistry.h"
 #include "TargetSystemInfo.h"
 
-namespace qssc::hal::registry {
+namespace qec::hal::registry {
 
 class TargetSystemRegistry
-    : public qssc::plugin::registry::PluginRegistry<TargetSystemInfo> {
+    : public qec::plugin::registry::PluginRegistry<TargetSystemInfo> {
   using PluginRegistry =
-      qssc::plugin::registry::PluginRegistry<TargetSystemInfo>;
+      qec::plugin::registry::PluginRegistry<TargetSystemInfo>;
 
 public:
   TargetSystemRegistry(const TargetSystemRegistry &) = delete;
   void operator=(const TargetSystemRegistry &) = delete;
 
-  /// Register a specific target allocator with the QSSC system.
+  /// Register a specific target allocator with the QEC system.
   template <typename ConcreteTargetSystem>
   static bool
   registerPlugin(llvm::StringRef name, llvm::StringRef description,
@@ -44,6 +44,6 @@ public:
   static TargetSystemInfo *nullTargetSystemInfo();
 };
 
-} // namespace qssc::hal::registry
+} // namespace qec::hal::registry
 
 #endif

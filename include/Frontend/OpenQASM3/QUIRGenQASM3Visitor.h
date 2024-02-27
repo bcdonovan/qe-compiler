@@ -30,7 +30,7 @@
 
 #include <unordered_map>
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 class QUIRGenQASM3Visitor : public BaseQASM3Visitor {
 private:
@@ -286,6 +286,6 @@ private:
   mlir::Type getQUIRTypeFromDeclaration(const QASM::ASTDeclarationNode *);
 };
 
-} // namespace qssc::frontend::openqasm3
+} // namespace qec::frontend::openqasm3
 
 #endif // VISITOR_QUIR_GEN_VISITOR_H

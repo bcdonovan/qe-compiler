@@ -1,4 +1,4 @@
-//===- qss-compiler.cpp -----------------------------------------*- C++ -*-===//
+//===- qe-compiler.cpp -----------------------------------------*- C++ -*-===//
 //
 // (C) Copyright IBM 2023.
 //
@@ -24,11 +24,11 @@
 
 int main(int argc, const char **argv) {
 
-  auto err = qssc::compileMain(
-      argc, argv, "Quantum System Software (QSS) Backend Compiler\n", {});
+  auto err = qec::compileMain(
+      argc, argv, "Quantum Engine (QE) Backend Compiler\n", {});
   if (err) {
     llvm::logAllUnhandledErrors(std::move(err), llvm::errs(), "Error: ");
     return EXIT_FAILURE;
   }
-  return qssc::asMainReturnCode(std::move(err));
+  return qec::asMainReturnCode(std::move(err));
 }

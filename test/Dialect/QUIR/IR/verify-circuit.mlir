@@ -1,4 +1,4 @@
-// RUN: qss-compiler %s | FileCheck %s
+// RUN: qe-compiler %s | FileCheck %s
 // Verify that a test with no classical ops inside a circuit passes.
 
 //

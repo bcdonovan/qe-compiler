@@ -1,4 +1,4 @@
-// RUN: qss-compiler %s --quir-to-pulse | FileCheck %s
+// RUN: qe-compiler %s --quir-to-pulse | FileCheck %s
 
 //
 // This code is part of Qiskit.

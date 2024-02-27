@@ -33,9 +33,9 @@
 
 #include "mlir/InitAllPasses.h"
 
-namespace qssc::dialect {
+namespace qec::dialect {
 
-/// Register all qss-compiler passes
+/// Register all qe-compiler passes
 inline llvm::Error registerPasses() {
   // TODO: Register standalone passes here.
   llvm::Error err = llvm::Error::success();
@@ -48,13 +48,13 @@ inline llvm::Error registerPasses() {
   mlir::pulse::registerPulsePassPipeline();
   mlir::registerConversionPasses();
 
-  err = llvm::joinErrors(std::move(err), qssc::hal::registerTargetPasses());
-  err = llvm::joinErrors(std::move(err), qssc::hal::registerTargetPipelines());
+  err = llvm::joinErrors(std::move(err), qec::hal::registerTargetPasses());
+  err = llvm::joinErrors(std::move(err), qec::hal::registerTargetPipelines());
 
   mlir::registerAllPasses();
   return err;
 }
 
-} // namespace qssc::dialect
+} // namespace qec::dialect
 
 #endif // REGISTER_PASSES_H

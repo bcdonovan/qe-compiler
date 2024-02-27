@@ -1,5 +1,5 @@
 // Redirect stderr (where timing is printed to) to stdout and then stdout to filecheck
-// RUN: qss-compiler %s --target mock --config %TEST_CFG --emit=qem --plaintext-payload --mlir-timing --mlir-disable-threading 2>&1 >/dev/null | FileCheck %s
+// RUN: qe-compiler %s --target mock --config %TEST_CFG --emit=qem --plaintext-payload --mlir-timing --mlir-disable-threading 2>&1 >/dev/null | FileCheck %s
 // (C) Copyright IBM 2024.
 //
 // This code is part of Qiskit.

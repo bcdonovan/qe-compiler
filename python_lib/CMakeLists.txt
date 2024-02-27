@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-project(py_qssc)
+project(py_qec)
 
 
 macro(python_pkg_add_file file lib)
@@ -65,7 +65,7 @@ python_pkg_add_files(
                 setup.py
 )
 
-foreach(dir ${QSSC_TARGET_PYTHON_DIRS})
+foreach(dir ${QEC_TARGET_PYTHON_DIRS})
     message(STATUS "Adding Python target directory: ${dir}")
     file(GLOB_RECURSE
             dir_files
@@ -79,4 +79,4 @@ configure_file(pyproject.toml.in ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml)
 
 add_subdirectory(qe_compiler)
 add_custom_target(copy_python_files DEPENDS ${PY_LIB_FILES})
-add_dependencies(py_qssc copy_python_files)
+add_dependencies(py_qec copy_python_files)

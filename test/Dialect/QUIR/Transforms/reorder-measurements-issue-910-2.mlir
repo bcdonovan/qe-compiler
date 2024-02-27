@@ -1,4 +1,4 @@
-// RUN: qss-compiler --canonicalize --reorder-measures %s | FileCheck %s
+// RUN: qe-compiler --canonicalize --reorder-measures %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

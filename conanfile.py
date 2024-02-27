@@ -15,14 +15,14 @@ from conans import ConanFile, CMake, tools
 
 
 # Get version from environment variable.
-# Note: QSSC_VERSION must be set in the environment when exporting
+# Note: QEC_VERSION must be set in the environment when exporting
 # to the Conan cache (i.e. via conan export or conan create).
 # https://docs.conan.io/en/1.53/reference/conanfile/attributes.html#version
 def get_version():
-    return os.environ.get("QSSC_VERSION", None)
+    return os.environ.get("QEC_VERSION", None)
 
 
-class QSSCompilerConan(ConanFile):
+class QECompilerConan(ConanFile):
     name = "qe-compiler"
     version = get_version()
     url = "https://github.com/qiskit/qe-compiler"

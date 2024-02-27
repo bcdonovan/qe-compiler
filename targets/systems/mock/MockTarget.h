@@ -30,12 +30,12 @@
 #include <memory>
 #include <unordered_map>
 
-namespace qssc::targets::systems::mock {
+namespace qec::targets::systems::mock {
 
 // Register the mock target.
 int init();
 
-class MockConfig : public qssc::hal::SystemConfiguration {
+class MockConfig : public qec::hal::SystemConfiguration {
 public:
   explicit MockConfig(llvm::StringRef configurationPath);
   uint getMultiplexingRatio() const { return multiplexing_ratio; }
@@ -67,7 +67,7 @@ private:
   std::unordered_map<uint, std::vector<int>> qubitAcquireToPhysIdMap;
 }; // class MockConfig
 
-class MockSystem : public qssc::hal::TargetSystem {
+class MockSystem : public qec::hal::TargetSystem {
 public:
   static constexpr auto name = "mock";
   static const std::vector<std::string> childNames;
@@ -83,10 +83,10 @@ private:
   std::unique_ptr<MockConfig> mockConfig;
 }; // class MockSystem
 
-class MockController : public qssc::hal::TargetInstrument {
+class MockController : public qec::hal::TargetInstrument {
 public:
   MockController(std::string name, MockSystem *parent,
-                 const qssc::hal::SystemConfiguration &config);
+                 const qec::hal::SystemConfiguration &config);
   static void registerTargetPasses();
   static void registerTargetPipelines();
   virtual llvm::StringRef getNodeType() override { return "controller"; }
@@ -101,10 +101,10 @@ private:
                                payload::Payload &payload);
 }; // class MockController
 
-class MockAcquire : public qssc::hal::TargetInstrument {
+class MockAcquire : public qec::hal::TargetInstrument {
 public:
   MockAcquire(std::string name, MockSystem *parent,
-              const qssc::hal::SystemConfiguration &config, uint32_t nodeId);
+              const qec::hal::SystemConfiguration &config, uint32_t nodeId);
   static void registerTargetPasses();
   static void registerTargetPipelines();
   virtual llvm::StringRef getNodeType() override { return "acquire"; }
@@ -118,10 +118,10 @@ private:
 
 }; // class MockAcquire
 
-class MockDrive : public qssc::hal::TargetInstrument {
+class MockDrive : public qec::hal::TargetInstrument {
 public:
   MockDrive(std::string name, MockSystem *parent,
-            const qssc::hal::SystemConfiguration &config, uint32_t nodeId);
+            const qec::hal::SystemConfiguration &config, uint32_t nodeId);
   static void registerTargetPasses();
   static void registerTargetPipelines();
   virtual llvm::StringRef getNodeType() override { return "drive"; }
@@ -134,6 +134,6 @@ private:
   uint32_t nodeId_;
 }; // class MockDrive
 
-} // namespace qssc::targets::systems::mock
+} // namespace qec::targets::systems::mock
 
 #endif // HAL_TARGETS_MOCK_MOCKTARGET_H

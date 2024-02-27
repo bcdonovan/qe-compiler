@@ -1,4 +1,4 @@
-// RUN: qss-opt %s --canonicalize | qss-opt | FileCheck %s --implicit-check-not cbit_extractbit
+// RUN: qe-opt %s --canonicalize | qe-opt | FileCheck %s --implicit-check-not cbit_extractbit
 // Verify that all oq3.cbit_extractbit operations are eliminated
 
 // CHECK: func.func @single_bit(%[[ARG0:.*]]: i1) -> i1 {

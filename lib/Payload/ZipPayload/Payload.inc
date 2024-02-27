@@ -15,7 +15,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// This file defines static objects that register payloads
-/// with the QSS compiler core.
+/// with the QE compiler core.
 ///
 //===----------------------------------------------------------------------===//
 
@@ -24,10 +24,10 @@
 
 #include "ZipPayload.h"
 
-namespace qssc::payload {
+namespace qec::payload {
 
 [[maybe_unused]] int registrar = init();
 
-} // namespace qssc::payload
+} // namespace qec::payload
 
 #endif // PAYLOAD_PAYLOAD_ZIPPAYLOAD_H

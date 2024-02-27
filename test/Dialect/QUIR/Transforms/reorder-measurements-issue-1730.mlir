@@ -1,4 +1,4 @@
-// RUN: qss-compiler --reorder-measures %s | FileCheck %s
+// RUN: qe-compiler --reorder-measures %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

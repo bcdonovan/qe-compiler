@@ -10,13 +10,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-qssc_add_library(QSSCHALCompile
+qec_add_library(QECHALCompile
     TargetCompilationManager.cpp
     ThreadedCompilationManager.cpp
 
     ADDITIONAL_HEADER_DIRS
-    ${QSSC_INCLUDE_DIR}/HAL/Compile
+    ${QEC_INCLUDE_DIR}/HAL/Compile
 
     LINK_LIBS
-    QSSCHAL
+    QECHAL
 )

@@ -19,7 +19,7 @@
 
 #include "Frontend/OpenQASM3/BaseQASM3Visitor.h"
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 class PrintQASM3Visitor : public BaseQASM3Visitor {
 private:
@@ -126,6 +126,6 @@ public:
   void visit(const QASM::ASTUnaryOpNode *) override;
 };
 
-} // namespace qssc::frontend::openqasm3
+} // namespace qec::frontend::openqasm3
 
 #endif // VISITOR_PRINT_VISITOR_H

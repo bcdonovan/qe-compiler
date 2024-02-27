@@ -47,7 +47,7 @@
 #include <qasm/AST/ASTTypeEnums.h>
 #include <qasm/AST/ASTTypes.h>
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 void QUIRVariableBuilder::generateVariableDeclaration(
     mlir::Location location, llvm::StringRef variableName, mlir::Type type,
@@ -284,4 +284,4 @@ QUIRVariableBuilder::resolveQUIRVariableType(const QASM::ASTResultNode *node) {
   return resolveQUIRVariableType(node->GetResultType(), node->GetResultBits());
 }
 
-} // namespace qssc::frontend::openqasm3
+} // namespace qec::frontend::openqasm3

@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --classical-only-detection %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --classical-only-detection %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

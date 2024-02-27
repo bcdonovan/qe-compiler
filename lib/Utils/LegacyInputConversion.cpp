@@ -22,7 +22,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace qssc::utils {
+namespace qec::utils {
 
 auto verifyInput(const std::string &calibrationsFilename,
                  const std::string &expParamsFilename,
@@ -66,8 +66,8 @@ auto verifyInput(const std::string &calibrationsFilename,
 
 auto createMaps(const nlohmann::json &backendConfig) {
 
-  std::map<std::string, std::shared_ptr<qssc::utils::Port>> portMap;
-  std::map<uint32_t, std::shared_ptr<qssc::utils::Qubit>> qubitMap;
+  std::map<std::string, std::shared_ptr<qec::utils::Port>> portMap;
+  std::map<uint32_t, std::shared_ptr<qec::utils::Qubit>> qubitMap;
 
   // create qubits
   {
@@ -266,4 +266,4 @@ void LegacyInputConversion::create(const std::string &calibrationsFilename,
   initialized_ = true;
 }
 
-} // namespace qssc::utils
+} // namespace qec::utils

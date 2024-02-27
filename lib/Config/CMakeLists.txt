@@ -4,12 +4,12 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# Add QSSConfig lib
-qssc_add_library(QSSConfig
-    QSSConfig.cpp
+# Add QEConfig lib
+qec_add_library(QEConfig
+    QEConfig.cpp
     CLIConfig.cpp
     EnvVarConfig.cpp
 
     ADDITIONAL_HEADER_DIRS
-    ${QSSC_INCLUDE_DIR}/Config
+    ${QEC_INCLUDE_DIR}/Config
 )

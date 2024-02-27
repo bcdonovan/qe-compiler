@@ -33,7 +33,7 @@
 
 #include <unordered_map>
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 class QUIRVariableBuilder {
 public:
@@ -250,6 +250,6 @@ private:
                                      const unsigned bits) const;
 };
 
-} // namespace qssc::frontend::openqasm3
+} // namespace qec::frontend::openqasm3
 
 #endif // OPENQASM3_QUIR_VARIABLE_BUILDER_H

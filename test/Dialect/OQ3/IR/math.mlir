@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir %s | FileCheck %s
+// RUN: qe-compiler -X=mlir %s | FileCheck %s
 module {
     oq3.declare_variable @cb1 : !quir.cbit<10>
     %cb1 = oq3.variable_load @cb1 : !quir.cbit<10>

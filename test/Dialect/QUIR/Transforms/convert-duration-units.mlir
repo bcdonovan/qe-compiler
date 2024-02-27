@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --convert-quir-duration-units='units=dt dt-timestep=0.1' %s | FileCheck %s --check-prefix=DT
-// RUN: qss-compiler -X=mlir --convert-quir-duration-units='units=s dt-timestep=0.1' %s | FileCheck %s --check-prefix=S
+// RUN: qe-compiler -X=mlir --convert-quir-duration-units='units=dt dt-timestep=0.1' %s | FileCheck %s --check-prefix=DT
+// RUN: qe-compiler -X=mlir --convert-quir-duration-units='units=s dt-timestep=0.1' %s | FileCheck %s --check-prefix=S
 
 
 //

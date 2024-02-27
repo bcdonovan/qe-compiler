@@ -31,55 +31,55 @@
 
 namespace {
 
-std::string_view getErrorCategoryAsString(qssc::ErrorCategory category) {
-  using namespace qssc;
+std::string_view getErrorCategoryAsString(qec::ErrorCategory category) {
+  using namespace qec;
   switch (category) {
   case ErrorCategory::OpenQASM3ParseFailure:
     return "OpenQASM 3 parse error";
 
-  case ErrorCategory::QSSCompilerError:
+  case ErrorCategory::QECompilerError:
     return "Unknown compiler error";
 
-  case ErrorCategory::QSSCompilerNoInputError:
+  case ErrorCategory::QECompilerNoInputError:
     return "Error when no input file or string is provided";
 
-  case ErrorCategory::QSSCompilerCommunicationFailure:
+  case ErrorCategory::QECompilerCommunicationFailure:
     return "Error on compilation communication failure";
 
-  case ErrorCategory::QSSCompilerEOFFailure:
+  case ErrorCategory::QECompilerEOFFailure:
     return "EOF Error";
 
-  case ErrorCategory::QSSCompilerNonZeroStatus:
+  case ErrorCategory::QECompilerNonZeroStatus:
     return "Errored because non-zero status is returned";
 
-  case ErrorCategory::QSSCompilerSequenceTooLong:
+  case ErrorCategory::QECompilerSequenceTooLong:
     return "Input sequence is too long";
 
-  case ErrorCategory::QSSCompilationFailure:
+  case ErrorCategory::QECompilationFailure:
     return "Failure during compilation";
 
-  case ErrorCategory::QSSLinkerNotImplemented:
+  case ErrorCategory::QELinkerNotImplemented:
     return "BindArguments not implemented for target";
 
-  case ErrorCategory::QSSLinkSignatureWarning:
+  case ErrorCategory::QELinkSignatureWarning:
     return "Signature file format is invalid but may be processed";
 
-  case ErrorCategory::QSSLinkSignatureError:
+  case ErrorCategory::QELinkSignatureError:
     return "Signature file format is invalid";
 
-  case ErrorCategory::QSSLinkAddressError:
+  case ErrorCategory::QELinkAddressError:
     return "Signature address is invalid";
 
-  case ErrorCategory::QSSLinkSignatureNotFound:
+  case ErrorCategory::QELinkSignatureNotFound:
     return "Signature file not found";
 
-  case ErrorCategory::QSSLinkArgumentNotFoundWarning:
+  case ErrorCategory::QELinkArgumentNotFoundWarning:
     return "Parameter in signature not found in arguments";
 
-  case ErrorCategory::QSSLinkInvalidPatchTypeError:
+  case ErrorCategory::QELinkInvalidPatchTypeError:
     return "Invalid patch point type";
 
-  case ErrorCategory::QSSControlSystemResourcesExceeded:
+  case ErrorCategory::QEControlSystemResourcesExceeded:
     return "Control system resources exceeded";
 
   case ErrorCategory::UncategorizedError:
@@ -89,15 +89,15 @@ std::string_view getErrorCategoryAsString(qssc::ErrorCategory category) {
   llvm_unreachable("unhandled category");
 }
 
-llvm::StringRef getSeverityAsString(qssc::Severity sev) {
+llvm::StringRef getSeverityAsString(qec::Severity sev) {
   switch (sev) {
-  case qssc::Severity::Info:
+  case qec::Severity::Info:
     return "Info";
-  case qssc::Severity::Warning:
+  case qec::Severity::Warning:
     return "Warning";
-  case qssc::Severity::Error:
+  case qec::Severity::Error:
     return "Error";
-  case qssc::Severity::Fatal:
+  case qec::Severity::Fatal:
     return "Fatal";
   }
 
@@ -106,7 +106,7 @@ llvm::StringRef getSeverityAsString(qssc::Severity sev) {
 
 } // anonymous namespace
 
-namespace qssc {
+namespace qec {
 
 std::string Diagnostic::toString() const {
   std::string str;
@@ -131,8 +131,8 @@ llvm::Error emitDiagnostic(const OptDiagnosticCallback &onDiagnostic,
 llvm::Error emitDiagnostic(const OptDiagnosticCallback &onDiagnostic,
                            Severity severity, ErrorCategory category,
                            std::string message, std::error_code ec) {
-  qssc::Diagnostic const diag{severity, category, std::move(message)};
+  qec::Diagnostic const diag{severity, category, std::move(message)};
   return emitDiagnostic(onDiagnostic, diag, ec);
 }
 
-} // namespace qssc
+} // namespace qec

@@ -1,6 +1,6 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
-// RUN: qss-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
+// RUN: qe-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
+// RUN: qe-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
 
 //
 // This code is part of Qiskit.
@@ -46,6 +46,6 @@ my_complex = a;
 complex[64] b;
 
 // The following raises error
-// loc("../qss-compiler/test/Visitor/complex.qasm":36:24): error: Cannot support float with 300 bits
+// loc("../qe-compiler/test/Visitor/complex.qasm":36:24): error: Cannot support float with 300 bits
 // Error: Failed to emit QUIR
 // complex[300] c;

@@ -36,11 +36,11 @@
 #include <system_error>
 #include <utility>
 
-namespace qssc::arguments {
+namespace qec::arguments {
 
 using namespace payload;
 
-llvm::Error updateParameters(qssc::payload::PatchablePayload *payload,
+llvm::Error updateParameters(qec::payload::PatchablePayload *payload,
                              Signature &sig, ArgumentSource const &arguments,
                              bool treatWarningsAsErrors,
                              BindArgumentsImplementationFactory &factory,
@@ -55,8 +55,8 @@ llvm::Error updateParameters(qssc::payload::PatchablePayload *payload,
 
     if (!binaryDataOrErr) {
       auto error = binaryDataOrErr.takeError();
-      return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                            qssc::ErrorCategory::QSSLinkSignatureError,
+      return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                            qec::ErrorCategory::QELinkSignatureError,
                             "Error reading " + binaryName + " " +
                                 toString(std::move(error)));
     }
@@ -164,4 +164,4 @@ llvm::Error bindArguments(llvm::StringRef moduleInput,
   return llvm::Error::success();
 }
 
-} // namespace qssc::arguments
+} // namespace qec::arguments

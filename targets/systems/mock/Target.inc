@@ -15,7 +15,7 @@
 //===----------------------------------------------------------------------===//
 //
 //  This file defines static objects that register system targets
-//  with the QSS compiler core.
+//  with the QE compiler core.
 //
 //===----------------------------------------------------------------------===//
 
@@ -24,10 +24,10 @@
 
 #include "MockTarget.h"
 
-namespace qssc::targets::systems::mock {
+namespace qec::targets::systems::mock {
 
 [[maybe_unused]] int registrar = init();
 
-} // namespace qssc::targets::systems::mock
+} // namespace qec::targets::systems::mock
 
 #endif // HAL_TARGETS_MOCK_TARGET_H

@@ -26,10 +26,10 @@
 
 #include <vector>
 
-using namespace qssc::targets::systems::mock;
+using namespace qec::targets::systems::mock;
 using namespace mlir;
 
-auto qssc::targets::systems::mock::getControllerModule(ModuleOp topModuleOp)
+auto qec::targets::systems::mock::getControllerModule(ModuleOp topModuleOp)
     -> ModuleOp {
   ModuleOp retOp = nullptr;
   topModuleOp->walk([&](ModuleOp walkOp) {
@@ -43,7 +43,7 @@ auto qssc::targets::systems::mock::getControllerModule(ModuleOp topModuleOp)
   return retOp;
 }
 
-auto qssc::targets::systems::mock::getActuatorModules(ModuleOp topModuleOp)
+auto qec::targets::systems::mock::getActuatorModules(ModuleOp topModuleOp)
     -> std::vector<ModuleOp> {
   std::vector<ModuleOp> retVec;
   topModuleOp->walk([&](ModuleOp walkOp) {

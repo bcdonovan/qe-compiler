@@ -1,4 +1,4 @@
-//===- qss-opt.cpp ----------------------------------------------*- C++ -*-===//
+//===- qe-opt.cpp ----------------------------------------------*- C++ -*-===//
 //
 // (C) Copyright IBM 2023.
 //
@@ -14,14 +14,14 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// This file implements an mlir-opt clone with the qss dialects and passes
+// This file implements an mlir-opt clone with the qe dialects and passes
 // registered. It is mainly for diagnostic verification (testing) but can
 // also be used for benchmarking and other types of testing.
 //
 //===----------------------------------------------------------------------===//
 
 #include "Config/CLIConfig.h"
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 #include "Dialect/RegisterDialects.h"
 #include "Dialect/RegisterPasses.h"
 #include "HAL/TargetSystemRegistry.h"
@@ -55,11 +55,11 @@
 #include <tuple>
 #include <utility>
 
-using namespace qssc;
-using namespace qssc::hal;
+using namespace qec;
+using namespace qec::hal;
 
 // NOLINTNEXTLINE(misc-use-anonymous-namespace)
-static const std::string toolName = "qss-opt";
+static const std::string toolName = "qe-opt";
 
 namespace {
 std::pair<std::string, std::string>
@@ -74,7 +74,7 @@ registerAndParseCLIOptions(int argc, char **argv, llvm::StringRef toolName,
       "o", llvm::cl::desc("Output filename"), llvm::cl::value_desc("filename"),
       llvm::cl::init("-"));
   // Register CL config builder prior to parsing
-  qssc::config::CLIConfigBuilder::registerCLOptions(registry);
+  qec::config::CLIConfigBuilder::registerCLOptions(registry);
   mlir::registerAsmPrinterCLOptions();
   mlir::registerMLIRContextCLOptions();
   mlir::registerPassManagerCLOptions();
@@ -98,7 +98,7 @@ registerAndParseCLIOptions(int argc, char **argv, llvm::StringRef toolName,
 
     os << "\nAvailable Payloads:\n";
     for (const auto &payload :
-         qssc::payload::registry::PayloadRegistry::registeredPlugins()) {
+         qec::payload::registry::PayloadRegistry::registeredPlugins()) {
       os << payload.second.getName() << " - " << payload.second.getDescription()
          << "\n";
     }
@@ -109,7 +109,7 @@ registerAndParseCLIOptions(int argc, char **argv, llvm::StringRef toolName,
   return std::make_pair(inputFilename.getValue(), outputFilename.getValue());
 }
 
-llvm::Error buildTarget_(qssc::config::QSSConfig &config) {
+llvm::Error buildTarget_(qec::config::QEConfig &config) {
   // The below must be performed after CL parsing
 
   // Create target if one was specified.
@@ -145,11 +145,11 @@ llvm::Error buildTarget_(qssc::config::QSSConfig &config) {
 }
 } // anonymous namespace
 
-mlir::LogicalResult QSSCOptMain(int argc, char **argv,
+mlir::LogicalResult QECOptMain(int argc, char **argv,
                                 llvm::StringRef inputFilename,
                                 llvm::StringRef outputFilename,
                                 mlir::DialectRegistry &registry,
-                                qssc::config::QSSConfig &config) {
+                                qec::config::QEConfig &config) {
 
   llvm::InitLLVM const y(argc, argv);
 
@@ -189,7 +189,7 @@ mlir::LogicalResult QSSCOptMain(int argc, char **argv,
   return mlir::success();
 }
 
-mlir::LogicalResult QSSCOptMain(int argc, char **argv,
+mlir::LogicalResult QECOptMain(int argc, char **argv,
                                 mlir::DialectRegistry &registry) {
 
   // Register and parse command line options.
@@ -198,14 +198,14 @@ mlir::LogicalResult QSSCOptMain(int argc, char **argv,
   std::tie(inputFilename, outputFilename) =
       registerAndParseCLIOptions(argc, argv, toolName, registry);
   auto configResult =
-      qssc::config::buildToolConfig(inputFilename, outputFilename);
+      qec::config::buildToolConfig(inputFilename, outputFilename);
   if (auto err = configResult.takeError()) {
     llvm::errs() << err;
     return mlir::failure();
   }
-  qssc::config::QSSConfig config = configResult.get();
+  qec::config::QEConfig config = configResult.get();
 
-  return QSSCOptMain(argc, argv, inputFilename, outputFilename, registry,
+  return QECOptMain(argc, argv, inputFilename, outputFilename, registry,
                      config);
 }
 
@@ -213,14 +213,14 @@ auto main(int argc, char **argv) -> int {
 
   // Register the standard passes with MLIR.
   // Must precede the command line parsing.
-  if (auto err = qssc::dialect::registerPasses()) {
+  if (auto err = qec::dialect::registerPasses()) {
     llvm::errs() << err << "\n";
     return EXIT_FAILURE;
   }
 
   mlir::DialectRegistry registry;
-  qssc::dialect::registerDialects(registry);
+  qec::dialect::registerDialects(registry);
   mlir::registerAllExtensions(registry);
 
-  return mlir::asMainReturnCode(QSSCOptMain(argc, argv, registry));
+  return mlir::asMainReturnCode(QECOptMain(argc, argv, registry));
 }

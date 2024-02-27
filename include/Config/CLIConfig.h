@@ -11,39 +11,39 @@
 ///  Populate the configuration from the CLI.
 ///
 //===----------------------------------------------------------------------===//
-#ifndef QSSC_CLICONFIG_H
-#define QSSC_CLICONFIG_H
+#ifndef QEC_CLICONFIG_H
+#define QEC_CLICONFIG_H
 
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
 #include "llvm/Support/CommandLine.h"
 
-namespace qssc::config {
+namespace qec::config {
 
-/// @brief Get the CLI category for the QSS compiler.
+/// @brief Get the CLI category for the QE compiler.
 /// @return The reference to the CLI category for the compiler.
-llvm::cl::OptionCategory &getQSSCCLCategory();
+llvm::cl::OptionCategory &getQECCLCategory();
 
-/// @brief Get the CLI category for the QSS compiler mlir-opt options.
+/// @brief Get the CLI category for the QE compiler mlir-opt options.
 /// @return The reference to the CLI category for the compiler.
-llvm::cl::OptionCategory &getQSSOptCLCategory();
+llvm::cl::OptionCategory &getQEOptCLCategory();
 
-/// @brief Build a QSSConfig from input CLI arguments.
+/// @brief Build a QEConfig from input CLI arguments.
 ///
 /// When the compiler is invoked it loads the CLI
 /// using the MLIR/LLVM CLI library. This enables the
 /// inheritance of all of MLIR's powerful CLI functionality.
 ///
-/// The qss-compiler adds several cli arguments to
-/// configure the QSSConfig through the CLIConfigBuilder.
-class CLIConfigBuilder : public QSSConfigBuilder {
+/// The qe-compiler adds several cli arguments to
+/// configure the QEConfig through the CLIConfigBuilder.
+class CLIConfigBuilder : public QEConfigBuilder {
 public:
   explicit CLIConfigBuilder();
   static void registerCLOptions(mlir::DialectRegistry &registry);
-  llvm::Error populateConfig(QSSConfig &config) override;
-  llvm::Error populateConfig(QSSConfig &config, llvm::StringRef inputFilename,
+  llvm::Error populateConfig(QEConfig &config) override;
+  llvm::Error populateConfig(QEConfig &config, llvm::StringRef inputFilename,
                              llvm::StringRef outputFilename);
 };
 
-} // namespace qssc::config
-#endif // QSS_CLICONFIG_H
+} // namespace qec::config
+#endif // QE_CLICONFIG_H

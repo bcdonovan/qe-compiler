@@ -21,13 +21,13 @@
 #ifndef THREADEDCOMPILATIONMANAGER_H
 #define THREADEDCOMPILATIONMANAGER_H
 
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 #include "HAL/Compile/TargetCompilationManager.h"
 
 #include <mutex>
 #include <string>
 
-namespace qssc::hal::compile {
+namespace qec::hal::compile {
 
 /// @brief A threaded implementation of a TargetCompilationManager
 /// based on the threading pools provided by the mlir::MLIRContext.
@@ -63,14 +63,14 @@ protected:
 public:
   using PMBuilder = std::function<llvm::Error(mlir::PassManager &)>;
 
-  ThreadedCompilationManager(qssc::hal::TargetSystem &target,
+  ThreadedCompilationManager(qec::hal::TargetSystem &target,
                              mlir::MLIRContext *context, PMBuilder pmBuilder);
   virtual ~ThreadedCompilationManager() = default;
   virtual const std::string getName() const override;
 
   virtual llvm::Error compileMLIR(mlir::ModuleOp moduleOp) override;
   virtual llvm::Error compilePayload(mlir::ModuleOp moduleOp,
-                                     qssc::payload::Payload &payload,
+                                     qec::payload::Payload &payload,
                                      bool doCompileMLIR = true) override;
 
   bool isMultithreadingEnabled() {
@@ -113,7 +113,7 @@ private:
   /// Compiles the input payload for a single target.
   llvm::Error compilePayloadTarget_(Target &target,
                                     mlir::ModuleOp targetModuleOp,
-                                    qssc::payload::Payload &payload,
+                                    qec::payload::Payload &payload,
                                     mlir::TimingScope &timing,
                                     bool doCompileMLIR);
 
@@ -121,5 +121,5 @@ private:
 
 }; // class THREADEDCOMPILATIONMANAGER
 
-} // namespace qssc::hal::compile
+} // namespace qec::hal::compile
 #endif // THREADEDCOMPILATIONMANAGER_H

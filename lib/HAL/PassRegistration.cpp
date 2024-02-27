@@ -21,8 +21,8 @@
 
 #include <utility>
 
-using namespace qssc;
-using namespace qssc::hal;
+using namespace qec;
+using namespace qec::hal;
 
 llvm::Error hal::registerTargetPasses() {
   llvm::Error err = llvm::Error::success();

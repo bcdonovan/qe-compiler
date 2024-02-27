@@ -24,10 +24,10 @@ TEST(PayloadRegistry, LookupZipPayload) {
 
   const char *zipName = "ZIP";
 
-  EXPECT_TRUE(qssc::payload::registry::PayloadRegistry::pluginExists(zipName));
+  EXPECT_TRUE(qec::payload::registry::PayloadRegistry::pluginExists(zipName));
 
   auto payloadInfoOpt =
-      qssc::payload::registry::PayloadRegistry::lookupPluginInfo(zipName);
+      qec::payload::registry::PayloadRegistry::lookupPluginInfo(zipName);
   const bool payloadInfoPresent = payloadInfoOpt.has_value();
   EXPECT_TRUE(payloadInfoPresent);
 

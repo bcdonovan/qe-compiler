@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --canonicalize %s | FileCheck %s --implicit-check-not cbit_assign_bit
+// RUN: qe-compiler -X=mlir --canonicalize %s | FileCheck %s --implicit-check-not cbit_assign_bit
 //
 // This test case validates that the single-bit cbit assignments
 // are simplified to variable assignments by

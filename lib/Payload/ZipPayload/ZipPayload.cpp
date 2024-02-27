@@ -26,7 +26,7 @@
 #include "Arguments/Signature.h"
 #include "Config.h"
 #include "Payload/PayloadRegistry.h"
-#include <Config/QSSConfig.h>
+#include <Config/QEConfig.h>
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/raw_os_ostream.h"
@@ -49,10 +49,10 @@
 #include <zip.h>
 #include <zipconf.h>
 
-using namespace qssc::payload;
+using namespace qec::payload;
 namespace fs = std::filesystem;
 
-int qssc::payload::init() {
+int qec::payload::init() {
   const char *name = "ZIP";
   bool const registered = registry::PayloadRegistry::registerPlugin(
       name, name, "Payload that generates zip file with .qem extension.",
@@ -70,7 +70,7 @@ void ZipPayload::addManifest() {
   std::lock_guard<std::mutex> const lock(_mtx);
   std::string const manifest_fname = "manifest/manifest.json";
   nlohmann::json manifest;
-  manifest["version"] = QSSC_VERSION;
+  manifest["version"] = QEC_VERSION;
   manifest["contents_path"] = prefix;
   files[manifest_fname] = manifest.dump() + "\n";
 }
@@ -150,7 +150,7 @@ void setFilePermissions(zip_int64_t fileIndex, fs::path &fName,
 } // end anonymous namespace
 
 void ZipPayload::writeZip(llvm::raw_ostream &stream) {
-  if (verbosity >= qssc::config::QSSVerbosity::Info)
+  if (verbosity >= qec::config::QEVerbosity::Info)
     llvm::outs() << "Writing zip to stream\n";
   // first add the manifest
   addManifest();
@@ -187,12 +187,12 @@ void ZipPayload::writeZip(llvm::raw_ostream &stream) {
   }
   zip_error_fini(&error);
 
-  if (verbosity >= qssc::config::QSSVerbosity::Info)
+  if (verbosity >= qec::config::QEVerbosity::Info)
     llvm::outs() << "Zip buffer created, adding files to archive\n";
   // archive is now allocated and created, need to fill it with files/data
   std::vector<fs::path> orderedNames = orderedFileNames();
   for (auto &fName : orderedNames) {
-    if (verbosity >= qssc::config::QSSVerbosity::Info)
+    if (verbosity >= qec::config::QEVerbosity::Info)
       llvm::outs() << "Adding file " << fName << " to archive buffer ("
                    << files[fName].size() << " bytes)\n";
 
@@ -235,7 +235,7 @@ void ZipPayload::writeZip(llvm::raw_ostream &stream) {
   //===---- Reopen for copying ----===//
   zip_int64_t sz;
   char *outbuffer = read_zip_src_to_buffer(new_archive_src, sz);
-  if (verbosity >= qssc::config::QSSVerbosity::Info)
+  if (verbosity >= qec::config::QEVerbosity::Info)
     llvm::outs() << "Zip buffer is of size " << sz << " bytes\n";
   if (outbuffer) {
     // output the new archive to the stream
@@ -254,6 +254,6 @@ void ZipPayload::write(llvm::raw_ostream &stream) { writeZip(stream); }
 
 void ZipPayload::write(std::ostream &stream) { writeZip(stream); }
 
-void ZipPayload::writeArgumentSignature(qssc::arguments::Signature &&sig) {
+void ZipPayload::writeArgumentSignature(qec::arguments::Signature &&sig) {
   getFile("arguments_signature.txt")->assign(sig.serialize());
 }

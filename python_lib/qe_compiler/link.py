@@ -25,7 +25,7 @@ from os import environ as os_environ
 from typing import Mapping, Any, Optional, Callable, Union
 import warnings
 
-from .py_qssc import _link_file, Diagnostic, ErrorCategory
+from .py_qec import _link_file, Diagnostic, ErrorCategory
 from .compile import stringify_path
 
 from . import exceptions
@@ -98,7 +98,7 @@ def link_file(
             if isinstance(value, int):
                 link_options.arguments[key] = float(value)
             else:
-                raise exceptions.QSSArgumentInputTypeError(
+                raise exceptions.QEArgumentInputTypeError(
                     f"Only int & double arguments are supported, not {type(value)}"
                 )
 
@@ -117,13 +117,13 @@ def link_file(
     # we aim at avoiding that right from the start!
 
     # The qe-compiler expects the path to static resources in the environment
-    # variable QSSC_RESOURCES. In the python package, those resources are
+    # variable QEC_RESOURCES. In the python package, those resources are
     # bundled under the directory resources/. Since python's functions for
     # looking up resources only treat files as resources, use the generated
     # python source _version.py to look up the path to the python package.
     with importlib_resources.path("qe_compiler", "_version.py") as version_py_path:
         resources_path = version_py_path.parent / "resources"
-        os_environ["QSSC_RESOURCES"] = str(resources_path)
+        os_environ["QEC_RESOURCES"] = str(resources_path)
         success, output = _link_file(
             input_file,
             enable_in_memory,
@@ -137,13 +137,13 @@ def link_file(
         if not success:
 
             exception_mapping = {
-                ErrorCategory.QSSLinkerNotImplemented: exceptions.QSSLinkerNotImplemented,
-                ErrorCategory.QSSLinkSignatureWarning: exceptions.QSSLinkSignatureWarning,
-                ErrorCategory.QSSLinkSignatureError: exceptions.QSSLinkSignatureError,
-                ErrorCategory.QSSLinkAddressError: exceptions.QSSLinkAddressError,
-                ErrorCategory.QSSLinkSignatureNotFound: exceptions.QSSLinkSignatureNotFound,
-                ErrorCategory.QSSLinkArgumentNotFoundWarning: exceptions.QSSLinkArgumentNotFoundWarning,  # noqa
-                ErrorCategory.QSSLinkInvalidPatchTypeError: exceptions.QSSLinkInvalidPatchTypeError,
+                ErrorCategory.QELinkerNotImplemented: exceptions.QELinkerNotImplemented,
+                ErrorCategory.QELinkSignatureWarning: exceptions.QELinkSignatureWarning,
+                ErrorCategory.QELinkSignatureError: exceptions.QELinkSignatureError,
+                ErrorCategory.QELinkAddressError: exceptions.QELinkAddressError,
+                ErrorCategory.QELinkSignatureNotFound: exceptions.QELinkSignatureNotFound,
+                ErrorCategory.QELinkArgumentNotFoundWarning: exceptions.QELinkArgumentNotFoundWarning,  # noqa
+                ErrorCategory.QELinkInvalidPatchTypeError: exceptions.QELinkInvalidPatchTypeError,
             }
 
             if diagnostics == [] or not isinstance(diagnostics[0], Diagnostic):
@@ -152,11 +152,11 @@ def link_file(
                 raise exception_mapping[diagnostics[0].category](
                     diagnostics[0].message, diagnostics
                 )
-            raise exceptions.QSSLinkingFailure("Unknown linking failure", diagnostics)
+            raise exceptions.QELinkingFailure("Unknown linking failure", diagnostics)
         else:
             warning_mapping = {
-                ErrorCategory.QSSLinkSignatureWarning: exceptions.QSSLinkSignatureWarning,
-                ErrorCategory.QSSLinkArgumentNotFoundWarning: exceptions.QSSLinkArgumentNotFoundWarning,  # noqa
+                ErrorCategory.QELinkSignatureWarning: exceptions.QELinkSignatureWarning,
+                ErrorCategory.QELinkArgumentNotFoundWarning: exceptions.QELinkArgumentNotFoundWarning,  # noqa
             }
             if diagnostics == [] or not isinstance(diagnostics[0], Diagnostic):
                 pass

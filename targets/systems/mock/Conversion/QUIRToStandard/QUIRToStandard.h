@@ -28,7 +28,7 @@
 #include "mlir/IR/BuiltinOps.h"
 #include "mlir/Pass/Pass.h"
 
-namespace qssc::targets::systems::mock::conversion {
+namespace qec::targets::systems::mock::conversion {
 struct MockQUIRToStdPass
     : public mlir::PassWrapper<
           MockQUIRToStdPass,
@@ -45,6 +45,6 @@ struct MockQUIRToStdPass
   llvm::StringRef getDescription() const override;
   llvm::StringRef getName() const override;
 };
-} // namespace qssc::targets::systems::mock::conversion
+} // namespace qec::targets::systems::mock::conversion
 
 #endif // MOCK_CONVERSION_QUIRTOSTD_H

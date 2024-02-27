@@ -15,15 +15,15 @@ set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/lib_enums.cpp
 )
 
-pybind11_add_module(py_qssc SHARED ${SOURCES})
+pybind11_add_module(py_qec SHARED ${SOURCES})
 
-target_link_libraries(py_qssc PRIVATE QSSCLib)
+target_link_libraries(py_qec PRIVATE QECLib)
 
 # collect python package files from this directory
-# into a variable PY_QSSC_FILES
+# into a variable PY_QEC_FILES
 macro(python_pkg_add_files)
     foreach(file ${ARGN})
-        python_pkg_add_file(${file} PY_QSSC_FILES)
+        python_pkg_add_file(${file} PY_QEC_FILES)
     endforeach()
 endmacro()
 
@@ -38,7 +38,7 @@ python_pkg_add_files(
 )
 
 set_target_properties(
-        py_qssc
+        py_qec
         PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/
         LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/
@@ -47,8 +47,8 @@ set_target_properties(
         )
 
 # require a target for copying files in each directory
-add_custom_target(copy_python_files_qss_compiler DEPENDS ${PY_QSSC_FILES})
-add_dependencies(py_qssc copy_python_files_qss_compiler)
+add_custom_target(copy_python_files_qe_compiler DEPENDS ${PY_QEC_FILES})
+add_dependencies(py_qec copy_python_files_qe_compiler)
 
 # Make static resources of the compiler available in the python package
-file(CREATE_LINK ${QSSC_RESOURCES_OUTPUT_INTDIR} ${CMAKE_CURRENT_BINARY_DIR}/resources SYMBOLIC)
+file(CREATE_LINK ${QEC_RESOURCES_OUTPUT_INTDIR} ${CMAKE_CURRENT_BINARY_DIR}/resources SYMBOLIC)

@@ -23,11 +23,11 @@
 
 #include <zip.h>
 
-namespace qssc::payload {
+namespace qec::payload {
 
 // read zip into buffer - buffer allocated in function
 char *read_zip_src_to_buffer(zip_source_t *zip_src, zip_int64_t &sz);
 
-} // namespace qssc::payload
+} // namespace qec::payload
 
 #endif // PAYLOAD_ZIPUTIL_H

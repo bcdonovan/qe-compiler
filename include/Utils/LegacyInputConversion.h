@@ -23,7 +23,7 @@
 
 #include <string>
 
-namespace qssc::utils {
+namespace qec::utils {
 
 class LegacyInputConversion : public SystemDefinition {
 
@@ -35,6 +35,6 @@ public:
               const std::string &backendConfigFilename);
 };
 
-} // namespace qssc::utils
+} // namespace qec::utils
 
 #endif // UTILS_LEGACY_INPUT_CONVERSION_H

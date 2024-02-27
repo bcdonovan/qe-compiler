@@ -22,17 +22,17 @@
 #define TARGET_OPERATION_PASS_H
 
 #include "HAL/TargetSystemRegistry.h"
-#include "QSSC.h"
+#include "QEC.h"
 
 #include "Dialect/QUIR/IR/QUIROps.h"
 
 #include "mlir/IR/BuiltinOps.h"
 #include "mlir/Pass/Pass.h"
 
-namespace qssc::hal {
+namespace qec::hal {
 
 /// Baseclass inheriting from OperationPass containing common code-generation
-/// helpers for QSSC targets.
+/// helpers for QEC targets.
 template <typename TargetT, typename OpT = void>
 class TargetOperationPass : public mlir::OperationPass<OpT> {
 
@@ -94,6 +94,6 @@ protected:
   }
 };
 
-} // namespace qssc::hal
+} // namespace qec::hal
 
 #endif // TARGET_OPERATION_PASS_H

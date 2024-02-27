@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --target mock --config %TEST_CFG --mock-conversion %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --target mock --config %TEST_CFG --mock-conversion %s | FileCheck %s
 
 // (C) Copyright IBM 2023.
 //

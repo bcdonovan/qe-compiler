@@ -1,5 +1,5 @@
 OPENQASM 3.0;
-// RUN: qss-compiler --num-shots=1  %s | FileCheck %s
+// RUN: qe-compiler --num-shots=1  %s | FileCheck %s
 //
 // Test implicit bit to int cast in comparisons.
 

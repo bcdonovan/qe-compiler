@@ -1,6 +1,6 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
-// RUN: qss-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
+// RUN: qe-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
+// RUN: qe-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
 
 //
 // This code is part of Qiskit.
@@ -57,7 +57,7 @@ float[9] b;
 float[80] c;
 float[81] d;
 
-// The remainder of this test case will be re-activated as part of IBM-Q-Software/QSS-Compiler#220
+// The remainder of this test case will be re-activated as part of IBM-Q-Software/qss-Compiler#220
 // COM: MLIR: %{{.*}} = cmpi eq, %cst, %cst_0 : f32
 // COM: AST-PRETTY: condition=BinaryOpNode(type=ASTOpTypeCompEq, left=IdentifierNode(name=x, bits=32), right=IdentifierNode(name=y, bits=32)),
 qubit $0;
@@ -76,6 +76,6 @@ float e;
 float f = 10.1;
 
 // The following raises error
-// loc("../qss-compiler/test/Visitor/floats.qasm":65:13): error: Cannot support float with 300 bits
+// loc("../qe-compiler/test/Visitor/floats.qasm":65:13): error: Cannot support float with 300 bits
 // Error: Failed to emit QUIR
 // float[300] g;

@@ -22,7 +22,7 @@
 #define TARGETCOMPILATIONMANAGER_H
 
 #include "API/errors.h"
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 #include "HAL/TargetSystem.h"
 
 #include "mlir/IR/BuiltinOps.h"
@@ -31,9 +31,9 @@
 
 #include <string>
 
-using namespace qssc;
+using namespace qec;
 
-namespace qssc::hal::compile {
+namespace qec::hal::compile {
 
 /// @brief Base class for the compiler's
 /// target compilation infrastructure.
@@ -88,7 +88,7 @@ public:
   /// @param doCompileMLIR Whether to call compileMLIR prior to compiling the
   /// payload. Defaults to true.
   virtual llvm::Error compilePayload(mlir::ModuleOp moduleOp,
-                                     qssc::payload::Payload &payload,
+                                     qec::payload::Payload &payload,
                                      bool doCompileMLIR = true) = 0;
 
   void enableIRPrinting(bool printBeforeAllTargetPasses,
@@ -97,7 +97,7 @@ public:
                         bool printAfterTargetCompileFailure);
 
   /// @brief Take the diagnostics capatured in the Target
-  qssc::DiagList takeTargetDiagnostics() { return target.takeDiagnostics(); }
+  qec::DiagList takeTargetDiagnostics() { return target.takeDiagnostics(); }
 
   void enableTiming(mlir::TimingScope &timingScope);
   void disableTiming();
@@ -140,5 +140,5 @@ void registerTargetCompilationManagerCLOptions();
 mlir::LogicalResult
 applyTargetCompilationManagerCLOptions(TargetCompilationManager &scheduler);
 
-} // namespace qssc::hal::compile
+} // namespace qec::hal::compile
 #endif // TARGETCOMPILATIONMANAGER_H

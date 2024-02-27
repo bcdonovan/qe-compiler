@@ -29,8 +29,8 @@
 #include <sys/types.h>
 #include <utility>
 
-using namespace qssc::hal;
-using namespace qssc::payload;
+using namespace qec::hal;
+using namespace qec::payload;
 
 Target::Target(std::string name, Target *parent)
     : name(std::move(name)), parent(parent) {}

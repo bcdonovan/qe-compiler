@@ -1,4 +1,4 @@
-//===- QSSC.cpp -------------------------------------------------*- C++ -*-===//
+//===- QEC.cpp -------------------------------------------------*- C++ -*-===//
 //
 // (C) Copyright IBM 2023.
 //
@@ -15,11 +15,11 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// This file implements QSSC.
+/// This file implements QEC.
 ///
 //===----------------------------------------------------------------------===//
 
-#include "QSSC.h"
+#include "QEC.h"
 
 #include "Config.h"
 #include "HAL/TargetSystem.h"
@@ -31,43 +31,43 @@
 #include <cstdlib>
 #include <string>
 
-using namespace qssc;
+using namespace qec;
 using namespace llvm;
 
 #define EXPORT_VERSION_STRING(FN, STR)                                         \
-  llvm::StringRef qssc::FN() {                                                 \
+  llvm::StringRef qec::FN() {                                                 \
     static const char *versionString = STR;                                    \
     return versionString;                                                      \
   }
 
-EXPORT_VERSION_STRING(getQSSCMajorVersion, QSSC_VERSION_MAJOR)
-EXPORT_VERSION_STRING(getQSSCMinorVersion, QSSC_VERSION_MINOR)
-EXPORT_VERSION_STRING(getQSSCPatchlevel, QSSC_VERSION_PATCH)
-EXPORT_VERSION_STRING(getQSSCVersion, QSSC_VERSION)
+EXPORT_VERSION_STRING(getQECMajorVersion, QEC_VERSION_MAJOR)
+EXPORT_VERSION_STRING(getQECMinorVersion, QEC_VERSION_MINOR)
+EXPORT_VERSION_STRING(getQECPatchlevel, QEC_VERSION_PATCH)
+EXPORT_VERSION_STRING(getQECVersion, QEC_VERSION)
 
 #undef EXPORT_VERSION_STRING
 
 namespace {
 llvm::StringRef _getResourcesDir() {
-  if (char *env = getenv("QSSC_RESOURCES")) {
+  if (char *env = getenv("QEC_RESOURCES")) {
     /* strings returned by getenv may be invalidated, so keep a copy */
     static std::string const resourcesDir{env};
     return resourcesDir;
   }
 
   /* fallback to compiled-in installation path */
-  return QSSC_RESOURCES_INSTALL_PREFIX;
+  return QEC_RESOURCES_INSTALL_PREFIX;
 }
 
 }; // namespace
 
-llvm::StringRef qssc::getResourcesDir() {
+llvm::StringRef qec::getResourcesDir() {
   static llvm::StringRef const resourcesDir = _getResourcesDir();
   return resourcesDir;
 }
 
 llvm::SmallString<128>
-qssc::getTargetResourcesDir(qssc::hal::Target const *target) {
+qec::getTargetResourcesDir(qec::hal::Target const *target) {
   // target-specific resources are at path "targets/<name of target>" below the
   // resource directory
   llvm::SmallString<128> path(getResourcesDir());

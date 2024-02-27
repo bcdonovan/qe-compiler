@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --canonicalize --quir-eliminate-variables %s --canonicalize | FileCheck %s
+// RUN: qe-compiler -X=mlir --canonicalize --quir-eliminate-variables %s --canonicalize | FileCheck %s
 //
 // This test verifies that there is no store-forwarding where control-flow makes
 // it impossible.

@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --test-qubit-op-interface %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --test-qubit-op-interface %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

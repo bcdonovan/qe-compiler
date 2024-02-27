@@ -36,7 +36,7 @@
 #define INDENT_DEBUG(msg) LLVM_DEBUG(llvm::errs() << indent() << msg)
 #define INDENT_DUMP(msg) LLVM_DEBUG(llvm::errs() << indent(); (msg))
 
-namespace qssc::utils {
+namespace qec::utils {
 
 class DebugIndent {
 public:
@@ -66,6 +66,6 @@ private:
 #endif
 };
 
-} // namespace qssc::utils
+} // namespace qec::utils
 
 #endif // UTILS_DEBUG_INDENT_H

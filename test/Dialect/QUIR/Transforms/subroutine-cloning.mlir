@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --subroutine-cloning %s | FileCheck %s
-// RUN: qss-compiler -X=mlir --subroutine-cloning %s --remove-qubit-args | FileCheck %s --check-prefix=NOQARG
+// RUN: qe-compiler -X=mlir --subroutine-cloning %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --subroutine-cloning %s --remove-qubit-args | FileCheck %s --check-prefix=NOQARG
 
 //
 // This code is part of Qiskit.

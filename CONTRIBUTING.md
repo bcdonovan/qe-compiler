@@ -266,7 +266,7 @@ The other checks that are performed can be seen in
 
 Several targets and CMake configuration options are defined as shown below to test the qe-compiler. The standard test suite consists of a format check to ensure the source follows the configured style defined in `.clang-format`, a run of `clang-tidy` to perform code analysis, and a run of the test suite. It is also possible to run additional analysis with Valgrind and the Google Sanitizers below. CMake commands should always be run from a build directory.
 
-Our test suite contains both unit tests (using googletest) and integration tests that exercise the full qss-compiler or qss-opt tools (using LLVM lit).
+Our test suite contains both unit tests (using googletest) and integration tests that exercise the full qe-compiler or qe-opt tools (using LLVM lit).
 
 ### Debugging LIT Tests
 
@@ -290,23 +290,23 @@ target that has an empty run.
 
 ### Setting Paths for Manual Test Runs
 
-The compiler may require static resources at runtime (e.g., target-specific tools or libraries). It will search for the resources in the path defined by the environment variable `QSSC_RESOURCES` or in the designated install location if that variable is not present.
+The compiler may require static resources at runtime (e.g., target-specific tools or libraries). It will search for the resources in the path defined by the environment variable `QEC_RESOURCES` or in the designated install location if that variable is not present.
 
-For running `qss-compiler` or `qss-opt` from the build directory, you may use a generated shell script that takes care of setting up the required environment variables as follows:
+For running `qe-compiler` or `qe-opt` from the build directory, you may use a generated shell script that takes care of setting up the required environment variables as follows:
 
 ```sh
 # assuming current directory is the build directory
-source qe-compiler/qssc-activate
-# now call qss-compiler tool as usual
+source qe-compiler/qec-activate
+# now call qe-compiler tool as usual
 ```
 
-You may clean up your environment by calling `qssc-deactivate` (a shell function defined by the script `qssc-activate`).
+You may clean up your environment by calling `qec-deactivate` (a shell function defined by the script `qec-activate`).
 
 The automated test runs take care of setting up the environment as required.
 
 ### Adding Unit Tests
 
-Unit tests live in `test/unittest` and use the [GoogleTest framework](https://google.github.io/googletest/) for discovering and running test cases. When adding a new test, first consider whether it relates to an existing test and add it to an existing source file with test cases if that is the case. Otherwise, add your new `.cpp` source file in `test/unittest/CMakeLists.txt` to the definition of `unittest-qss-compiler` -- there should be a comment that points to the right place. Take a look at `test/unittest/test1.cpp` for a basic example.
+Unit tests live in `test/unittest` and use the [GoogleTest framework](https://google.github.io/googletest/) for discovering and running test cases. When adding a new test, first consider whether it relates to an existing test and add it to an existing source file with test cases if that is the case. Otherwise, add your new `.cpp` source file in `test/unittest/CMakeLists.txt` to the definition of `unittest-qe-compiler` -- there should be a comment that points to the right place. Take a look at `test/unittest/test1.cpp` for a basic example.
 
 The [Googletest Primer](https://google.github.io/googletest/primer.html) is a good place to get started. Also, take a look at our existing tests to get inspired. To learn more, have a look at the [comprehensive documentation of GoogleTest](https://google.github.io/googletest/).
 

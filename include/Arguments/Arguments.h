@@ -32,7 +32,7 @@
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Error.h"
 
-namespace qssc::arguments {
+namespace qec::arguments {
 
 using ArgumentType = std::variant<std::optional<double>>;
 
@@ -53,11 +53,11 @@ public:
   virtual llvm::Error
   parseParamMapIntoSignature(llvm::StringRef paramMapContents,
                              llvm::StringRef paramMapFileName,
-                             qssc::arguments::Signature &sig) = 0;
-  virtual qssc::payload::PatchablePayload *
+                             qec::arguments::Signature &sig) = 0;
+  virtual qec::payload::PatchablePayload *
   getPayload(llvm::StringRef payloadOutputPath, bool enableInMemory) = 0;
   virtual llvm::Expected<Signature>
-  parseSignature(qssc::payload::PatchablePayload *payload) = 0;
+  parseSignature(qec::payload::PatchablePayload *payload) = 0;
   void setTreatWarningsAsErrors(bool val) { treatWarningsAsErrors_ = val; }
 
 protected:
@@ -87,6 +87,6 @@ llvm::Error bindArguments(llvm::StringRef moduleInput,
                           BindArgumentsImplementationFactory &factory,
                           const OptDiagnosticCallback &onDiagnostic);
 
-} // namespace qssc::arguments
+} // namespace qec::arguments
 
 #endif // ARGUMENTS_H

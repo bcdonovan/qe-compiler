@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --remove-unused-variables %s | FileCheck %s --check-prefix=UNUSED
+// RUN: qe-compiler -X=mlir --remove-unused-variables %s | FileCheck %s --check-prefix=UNUSED
 
 //
 // This code is part of Qiskit.

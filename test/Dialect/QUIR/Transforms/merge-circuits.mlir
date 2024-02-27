@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --subroutine-cloning --quantum-decorate --merge-circuits %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --subroutine-cloning --quantum-decorate --merge-circuits %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

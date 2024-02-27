@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --quir-arg-specialization %s | FileCheck %s
-// RUN: qss-compiler -X=mlir %s | FileCheck --check-prefix MLIR %s
+// RUN: qe-compiler -X=mlir --quir-arg-specialization %s | FileCheck %s
+// RUN: qe-compiler -X=mlir %s | FileCheck --check-prefix MLIR %s
 //
 // This test case validates MLIR with and without argument specialization.
 

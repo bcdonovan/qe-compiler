@@ -1,4 +1,4 @@
-// RUN: qss-compiler %s --config %TEST_CFG --target mock --canonicalize --mock-quir-to-std --emit=qem --plaintext-payload  | FileCheck %s
+// RUN: qe-compiler %s --config %TEST_CFG --target mock --canonicalize --mock-quir-to-std --emit=qem --plaintext-payload  | FileCheck %s
 
 // (C) Copyright IBM 2023.
 //

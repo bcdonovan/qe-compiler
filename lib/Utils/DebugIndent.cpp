@@ -26,7 +26,7 @@
 
 #include <string>
 
-using namespace qssc::utils;
+using namespace qec::utils;
 
 DebugIndent::DebugIndent(unsigned int indentStep)
     : debugIndentStep(indentStep) {}

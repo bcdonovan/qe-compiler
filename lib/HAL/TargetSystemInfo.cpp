@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Implementation of the QSSC target system info.
+//  Implementation of the QEC target system info.
 //
 //===----------------------------------------------------------------------===//
 
@@ -31,7 +31,7 @@
 // NOLINTNEXTLINE: Required for target initializations even if not used
 #include "Targets.inc"
 
-using namespace qssc::hal::registry;
+using namespace qec::hal::registry;
 
 /// This is the implementation class (following the Pimpl idiom) for
 /// TargetSystemInfo, which encapsulates all of its implementation-specific
@@ -52,7 +52,7 @@ TargetSystemInfo::TargetSystemInfo(
 
 TargetSystemInfo::~TargetSystemInfo() = default;
 
-llvm::Expected<qssc::hal::TargetSystem *> TargetSystemInfo::createTarget(
+llvm::Expected<qec::hal::TargetSystem *> TargetSystemInfo::createTarget(
     mlir::MLIRContext *context,
     std::optional<PluginInfo::PluginConfiguration> configuration) {
   auto target = PluginInfo::createPluginInstance(configuration);
@@ -62,7 +62,7 @@ llvm::Expected<qssc::hal::TargetSystem *> TargetSystemInfo::createTarget(
   return impl->managedTargets[context].get();
 }
 
-llvm::Expected<qssc::hal::TargetSystem *>
+llvm::Expected<qec::hal::TargetSystem *>
 TargetSystemInfo::getTarget(mlir::MLIRContext *context) const {
   auto it = impl->managedTargets.find(context);
   if (it != impl->managedTargets.end())

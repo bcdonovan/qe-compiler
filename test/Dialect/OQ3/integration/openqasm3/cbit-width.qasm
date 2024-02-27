@@ -1,5 +1,5 @@
 OPENQASM 3.0;
-// RUN: qss-compiler %s --emit=mlir --oq3-limit-cbit-width --canonicalize | FileCheck %s
+// RUN: qe-compiler %s --emit=mlir --oq3-limit-cbit-width --canonicalize | FileCheck %s
 //
 // Test that the we can successfully split cbit arrays larger than 32 bits wide
 

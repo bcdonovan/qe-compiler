@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --pulse-inline %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --pulse-inline %s | FileCheck %s
 // XFAIL: *
 
 //

@@ -31,7 +31,7 @@
 #include <unordered_map>
 #include <zip.h>
 
-namespace qssc::payload {
+namespace qec::payload {
 class PatchableZipPayload : public PatchablePayload {
 public:
   PatchableZipPayload(std::string path, bool enableInMemory)
@@ -87,6 +87,6 @@ private:
 llvm::Error extractLibZipError(llvm::StringRef info, zip_error_t &zipError);
 llvm::Expected<std::string> readFileFromZip(zip_t *zip, zip_stat_t &zs);
 
-} // namespace qssc::payload
+} // namespace qec::payload
 
 #endif // PAYLOAD_PATCHABLE_ZIP_PAYLOAD_H

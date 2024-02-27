@@ -27,5 +27,5 @@ add_mlir_dialect_library(MLIRPulseTransforms
 
 	LINK_LIBS PUBLIC
 	MLIRIR
-	QSSCUtils
+	QECUtils
 	)

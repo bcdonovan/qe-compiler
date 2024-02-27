@@ -11,39 +11,39 @@
 ///  Populate the configuration from environment variables.
 ///
 //===----------------------------------------------------------------------===//
-#ifndef QSSC_ENVVARCONFIG_H
-#define QSSC_ENVVARCONFIG_H
+#ifndef QEC_ENVVARCONFIG_H
+#define QEC_ENVVARCONFIG_H
 
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
-namespace qssc::config {
+namespace qec::config {
 
-/// @brief Populate arguments of the QSSConfig
+/// @brief Populate arguments of the QEConfig
 /// from environment variables.
 ///
 ///
-/// The qss-compiler makes several several QSSConfig configuration
+/// The qe-compiler makes several several QEConfig configuration
 /// options configurable from environment variables through the
 /// EnvVarConfigBuilder.
 ///
 /// These currently are:
-/// - `QSSC_TARGET_NAME`: Sets QSSConfig::targetName.
-/// - `QSSC_TARGET_CONFIG_PATH`: Sets QSSConfig::targetConfigPath.
-/// - `QSSC_VERBOSITY`: Set the compiler output verbosity. One of
+/// - `QEC_TARGET_NAME`: Sets QEConfig::targetName.
+/// - `QEC_TARGET_CONFIG_PATH`: Sets QEConfig::targetConfigPath.
+/// - `QEC_VERBOSITY`: Set the compiler output verbosity. One of
 /// "ERROR/WARN/INFO/DEBUG".
-/// - `QSSC_MAX_THREADS`: Sets the maximum number of compiler threads when
+/// - `QEC_MAX_THREADS`: Sets the maximum number of compiler threads when
 /// initializing the MLIR context's threadpool.
 ///
-class EnvVarConfigBuilder : public QSSConfigBuilder {
+class EnvVarConfigBuilder : public QEConfigBuilder {
 public:
-  llvm::Error populateConfig(QSSConfig &config) override;
+  llvm::Error populateConfig(QEConfig &config) override;
 
 private:
-  llvm::Error populateConfigurationPath_(QSSConfig &config);
-  llvm::Error populateTarget_(QSSConfig &config);
-  llvm::Error populateVerbosity_(QSSConfig &config);
-  llvm::Error populateMaxThreads_(QSSConfig &config);
+  llvm::Error populateConfigurationPath_(QEConfig &config);
+  llvm::Error populateTarget_(QEConfig &config);
+  llvm::Error populateVerbosity_(QEConfig &config);
+  llvm::Error populateMaxThreads_(QEConfig &config);
 };
 
-} // namespace qssc::config
-#endif // QSS_ENVVARCONFIG_H
+} // namespace qec::config
+#endif // QE_ENVVARCONFIG_H

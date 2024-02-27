@@ -15,7 +15,7 @@
 //===----------------------------------------------------------------------===//
 //
 //  The BaseQASM3Visitor implements a simple visitor pattern to traverse the AST
-//  which is output from the qss-qasm parser.
+//  which is output from the qe-qasm parser.
 //
 //  The BaseQASM3Visitor is a base class that cannot decide for itself what to
 //  do upon visiting a node. The derived classes of BaseQASM3Visitor (e.g.
@@ -35,14 +35,14 @@
 //  When adding support for a new feature, this process may be helpful:
 //  1. Create an example file, which can later be used as a test case
 //  2. Execute the compiler using the AST printer
-//     (`./qss-compiler <your-input-file.qasm> --emit=ast`)
+//     (`./qe-compiler <your-input-file.qasm> --emit=ast`)
 //  3. Inspect the output to discover the relevant AST nodes
 //  4. Execute the compiler again using `--emit=mlir`. Often times, given the
 //     existing code, this will print a nice error such as
 //     "Cannot process ASTTypeExampleNode statement node.". This tells you
 //     that the node you must add support for is a statement node of type
 //     ASTTypeExampleNode.
-//  5. Search within `qss-qasm` "class ASTExampleNode" to quickly find the
+//  5. Search within `qe-qasm` "class ASTExampleNode" to quickly find the
 //     node's user interface. This interface will tell you how to visit nested
 //     nodes, if there are any, and/or what to do with the nodes when they are
 //     visited in the concrete implementations.
@@ -93,7 +93,7 @@
 
 using namespace QASM;
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 BaseQASM3Visitor::~BaseQASM3Visitor() = default;
 
@@ -499,4 +499,4 @@ void BaseQASM3Visitor::visit(const ASTFunctionCallNode *node) {
   }
 }
 
-} // namespace qssc::frontend::openqasm3
+} // namespace qec::frontend::openqasm3

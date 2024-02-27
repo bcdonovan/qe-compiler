@@ -1,6 +1,6 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
-// RUN: qss-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
+// RUN: qe-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
+// RUN: qe-compiler -X=qasm --emit=mlir %s | FileCheck %s --match-full-lines --check-prefix MLIR
 
 //
 // This code is part of Qiskit.
@@ -26,7 +26,7 @@ angle[64] angle_a;
 angle[20] my_angle = 0.707;
 angle[20] second_angle = 0.7;
 
-// The remainder of this test case will be re-activated as part of IBM-Q-Software/QSS-Compiler#220
+// The remainder of this test case will be re-activated as part of IBM-Q-Software/qss-compiler#220
 // COM: MLIR: %{{.*}} = cmpi eq, %{{.*}}, %{{.*}} : !quir.angle<20>
 // COM: AST-PRETTY: condition=BinaryOpNode(type=ASTOpTypeCompEq, left=IdentifierNode(name=my_angle, bits=20), right=IdentifierNode(name=second_angle, bits=20)),
 qubit $0;

@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --quir-arg-specialization %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --quir-arg-specialization %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

@@ -1,4 +1,4 @@
-//===- EnvVarConfigBuilder.cpp - QSSConfig from EnvVars  ----* C++*--------===//
+//===- EnvVarConfigBuilder.cpp - QEConfig from EnvVars  ----* C++*--------===//
 //
 // (C) Copyright IBM 2023, 2024.
 //
@@ -13,7 +13,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "Config/EnvVarConfig.h"
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Error.h"
@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <cstring>
 
-using namespace qssc::config;
+using namespace qec::config;
 
-llvm::Error EnvVarConfigBuilder::populateConfig(QSSConfig &config) {
+llvm::Error EnvVarConfigBuilder::populateConfig(QEConfig &config) {
   if (auto err = populateConfigurationPath_(config))
     return err;
 
@@ -39,20 +39,20 @@ llvm::Error EnvVarConfigBuilder::populateConfig(QSSConfig &config) {
   return llvm::Error::success();
 }
 
-llvm::Error EnvVarConfigBuilder::populateConfigurationPath_(QSSConfig &config) {
-  if (const char *configurationPath = std::getenv("QSSC_TARGET_CONFIG_PATH"))
+llvm::Error EnvVarConfigBuilder::populateConfigurationPath_(QEConfig &config) {
+  if (const char *configurationPath = std::getenv("QEC_TARGET_CONFIG_PATH"))
     config.targetConfigPath = configurationPath;
   return llvm::Error::success();
 }
 
-llvm::Error EnvVarConfigBuilder::populateTarget_(QSSConfig &config) {
-  if (const char *targetStr = std::getenv("QSSC_TARGET_NAME"))
+llvm::Error EnvVarConfigBuilder::populateTarget_(QEConfig &config) {
+  if (const char *targetStr = std::getenv("QEC_TARGET_NAME"))
     config.targetName = targetStr;
   return llvm::Error::success();
 }
 
-llvm::Error EnvVarConfigBuilder::populateMaxThreads_(QSSConfig &config) {
-  if (const char *maxThreads = std::getenv("QSSC_MAX_THREADS")) {
+llvm::Error EnvVarConfigBuilder::populateMaxThreads_(QEConfig &config) {
+  if (const char *maxThreads = std::getenv("QEC_MAX_THREADS")) {
     llvm::StringRef maxThreadsStr(maxThreads);
     unsigned int maxThreadsInt;
     if (maxThreadsStr.consumeInteger<unsigned int>(0, maxThreadsInt))
@@ -66,20 +66,20 @@ llvm::Error EnvVarConfigBuilder::populateMaxThreads_(QSSConfig &config) {
   return llvm::Error::success();
 }
 
-llvm::Error EnvVarConfigBuilder::populateVerbosity_(QSSConfig &config) {
-  if (const char *verbosity = std::getenv("QSSC_VERBOSITY")) {
+llvm::Error EnvVarConfigBuilder::populateVerbosity_(QEConfig &config) {
+  if (const char *verbosity = std::getenv("QEC_VERBOSITY")) {
     if (strcmp(verbosity, "ERROR") == 0) {
-      config.setVerbosityLevel(QSSVerbosity::Error);
+      config.setVerbosityLevel(QEVerbosity::Error);
     } else if (strcmp(verbosity, "WARN") == 0) {
-      config.setVerbosityLevel(QSSVerbosity::Warn);
+      config.setVerbosityLevel(QEVerbosity::Warn);
     } else if (strcmp(verbosity, "INFO") == 0) {
-      config.setVerbosityLevel(QSSVerbosity::Info);
+      config.setVerbosityLevel(QEVerbosity::Info);
     } else if (strcmp(verbosity, "DEBUG") == 0) {
-      config.setVerbosityLevel(QSSVerbosity::Debug);
+      config.setVerbosityLevel(QEVerbosity::Debug);
     } else {
       return llvm::createStringError(
           llvm::inconvertibleErrorCode(),
-          "QSSC_VERBOSITY level unrecognized got (" +
+          "QEC_VERBOSITY level unrecognized got (" +
               llvm::StringRef(verbosity) +
               "), options are ERROR, WARN, INFO, or DEBUG\n");
     }

@@ -1,4 +1,4 @@
-//===- QSSConfig.h - Global QSS config ----------------*- C++ -*-----------===//
+//===- QEConfig.h - Global QE config ----------------*- C++ -*-----------===//
 //
 // (C) Copyright IBM 2023, 2024.
 //
@@ -8,11 +8,11 @@
 //
 //===----------------------------------------------------------------------===//
 ///
-///  A centralized API for configuration handling within the QSS infrastructure.
+///  A centralized API for configuration handling within the QE infrastructure.
 ///
 //===----------------------------------------------------------------------===//
-#ifndef QSSC_QSSCONFIG_H
-#define QSSC_QSSCONFIG_H
+#ifndef QEC_QECONFIG_H
+#define QEC_QECONFIG_H
 
 #include "llvm/Support/Error.h"
 #include "llvm/Support/raw_ostream.h"
@@ -25,9 +25,9 @@
 #include <string>
 #include <utility>
 
-namespace qssc::config {
+namespace qec::config {
 
-enum QSSVerbosity {
+enum QEVerbosity {
   Error = 0,
   Warn = 1,
   Info = 2,
@@ -77,21 +77,21 @@ FileExtension strToFileExtension(const llvm::StringRef extStr);
 
 FileExtension getExtension(const llvm::StringRef inStr);
 
-/// @brief The QSS configuration data structure that is to be used for global
-/// configuration of the QSS infrastructure. This is to be used for static
+/// @brief The QE configuration data structure that is to be used for global
+/// configuration of the QE infrastructure. This is to be used for static
 /// options that are rarely changed for a system and do not need to be
 /// dynamically extensible (such as pluggable TargetInstrument and their
 /// configuration). This configuration is constructed from several sources such
 /// as CLI, environment variables and possible configuration file formats
-/// through QSSConfigBuilder implementations which apply successive views over
+/// through QEConfigBuilder implementations which apply successive views over
 /// the configuration to produce the final configuration.
-struct QSSConfig : mlir::MlirOptMainConfig {
+struct QEConfig : mlir::MlirOptMainConfig {
 
 public:
   friend class CLIConfigBuilder;
   friend class EnvVarConfigBuilder;
 
-  QSSConfig &setTargetName(std::string name) {
+  QEConfig &setTargetName(std::string name) {
     targetName = std::move(name);
     return *this;
   }
@@ -101,7 +101,7 @@ public:
     return std::nullopt;
   }
 
-  QSSConfig &setTargetConfigPath(std::string path) {
+  QEConfig &setTargetConfigPath(std::string path) {
     targetConfigPath = std::move(path);
     return *this;
   }
@@ -111,73 +111,73 @@ public:
     return std::nullopt;
   }
 
-  QSSConfig &setInputType(InputType type) {
+  QEConfig &setInputType(InputType type) {
     inputType = type;
     return *this;
   }
   InputType getInputType() const { return inputType; }
 
-  QSSConfig &setEmitAction(EmitAction action) {
+  QEConfig &setEmitAction(EmitAction action) {
     emitAction = action;
     return *this;
   }
   EmitAction getEmitAction() const { return emitAction; }
 
-  QSSConfig &setVerbosityLevel(QSSVerbosity level) {
+  QEConfig &setVerbosityLevel(QEVerbosity level) {
     verbosityLevel = level;
     return *this;
   }
-  QSSVerbosity getVerbosityLevel() const { return verbosityLevel; }
+  QEVerbosity getVerbosityLevel() const { return verbosityLevel; }
 
-  QSSConfig &addTargetPasses(bool flag) {
+  QEConfig &addTargetPasses(bool flag) {
     addTargetPassesFlag = flag;
     return *this;
   }
   bool shouldAddTargetPasses() const { return addTargetPassesFlag; }
 
-  QSSConfig &showTargets(bool flag) {
+  QEConfig &showTargets(bool flag) {
     showTargetsFlag = flag;
     return *this;
   }
   bool shouldShowTargets() const { return showTargetsFlag; }
 
-  QSSConfig &showPayloads(bool flag) {
+  QEConfig &showPayloads(bool flag) {
     showPayloadsFlag = flag;
     return *this;
   }
   bool shouldShowPayloads() const { return showPayloadsFlag; }
 
-  QSSConfig &showConfig(bool flag) {
+  QEConfig &showConfig(bool flag) {
     showConfigFlag = flag;
     return *this;
   }
   bool shouldShowConfig() const { return showConfigFlag; }
 
-  QSSConfig &setPayloadName(std::string name) {
+  QEConfig &setPayloadName(std::string name) {
     payloadName = std::move(name);
     return *this;
   }
   llvm::StringRef getPayloadName() const { return payloadName; }
 
-  QSSConfig &emitPlaintextPayload(bool flag) {
+  QEConfig &emitPlaintextPayload(bool flag) {
     emitPlaintextPayloadFlag = flag;
     return *this;
   }
   bool shouldEmitPlaintextPayload() const { return emitPlaintextPayloadFlag; }
 
-  QSSConfig &includeSource(bool flag) {
+  QEConfig &includeSource(bool flag) {
     includeSourceFlag = flag;
     return *this;
   }
   bool shouldIncludeSource() const { return includeSourceFlag; }
 
-  QSSConfig &compileTargetIR(bool flag) {
+  QEConfig &compileTargetIR(bool flag) {
     compileTargetIRFlag = flag;
     return *this;
   }
   bool shouldCompileTargetIR() const { return compileTargetIRFlag; }
 
-  QSSConfig &bypassPayloadTargetCompilation(bool flag) {
+  QEConfig &bypassPayloadTargetCompilation(bool flag) {
     bypassPayloadTargetCompilationFlag = flag;
     return *this;
   }
@@ -185,19 +185,19 @@ public:
     return bypassPayloadTargetCompilationFlag;
   }
 
-  QSSConfig &setPassPlugins(std::vector<std::string> plugins) {
+  QEConfig &setPassPlugins(std::vector<std::string> plugins) {
     dialectPlugins = std::move(plugins);
     return *this;
   }
   const std::vector<std::string> &getPassPlugins() { return dialectPlugins; }
 
-  QSSConfig &setDialectPlugins(std::vector<std::string> plugins) {
+  QEConfig &setDialectPlugins(std::vector<std::string> plugins) {
     dialectPlugins = std::move(plugins);
     return *this;
   }
   const std::vector<std::string> &getDialectPlugins() { return dialectPlugins; }
 
-  QSSConfig &setMaxThreads(unsigned int maxThreads_) {
+  QEConfig &setMaxThreads(unsigned int maxThreads_) {
     maxThreads = maxThreads_;
     return *this;
   }
@@ -217,7 +217,7 @@ protected:
   /// @brief Output action to take
   EmitAction emitAction = EmitAction::Undetected;
   /// @brief Verbosity level for logging info
-  QSSVerbosity verbosityLevel = QSSVerbosity::Warn;
+  QEVerbosity verbosityLevel = QEVerbosity::Warn;
   /// @brief Register target passes with the compiler.
   bool addTargetPassesFlag = true;
   /// @brief Should available targets be printed
@@ -244,19 +244,19 @@ protected:
   std::optional<unsigned int> maxThreads;
 };
 
-llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const QSSConfig &config);
-std::ostream &operator<<(std::ostream &os, const QSSConfig &config);
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const QEConfig &config);
+std::ostream &operator<<(std::ostream &os, const QEConfig &config);
 
 /// @brief Assign the input configuration to be managed by the context.
 /// @param context The context to assign the configuration to.
 /// This must outlive all usages of the context registry.
 /// @param config The configuration to move for the context.
-void setContextConfig(mlir::MLIRContext *context, const QSSConfig &config);
+void setContextConfig(mlir::MLIRContext *context, const QEConfig &config);
 
 /// @brief Get a constant reference to the configuration registered for this
 /// context.
 /// @param context The context to lookup the configuration for.
-llvm::Expected<const QSSConfig &> getContextConfig(mlir::MLIRContext *context);
+llvm::Expected<const QEConfig &> getContextConfig(mlir::MLIRContext *context);
 
 /// @brief Load a dynamic dialect plugin
 /// @param pluginPath Path to the plugin
@@ -268,20 +268,20 @@ mlir::LogicalResult loadDialectPlugin(const std::string &pluginPath,
 /// @param pluginPath Path to the plugin
 mlir::LogicalResult loadPassPlugin(const std::string &pluginPath);
 
-/// @brief A builder class for the QSSConfig. All standard configuration
+/// @brief A builder class for the QEConfig. All standard configuration
 /// population should be completed through builders.
-class QSSConfigBuilder {
+class QEConfigBuilder {
 public:
-  /// Build a new QSSConfig just from this builder
-  virtual llvm::Expected<QSSConfig> buildConfig();
-  /// Populate an existing QSSConfig from this builder.
+  /// Build a new QEConfig just from this builder
+  virtual llvm::Expected<QEConfig> buildConfig();
+  /// Populate an existing QEConfig from this builder.
   /// This may layer on top of existing configuration settings.
-  virtual llvm::Error populateConfig(QSSConfig &config) = 0;
-  virtual ~QSSConfigBuilder() = default;
+  virtual llvm::Error populateConfig(QEConfig &config) = 0;
+  virtual ~QEConfigBuilder() = default;
 };
 
 /// Build the default tool configuration
-/// @brief Build the QSSConfig using the standard sources and assign to the
+/// @brief Build the QEConfig using the standard sources and assign to the
 /// supplied context.
 ///
 /// The configuration precedence order is
@@ -294,8 +294,8 @@ public:
 /// @param outputFilename Output filename which will be used to compute input
 /// types
 /// @return The constructed configuration
-llvm::Expected<qssc::config::QSSConfig>
+llvm::Expected<qec::config::QEConfig>
 buildToolConfig(llvm::StringRef inputFilename, llvm::StringRef outputFilename);
 
-} // namespace qssc::config
-#endif // QSS_QSSCONFIG_H
+} // namespace qec::config
+#endif // QE_QECONFIG_H

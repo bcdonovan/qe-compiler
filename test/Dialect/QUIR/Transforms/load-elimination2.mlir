@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --quir-eliminate-loads %s | FileCheck %s --implicit-check-not 'oq3.variable_load @a'
-// RUN: qss-compiler -X=mlir --quir-eliminate-loads --remove-unused-variables %s | FileCheck %s --check-prefix REMOVE-UNUSED
+// RUN: qe-compiler -X=mlir --quir-eliminate-loads %s | FileCheck %s --implicit-check-not 'oq3.variable_load @a'
+// RUN: qe-compiler -X=mlir --quir-eliminate-loads --remove-unused-variables %s | FileCheck %s --check-prefix REMOVE-UNUSED
 //
 // This test case serves to validate the behavior of the load elimination pass.
 

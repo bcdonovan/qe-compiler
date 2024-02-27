@@ -11,9 +11,9 @@
 # that they have been altered from the originals.
 
 #
-# QSS Compiler
+# QE Compiler
 # ============
-# This file is used to configure both the QSS compiler core test suite
+# This file is used to configure both the QE compiler core test suite
 # as well test suites for specific targets.
 
 # flake8: noqa
@@ -45,16 +45,16 @@ llvm_config.use_default_substitutions()
 config.excludes = ["Inputs", "Examples", "CMakeLists.txt", "README.txt", "LICENSE.txt"]
 
 # TODO pull from "virtual env" *activate.py?" "buildenv.py?"
-config.environment["QSSC_RESOURCES"] = os.path.join(config.qss_compiler_obj_root, "resources")
+config.environment["QEC_RESOURCES"] = os.path.join(config.qe_compiler_obj_root, "resources")
 
-config.qss_compiler_tools_dir = os.path.join(config.qss_compiler_obj_root, "bin")
+config.qe_compiler_tools_dir = os.path.join(config.qe_compiler_obj_root, "bin")
 
 # Tweak the PATH to include the tools dir.
 llvm_config.with_environment("PATH", config.llvm_tools_dir, append_path=True)
 
-# Add substitutions for all files in QSS compiler tools directory.
-tools = os.listdir(config.qss_compiler_tools_dir)
-llvm_config.add_tool_substitutions(tools, [config.qss_compiler_tools_dir])
+# Add substitutions for all files in QE compiler tools directory.
+tools = os.listdir(config.qe_compiler_tools_dir)
+llvm_config.add_tool_substitutions(tools, [config.qe_compiler_tools_dir])
 
 llvm_config.feature_config(
     [("--assertion-mode", {"ON": "asserts"}), ("--build-mode", {"[Dd][Ee][Bb][Uu][Gg]": "debug"})]

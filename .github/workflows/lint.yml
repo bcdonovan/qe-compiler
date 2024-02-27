@@ -52,10 +52,10 @@ jobs:
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: ./.github/renos_updated.sh
-      - name: Export QSSC_VERSION from Git version tag
+      - name: Export QEC_VERSION from Git version tag
         run: |
           version=`python -c "from setuptools_scm import get_version; print(get_version())"`
-          echo "QSSC_VERSION=$version" >> $GITHUB_ENV
+          echo "QEC_VERSION=$version" >> $GITHUB_ENV
       - name: Prepare Conan
         run: |
           conan profile new default --detect || true

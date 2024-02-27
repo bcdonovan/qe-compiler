@@ -1,4 +1,4 @@
-# Python API for the [QSS Compiler](../README.md)
+# Python API for the [QE Compiler](../README.md)
 
 This `python_lib` subdirectory of the
 [qe-compiler](https://github.com/openqasm/qe-compiler/) provides python
@@ -36,7 +36,7 @@ For development, we recommend a so-called _editable_ install that links back to 
 
 Note that when you change python or C++ source files, you need to first re-build `qe-compiler` (i.e., run `make` or `ninja`) so that the changes become visible in the build directory, before rebuilding or reinstalling the python package.
 
-The build system copies over python source files and all other files required to building the python package to `<build dir>/python_lib`. Also, the build system generates a shared library file containing the QSSC python module. Specifically, you should see a file in `<build dir>/python_lib/qe_compiler/` named like `py_qssc.cpython-<pyversion>-<arch>.so` (e.g. `py_qssc.cpython-39-darwin.so`).
+The build system copies over python source files and all other files required to building the python package to `<build dir>/python_lib`. Also, the build system generates a shared library file containing the QEC python module. Specifically, you should see a file in `<build dir>/python_lib/qe_compiler/` named like `py_qec.cpython-<pyversion>-<arch>.so` (e.g. `py_qec.cpython-39-darwin.so`).
 The reason for that indirection is that python cannot collect files from different directories when building a package. Thus, the generated shared library and the python source files from the source tree need to be moved to the same directory hierarchy.
 
 

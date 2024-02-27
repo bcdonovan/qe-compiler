@@ -39,7 +39,7 @@ namespace mlir::pulse {
 
 class SchedulePortPass
     : public PassWrapper<SchedulePortPass, OperationPass<ModuleOp>>,
-      protected qssc::utils::DebugIndent {
+      protected qec::utils::DebugIndent {
 public:
   void runOnOperation() override;
 

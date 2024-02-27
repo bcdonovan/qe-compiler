@@ -14,28 +14,28 @@ package_add_test_with_libs(unittest-quir-dialect
         quir-dialect.cpp
 
         LIBRARIES
-        QSSCLib
+        QECLib
 )
 
 set(TEST_FILES
         Payload/PayloadRegistryTest.cpp
         )
 
-if (QSSC_WITH_MOCK_TARGET)
+if (QEC_WITH_MOCK_TARGET)
     set(TEST_FILES
             HAL/TargetSystemRegistryTest.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}
             )
 endif ()
 
-package_add_test_with_libs(unittest-qss-compiler
+package_add_test_with_libs(unittest-qe-compiler
         ${TEST_FILES}
 
         LIBRARIES
-        QSSCLib
+        QECLib
         )
 
-add_custom_target(run-qss-compiler-unittests
+add_custom_target(run-qe-compiler-unittests
         COMMAND ${CMAKE_CTEST_COMMAND}
-        DEPENDS ${QSSC_UNITTESTS}
+        DEPENDS ${QEC_UNITTESTS}
         )

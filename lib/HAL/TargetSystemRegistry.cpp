@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Implementation of the QSSC target registry system.
+//  Implementation of the QEC target registry system.
 //
 //===----------------------------------------------------------------------===//
 
@@ -27,10 +27,10 @@
 #include <memory>
 #include <optional>
 
-using namespace qssc::hal::registry;
+using namespace qec::hal::registry;
 
 namespace {
-class NullTarget : public qssc::hal::TargetSystem {
+class NullTarget : public qec::hal::TargetSystem {
 public:
   NullTarget() : TargetSystem("NullTarget", nullptr) {}
 
@@ -41,7 +41,7 @@ public:
 
   // Do nothing.
   llvm::Error emitToPayload(mlir::ModuleOp moduleOp,
-                            qssc::payload::Payload &payload) override {
+                            qec::payload::Payload &payload) override {
     return llvm::Error::success();
   }
 };

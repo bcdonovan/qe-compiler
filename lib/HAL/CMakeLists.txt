@@ -13,13 +13,13 @@
 add_subdirectory(Compile)
 
 # Register targets with build system
-foreach(target_dir ${QSSC_TARGET_DIRS})
-    message(STATUS "Adding QSS Target directory: ${target_dir}")
+foreach(target_dir ${QEC_TARGET_DIRS})
+    message(STATUS "Adding QE Target directory: ${target_dir}")
     add_subdirectory(${target_dir} ${CMAKE_CURRENT_BINARY_DIR}/Targets/${target_dir})
 endforeach()
 
 # Write Targets.inc file for registration
-get_property(reg_headers GLOBAL PROPERTY QSSC_TARGET_REGISTRATION_HEADERS)
+get_property(reg_headers GLOBAL PROPERTY QEC_TARGET_REGISTRATION_HEADERS)
 foreach(REG_HEADER ${reg_headers})
     set(TARGET_REGISTRATION_INCLUDE_SECTION "${TARGET_REGISTRATION_INCLUDE_SECTION}#include \"${REG_HEADER}\"\n")
 endforeach()
@@ -27,9 +27,9 @@ endforeach()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Targets.inc.in ${CMAKE_CURRENT_BINARY_DIR}/Targets.inc)
 unset(TARGET_REGISTRATION_INCLUDE_SECTION)
 
-# Add QSSCHAL lib
-get_property(qssc_targets GLOBAL PROPERTY QSSC_TARGETS)
-qssc_add_library(QSSCHAL
+# Add QECHAL lib
+get_property(qec_targets GLOBAL PROPERTY QEC_TARGETS)
+qec_add_library(QECHAL
     PassRegistration.cpp
     SystemConfiguration.cpp
     TargetSystem.cpp
@@ -37,14 +37,14 @@ qssc_add_library(QSSCHAL
     TargetSystemRegistry.cpp
 
     ADDITIONAL_HEADER_DIRS
-    ${QSSC_INCLUDE_DIR}/HAL
+    ${QEC_INCLUDE_DIR}/HAL
 
     LINK_LIBS
-    ${qssc_targets}
-    QSSCArguments
-    QSSCHALCompile
+    ${qec_targets}
+    QECArguments
+    QECHALCompile
 
 )
 
 # Add include directory to pick up generated Targets.inc
-target_include_directories(QSSCHAL PRIVATE ${QSSC_BINARY_DIR}/lib/HAL/)
+target_include_directories(QECHAL PRIVATE ${QEC_BINARY_DIR}/lib/HAL/)

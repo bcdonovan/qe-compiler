@@ -20,4 +20,4 @@
 
 #include "HAL/SystemConfiguration.h"
 
-qssc::hal::SystemConfiguration::~SystemConfiguration() = default;
+qec::hal::SystemConfiguration::~SystemConfiguration() = default;

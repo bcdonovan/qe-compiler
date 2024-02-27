@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir --enable-circuits=true --subroutine-cloning --merge-measures-topological %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --enable-circuits=true --subroutine-cloning --merge-measures-topological %s | FileCheck %s
 
 //
 // This code is part of Qiskit.

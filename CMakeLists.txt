@@ -64,30 +64,30 @@ else()
     execute_process(
         COMMAND git rev-parse --show-toplevel
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE QSS_ROOT_GIT_DIR
+        OUTPUT_VARIABLE QE_ROOT_GIT_DIR
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    message(STATUS "Root CMake project Git directory (used for version): ${QSS_ROOT_GIT_DIR}")
+    message(STATUS "Root CMake project Git directory (used for version): ${QE_ROOT_GIT_DIR}")
     execute_process(
-        COMMAND ${Python_EXECUTABLE} -c "from setuptools_scm import get_version; print(get_version(root='${QSS_ROOT_GIT_DIR}'))"
+        COMMAND ${Python_EXECUTABLE} -c "from setuptools_scm import get_version; print(get_version(root='${QE_ROOT_GIT_DIR}'))"
         OUTPUT_VARIABLE VERSION_STRING
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    unset(QSS_ROOT_GIT_DIR)
+    unset(QE_ROOT_GIT_DIR)
 endif()
 
 message(STATUS "SCM Version: ${VERSION_STRING}")
 
 # Version information
 string(REGEX MATCHALL "^([0-9]+)\\.([0-9]+)\\.([a-zA-Z0-9\+_.-]+)" _ ${VERSION_STRING})
-set(QSSC_VERSION_MAJOR ${CMAKE_MATCH_1})
-message(STATUS "QSS Compiler Major Version: ${QSSC_VERSION_MAJOR}")
-set(QSSC_VERSION_MINOR ${CMAKE_MATCH_2})
-message(STATUS "QSS Compiler Minor Version: ${QSSC_VERSION_MINOR}")
-set(QSSC_VERSION_PATCH ${CMAKE_MATCH_3})
-message(STATUS "QSS Compiler Patch Version: ${QSSC_VERSION_PATCH}")
-set(QSSC_VERSION ${QSSC_VERSION_MAJOR}.${QSSC_VERSION_MINOR}.${QSSC_VERSION_PATCH})
-message(STATUS "QSS Compiler Version: ${QSSC_VERSION}")
+set(QEC_VERSION_MAJOR ${CMAKE_MATCH_1})
+message(STATUS "QE Compiler Major Version: ${QEC_VERSION_MAJOR}")
+set(QEC_VERSION_MINOR ${CMAKE_MATCH_2})
+message(STATUS "QE Compiler Minor Version: ${QEC_VERSION_MINOR}")
+set(QEC_VERSION_PATCH ${CMAKE_MATCH_3})
+message(STATUS "QE Compiler Patch Version: ${QEC_VERSION_PATCH}")
+set(QEC_VERSION ${QEC_VERSION_MAJOR}.${QEC_VERSION_MINOR}.${QEC_VERSION_PATCH})
+message(STATUS "QE Compiler Version: ${QEC_VERSION}")
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -108,8 +108,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     endif()
 endif()
 
-project(qss-compiler CXX)
-project(qss-opt LANGUAGES CXX C)
+project(qe-compiler CXX)
+project(qe-opt LANGUAGES CXX C)
 
 # ------------------------------------------------------------------------------
 # Project configuration
@@ -119,54 +119,54 @@ option(PACKAGE_TESTS "Build the tests" ON)
 option(ENABLE_ADDRESS_SANITIZER "Compile with google address sanitizer" ${CI_RUN})
 option(ENABLE_UNDEFINED_SANITIZER "Compile with google undefined sanitizer" ${CI_RUN})
 option(ENABLE_THREAD_SANITIZER "Compile with google thread sanitizer" ${CI_RUN})
-option(TEST_USE_VG "Run qss-compiler tests under Valgrind" ${CI_RUN})
-option(INSTALL_BUNDLED_STATIC_LIB "Install the qss-compiler as a static library")
+option(TEST_USE_VG "Run qe-compiler tests under Valgrind" ${CI_RUN})
+option(INSTALL_BUNDLED_STATIC_LIB "Install the qe-compiler as a static library")
 
-set(QSSC_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "QSSC_SRC_DIR")
-set(QSSC_INCLUDE_DIR ${QSSC_SRC_DIR}/include CACHE INTERNAL "QSSC_INCLUDE_DIR")
-set(QSSC_TEST_DIR ${QSSC_SRC_DIR}/test CACHE INTERNAL "QSSC_TEST_DIR")
-set(QSSC_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "QSSC_BINARY_DIR")
-set(QSSC_RUNTIME_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/bin)
-set(QSSC_LIBRARY_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib)
-set(QSSC_RESOURCES_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/resources)
-set(QSSC_PLUGIN_EXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
+set(QEC_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "QEC_SRC_DIR")
+set(QEC_INCLUDE_DIR ${QEC_SRC_DIR}/include CACHE INTERNAL "QEC_INCLUDE_DIR")
+set(QEC_TEST_DIR ${QEC_SRC_DIR}/test CACHE INTERNAL "QEC_TEST_DIR")
+set(QEC_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "QEC_BINARY_DIR")
+set(QEC_RUNTIME_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/bin)
+set(QEC_LIBRARY_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib)
+set(QEC_RESOURCES_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/resources)
+set(QEC_PLUGIN_EXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
 
-option(QSSC_WITH_MOCK_TARGET "Available targets include the built-in mock target" ON)
-set(QSSC_TARGET_DIRS
+option(QEC_WITH_MOCK_TARGET "Available targets include the built-in mock target" ON)
+set(QEC_TARGET_DIRS
         ""
         CACHE STRING
-        "List of directories containing QSS compiler targets."
+        "List of directories containing QE compiler targets."
 )
 
-set(QSSC_TARGET_TEST_DIRS
+set(QEC_TARGET_TEST_DIRS
         ""
         CACHE STRING
-        "List of directories containing QSS compiler LIT test suites."
+        "List of directories containing QE compiler LIT test suites."
         )
 
-if(QSSC_WITH_MOCK_TARGET)
-    set(QSSC_TARGET_DIRS
-            ${QSSC_TARGET_DIRS}
+if(QEC_WITH_MOCK_TARGET)
+    set(QEC_TARGET_DIRS
+            ${QEC_TARGET_DIRS}
             ${CMAKE_CURRENT_SOURCE_DIR}/targets/systems/mock
     )
-    set(QSSC_TARGET_TEST_DIRS
-            ${QSSC_TARGET_TEST_DIRS}
+    set(QEC_TARGET_TEST_DIRS
+            ${QEC_TARGET_TEST_DIRS}
             ${CMAKE_CURRENT_SOURCE_DIR}/targets/systems/mock/test
     )
 endif()
 
-set(QSSC_PAYLOAD_PATHS
+set(QEC_PAYLOAD_PATHS
         ""
         CACHE STRING
-        "List of directories containing QSS compiler payloads."
+        "List of directories containing QE compiler payloads."
         )
 
 
-set(QSSC_RESOURCES_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/qssc)
-configure_file(include/Config.h.in ${QSSC_BINARY_DIR}/include/Config.h)
+set(QEC_RESOURCES_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/qec)
+configure_file(include/Config.h.in ${QEC_BINARY_DIR}/include/Config.h)
 
 # prepare variables for build environment
-configure_file(qssc-activate.in ${QSSC_BINARY_DIR}/qssc-activate @ONLY)
+configure_file(qec-activate.in ${QEC_BINARY_DIR}/qec-activate @ONLY)
 
 # ------------------------------------------------------------------------------
 # Utilities
@@ -180,16 +180,16 @@ file(GLOB_RECURSE
   lib/*cpp lib/*h
 )
 file(GLOB_RECURSE
-  ALL_CXX_QSSC_FILES
-  tools/qss-compiler/*cpp tools/qss-compiler/*h
-  tools/qss-opt/*cpp tools/qss-opt/*h
+  ALL_CXX_QEC_FILES
+  tools/qe-compiler/*cpp tools/qe-compiler/*h
+  tools/qe-opt/*cpp tools/qe-opt/*h
 )
 file(GLOB_RECURSE
   ALL_CXX_TEST_FILES
   test/*cpp test/*h
 )
 
-foreach(dir ${QSSC_TARGET_DIRS})
+foreach(dir ${QEC_TARGET_DIRS})
     file(GLOB_RECURSE
             dir_files
             "${dir}/*cpp" "${dir}/*h"
@@ -198,7 +198,7 @@ foreach(dir ${QSSC_TARGET_DIRS})
     unset(dir_files)
 endforeach()
 
-foreach(dir ${QSSC_TARGET_TEST_DIRS})
+foreach(dir ${QEC_TARGET_TEST_DIRS})
     file(GLOB_RECURSE
             dir_files
             "${dir}/*cpp" "${dir}/*h"
@@ -208,14 +208,14 @@ foreach(dir ${QSSC_TARGET_TEST_DIRS})
 endforeach()
 
 # All CXX source files
-set(QSSC_ALL_CXX_SOURCE_FILES
+set(QEC_ALL_CXX_SOURCE_FILES
     ${ALL_CXX_INCLUDE_FILES}
     ${ALL_CXX_LIB_FILES}
-    ${ALL_CXX_QSSC_FILES}
+    ${ALL_CXX_QEC_FILES}
     ${ALL_CXX_TEST_FILES}
     ${ALL_CXX_TARGET_FILES}
     ${ALL_CXX_TARGET_TEST_FILES}
-    CACHE INTERNAL "QSSC_ALL_CXX_SOURCE_FILES"
+    CACHE INTERNAL "QEC_ALL_CXX_SOURCE_FILES"
 )
 
 # Clang Format -----------------------------------------------------------------
@@ -226,13 +226,13 @@ add_custom_target(
     fix-format
     COMMAND ${CLANG_FORMAT_BIN}
     --style=file
-    -i ${QSSC_ALL_CXX_SOURCE_FILES}
+    -i ${QEC_ALL_CXX_SOURCE_FILES}
     COMMENT "running clang-format"
 )
 
 add_custom_target(
     check-format
-    COMMAND ${PROJECT_SOURCE_DIR}/check_format.sh ${CLANG_FORMAT_BIN} ${QSSC_ALL_CXX_SOURCE_FILES}
+    COMMAND ${PROJECT_SOURCE_DIR}/check_format.sh ${CLANG_FORMAT_BIN} ${QEC_ALL_CXX_SOURCE_FILES}
     COMMENT "running clang-format check"
 )
 
@@ -276,7 +276,7 @@ add_custom_target(
 # ------------------------------------------------------------------------------
 
 # Valgrind ----------------------------------------------------------------------
-option(TEST_USE_VG "Run qss-compiler tests under Valgrind" ${CI_RUN})
+option(TEST_USE_VG "Run qe-compiler tests under Valgrind" ${CI_RUN})
 if(TEST_USE_VG)
   # Use with standard test suite
   set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --leak-check=full")
@@ -290,8 +290,8 @@ endif ()
 # ------------------------------------------------------------------------------
 # third-party
 # ------------------------------------------------------------------------------
-include_directories(${QSSC_INCLUDE_DIR})
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/AddQSSC.cmake)
+include_directories(${QEC_INCLUDE_DIR})
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/AddQEC.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bundle_static_library.cmake)
 
 # QASM -------------------------------------------------------------------------
@@ -346,7 +346,7 @@ find_package(pybind11 REQUIRED)
 include_directories(BEFORE SYSTEM ${nlohmann_json_INCLUDE_DIRS})
 
 # ------------------------------------------------------------------------------
-# QSS-COMPILER
+# QE-COMPILER
 # ------------------------------------------------------------------------------
 add_subdirectory(include)
 add_subdirectory(lib)
@@ -356,8 +356,8 @@ add_subdirectory(python_lib)
 # Analysis ----------------------------------------------------------------------
 add_custom_target(check-analysis DEPENDS check-tidy check-format COMMENT "Running all analysis")
 
-# Intallation -------------------------------------------------------------------
-install(TARGETS qss-compiler qss-opt DESTINATION bin)
+# Installation -------------------------------------------------------------------
+install(TARGETS qe-compiler qe-opt DESTINATION bin)
 
 # Tests -------------------------------------------------------------------------
 if(PACKAGE_TESTS)
@@ -370,21 +370,21 @@ enable_testing()
 
 # Source files, without extensions or directory names
 # Here assuming each file has both header and impl
-set(SRC_FILES QSSC)
+set(SRC_FILES QEC)
 
 # Create SOURCE_FILES
 foreach(file ${SRC_FILES})
 	list(APPEND SOURCE_FILES
-        ${QSSC_SRC_DIR}/lib/${file}.cpp
-        ${QSSC_INCLUDE_DIR}/${file}.h
+        ${QEC_SRC_DIR}/lib/${file}.cpp
+        ${QEC_INCLUDE_DIR}/${file}.h
 	)
 endforeach()
 
 # Set up such that your IDE organizes the files correctly
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCE_FILES})
 
-add_library(qss-compiler-opt ${SOURCE_FILES})
-add_dependencies(qss-compiler-opt mlir-headers)
+add_library(qe-compiler-opt ${SOURCE_FILES})
+add_dependencies(qe-compiler-opt mlir-headers)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

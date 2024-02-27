@@ -1,6 +1,6 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
-// RUN: (qss-compiler -o /dev/null -X=qasm --emit=mlir %s || true) 2>&1 | FileCheck %s --check-prefix MLIR-DIAGNOSTICS
+// RUN: qe-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
+// RUN: (qe-compiler -o /dev/null -X=qasm --emit=mlir %s || true) 2>&1 | FileCheck %s --check-prefix MLIR-DIAGNOSTICS
 
 //
 // This code is part of Qiskit.

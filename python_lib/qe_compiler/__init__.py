@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 from ._version import version as __version__  # noqa: F401
-from .py_qssc import __doc__  # noqa: F401
+from .py_qec import __doc__  # noqa: F401
 
 from .compile import (  # noqa: F401
     compile_file,
@@ -23,11 +23,11 @@ from .compile import (  # noqa: F401
 )
 
 from .exceptions import (  # noqa: F401
-    QSSCompilationFailure,
-    QSSCompilerError,
+    QECompilationFailure,
+    QECompilerError,
 )
 
-from .py_qssc import (  # noqa: F401
+from .py_qec import (  # noqa: F401
     Diagnostic,
     ErrorCategory,
     Severity,

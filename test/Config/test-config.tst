@@ -1,7 +1,7 @@
-// RUN: qss-compiler --target Mock --config path/to/config --allow-unregistered-dialect=false \
+// RUN: qe-compiler --target Mock --config path/to/config --allow-unregistered-dialect=false \
 // RUN:          --add-target-passes=false --verbosity=info --max-threads=5 --show-config - | FileCheck %s --check-prefix CLI
-// RUN: QSSC_TARGET_NAME="MockEnv" QSSC_TARGET_CONFIG_PATH="path/to/config/Env" QSSC_VERBOSITY=DEBUG QSSC_MAX_THREADS=10 \
-// RUN:          qss-compiler --allow-unregistered-dialect=false --add-target-passes=false --show-config - | FileCheck %s --check-prefix ENV
+// RUN: QEC_TARGET_NAME="MockEnv" QEC_TARGET_CONFIG_PATH="path/to/config/Env" QEC_VERBOSITY=DEBUG QEC_MAX_THREADS=10 \
+// RUN:          qe-compiler --allow-unregistered-dialect=false --add-target-passes=false --show-config - | FileCheck %s --check-prefix ENV
 // REQUIRES: !asserts
 
 // CLI: inputType: none

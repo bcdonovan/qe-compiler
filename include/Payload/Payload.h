@@ -21,7 +21,7 @@
 #ifndef PAYLOAD_PAYLOAD_H
 #define PAYLOAD_PAYLOAD_H
 
-#include <Config/QSSConfig.h>
+#include <Config/QEConfig.h>
 
 #include <filesystem>
 #include <iostream>
@@ -35,22 +35,22 @@
 
 #include "Arguments/Signature.h"
 
-namespace qssc::payload {
+namespace qec::payload {
 
 struct PayloadConfig {
   std::string prefix;
   std::string name;
-  qssc::config::QSSVerbosity verbosity;
+  qec::config::QEVerbosity verbosity;
 };
 
-// Payload class will wrap the QSS Payload and interface with the qss-compiler
+// Payload class will wrap the QE Payload and interface with the qe-compiler
 class Payload {
 public:
   using PluginConfiguration = PayloadConfig;
 
 public:
   Payload()
-      : prefix(""), name("exp"), verbosity(qssc::config::QSSVerbosity::Warn) {}
+      : prefix(""), name("exp"), verbosity(qec::config::QEVerbosity::Warn) {}
   explicit Payload(PayloadConfig config)
       : prefix(std::move(config.prefix) + "/"), name(std::move(config.name)),
         verbosity(config.verbosity) {
@@ -70,7 +70,7 @@ public:
   virtual void writePlain(std::ostream &stream) = 0;
   virtual void writePlain(llvm::raw_ostream &stream) = 0;
   virtual void addFile(llvm::StringRef filename, llvm::StringRef str) = 0;
-  virtual void writeArgumentSignature(qssc::arguments::Signature &&sig){};
+  virtual void writeArgumentSignature(qec::arguments::Signature &&sig){};
 
   const std::string &getName() const { return name; }
   const std::string &getPrefix() const { return prefix; }
@@ -91,7 +91,7 @@ protected:
 
   std::string prefix;
   std::string name;
-  qssc::config::QSSVerbosity verbosity;
+  qec::config::QEVerbosity verbosity;
   std::unordered_map<std::filesystem::path, std::string, PathHash> files;
 }; // class Payload
 
@@ -106,6 +106,6 @@ public:
   virtual llvm::Error writeString(std::string *outputString) = 0;
 }; // class PatchablePayload
 
-} // namespace qssc::payload
+} // namespace qec::payload
 
 #endif // PAYLOAD_PAYLOAD_H

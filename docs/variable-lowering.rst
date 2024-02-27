@@ -31,7 +31,7 @@ is obvious from the OpenQASM 3 code for a human reader, it takes a
 compiler several transformation steps to reach the MLIR example code
 above.
 
-The qss-compiler proceeds as follows: Statements involving OpenQASM 3
+The qe-compiler proceeds as follows: Statements involving OpenQASM 3
 variables are lowered to MLIR’s built-in ``memref`` dialect in several
 steps. The initial MLIR follows the memory semantics of OpenQASM 3. Two
 initial optimizations can remove some variables. Finally, variable
@@ -43,7 +43,7 @@ QUIRGenQASM3Visitor
 -------------------
 
 The OpenQASM 3 frontend’s first step that generates MLIR, the
-`QUIRGenQASM3Visitor <https://github.com/Qiskit/qss-compiler/blob/main/lib/Frontend/OpenQASM3/QUIRGenQASM3Visitor.cpp>`__ ,
+`QUIRGenQASM3Visitor <https://github.com/Qiskit/qe-compiler/blob/main/lib/Frontend/OpenQASM3/QUIRGenQASM3Visitor.cpp>`__ ,
 follows the memory semantics of OpenQASM 3 variables: each variable
 identifies a location in memory and each reference or assignment to that
 variables reads or writes that location.
@@ -86,18 +86,18 @@ Coarse Initial Optimizations
 Two initial optimization steps can remove (or simplify) variables
 altogether (saving memory and potentially enabling further optimizations
 of values assigned to them). The
-`LoadEliminationPass <https://github.com/Qiskit/qss-compiler/blob/main/lib/Dialect/QUIR/Transforms/LoadElimination.cpp>`__
+`LoadEliminationPass <https://github.com/Qiskit/qe-compiler/blob/main/lib/Dialect/QUIR/Transforms/LoadElimination.cpp>`__
 can remove variables that are only assigned once and, thus, effectively
 act as constants (replacing every use with the single assigned value).
 The
-`UnusedVariablePass <https://github.com/Qiskit/qss-compiler/blob/main/lib/Dialect/QUIR/Transforms/UnusedVariable.cpp>`__
+`UnusedVariablePass <https://github.com/Qiskit/qe-compiler/blob/main/lib/Dialect/QUIR/Transforms/UnusedVariable.cpp>`__
 removes variables that are never referenced.
 
 Best-Effort SSA Transformation
 ------------------------------
 
 The
-`VariableEliminationPass <https://github.com/Qiskit/qss-compiler/blob/main/lib/Dialect/QUIR/Transforms/VariableElimination.cpp>`__
+`VariableEliminationPass <https://github.com/Qiskit/qe-compiler/blob/main/lib/Dialect/QUIR/Transforms/VariableElimination.cpp>`__
 reuses the scalar-replacement pass from MLIR’s affine dialect to
 replace instances of `oq3.variable_load` with the MLIR Value previously
 assigned to the respective variable, in many cases. Noteably, that code

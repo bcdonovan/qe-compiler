@@ -34,7 +34,7 @@
 #include <string>
 #include <vector>
 
-namespace qssc::arguments {
+namespace qec::arguments {
 
 class PatchPoint {
   std::string expression_;
@@ -74,12 +74,12 @@ public:
   std::string serialize() const;
 
   static llvm::Expected<Signature>
-  deserialize(llvm::StringRef, const qssc::OptDiagnosticCallback &onDiagnostic,
+  deserialize(llvm::StringRef, const qec::OptDiagnosticCallback &onDiagnostic,
               bool treatWarningsAsError = false);
 
   bool isEmpty() const { return patchPointsByBinary.size() == 0; }
 };
 
-} // namespace qssc::arguments
+} // namespace qec::arguments
 
 #endif // PARAMETER_SIGNATURE_H

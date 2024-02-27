@@ -14,13 +14,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef QSS_COMPILER_LIB_H
-#define QSS_COMPILER_LIB_H
+#ifndef QE_COMPILER_LIB_H
+#define QE_COMPILER_LIB_H
 
 #include "API/errors.h"
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
 #include "mlir/IR/DialectRegistry.h"
 #include "mlir/Support/Timing.h"
@@ -36,7 +36,7 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace qssc {
+namespace qec {
 
 // The API implementation is based on that of MLIROptMain in the core
 // MLIR project. The hope is that this helps standardize CLI tooling and make
@@ -64,7 +64,7 @@ registerAndParseCLIToolOptions(int argc, const char **argv,
                                llvm::StringRef toolName,
                                mlir::DialectRegistry &registry);
 
-/// Perform the core processing behind `qss-compiler`
+/// Perform the core processing behind `qe-compiler`
 /// @param outputStream to emit to.
 /// @param buffer to parse and process.
 /// @param registry should contain all the dialects that can be parsed in the
@@ -75,11 +75,11 @@ registerAndParseCLIToolOptions(int argc, const char **argv,
 llvm::Error compileMain(llvm::raw_ostream &outputStream,
                         std::unique_ptr<llvm::MemoryBuffer> buffer,
                         mlir::DialectRegistry &registry,
-                        const qssc::config::QSSConfig &config,
+                        const qec::config::QEConfig &config,
                         OptDiagnosticCallback diagnosticCb,
                         mlir::TimingScope &timing);
 
-/// Implementation for tools like `qss-compiler`.
+/// Implementation for tools like `qe-compiler`.
 /// @param argc Commandline argc to parse.
 /// @param argv Commandline argv to parse.
 /// @param inputFilename input filename to parse.
@@ -93,7 +93,7 @@ llvm::Error compileMain(int argc, const char **argv,
                         mlir::DialectRegistry &registry,
                         OptDiagnosticCallback diagnosticCb);
 
-/// Implementation for tools like `qss-compiler`.
+/// Implementation for tools like `qe-compiler`.
 /// @param argc Commandline argc to parse.
 /// @param argv Commandline argv to parse.
 /// @param registry should contain all the dialects that can be parsed in the
@@ -103,7 +103,7 @@ llvm::Error compileMain(int argc, const char **argv, llvm::StringRef toolName,
                         mlir::DialectRegistry &registry,
                         OptDiagnosticCallback diagnosticCb);
 
-/// Implementation for tools like `qss-compiler` with provided registry with
+/// Implementation for tools like `qe-compiler` with provided registry with
 /// default project dialects loaded
 /// @param argc Commandline argc to parse.
 /// @param argv Commandline argv to parse.
@@ -126,7 +126,7 @@ inline int asMainReturnCode(llvm::Error err) {
 /// @param diagnosticCb an optional callback that will receive emitted
 /// diagnostics
 /// @return 0 on success
-int bindArguments(std::string_view target, qssc::config::EmitAction action,
+int bindArguments(std::string_view target, qec::config::EmitAction action,
                   std::string_view configPath, std::string_view moduleInput,
                   std::string_view payloadOutputPath,
                   std::unordered_map<std::string, double> const &arguments,
@@ -134,5 +134,5 @@ int bindArguments(std::string_view target, qssc::config::EmitAction action,
                   std::string *inMemoryOutput,
                   const OptDiagnosticCallback &onDiagnostic);
 
-} // namespace qssc
-#endif // QSS_COMPILER_LIB_H
+} // namespace qec
+#endif // QE_COMPILER_LIB_H

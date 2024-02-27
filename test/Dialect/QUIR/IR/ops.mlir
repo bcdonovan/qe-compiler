@@ -1,6 +1,6 @@
-// RUN: qss-opt %s | qss-opt | FileCheck %s
+// RUN: qe-opt %s | qe-opt | FileCheck %s
 // Verify the printed output can be parsed.
-// RUN: qss-opt %s --mlir-print-op-generic | qss-opt | FileCheck %s
+// RUN: qe-opt %s --mlir-print-op-generic | qe-opt | FileCheck %s
 
 //
 // This code is part of Qiskit.

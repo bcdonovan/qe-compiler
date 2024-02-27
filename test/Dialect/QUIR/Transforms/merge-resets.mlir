@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --merge-resets-lexicographic -emit=mlir %s | FileCheck %s
-// RUN: qss-compiler -X=mlir --merge-resets-topological -emit=mlir %s | FileCheck %s --check-prefix=TOPO
+// RUN: qe-compiler -X=mlir --merge-resets-lexicographic -emit=mlir %s | FileCheck %s
+// RUN: qe-compiler -X=mlir --merge-resets-topological -emit=mlir %s | FileCheck %s --check-prefix=TOPO
 //
 // This test case checks that the MergeResetPass merges all parallelizable
 // resets (and no more than that).

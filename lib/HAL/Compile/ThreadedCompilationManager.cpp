@@ -40,11 +40,11 @@
 #include <unordered_map>
 #include <utility>
 
-using namespace qssc;
-using namespace qssc::hal::compile;
+using namespace qec;
+using namespace qec::hal::compile;
 
 ThreadedCompilationManager::ThreadedCompilationManager(
-    qssc::hal::TargetSystem &target, mlir::MLIRContext *context,
+    qec::hal::TargetSystem &target, mlir::MLIRContext *context,
     ThreadedCompilationManager::PMBuilder pmBuilder)
     : TargetCompilationManager(target, context),
       pmBuilder(std::move(pmBuilder)) {}
@@ -274,7 +274,7 @@ llvm::Error ThreadedCompilationManager::compileMLIRTarget_(
 
 llvm::Error
 ThreadedCompilationManager::compilePayload(mlir::ModuleOp moduleOp,
-                                           qssc::payload::Payload &payload,
+                                           qec::payload::Payload &payload,
                                            bool doCompileMLIR) {
 
   auto compilePayloadTiming = getTimer("compile-payload");
@@ -316,7 +316,7 @@ ThreadedCompilationManager::compilePayload(mlir::ModuleOp moduleOp,
 
 llvm::Error ThreadedCompilationManager::compilePayloadTarget_(
     Target &target, mlir::ModuleOp targetModuleOp,
-    qssc::payload::Payload &payload, mlir::TimingScope &timing,
+    qec::payload::Payload &payload, mlir::TimingScope &timing,
     bool doCompileMLIR) {
 
   if (doCompileMLIR)

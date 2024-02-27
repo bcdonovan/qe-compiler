@@ -1,4 +1,4 @@
-//===- CLIConfigBuilder.cpp - QSSConfig from the CLI ------*- C++ -*-------===//
+//===- CLIConfigBuilder.cpp - QEConfig from the CLI ------*- C++ -*-------===//
 //
 // (C) Copyright IBM 2023, 2024.
 //
@@ -13,7 +13,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "Config/CLIConfig.h"
-#include "Config/QSSConfig.h"
+#include "Config/QEConfig.h"
 
 #include "mlir/Debug/CLOptionsSetup.h"
 #include "mlir/IR/DialectRegistry.h"
@@ -32,17 +32,17 @@
 #include <optional>
 #include <string>
 
-using namespace qssc::config;
+using namespace qec::config;
 
 namespace {
 // The space below at the front of the string causes this category to be printed
 // first
 llvm::cl::OptionCategory
-    qsscCat_(" qss-compiler options",
-             "Options that control high-level behavior of QSS Compiler");
+    qecCat_(" qe-compiler options",
+             "Options that control high-level behavior of QE Compiler");
 
 llvm::cl::OptionCategory
-    optCat_(" qss-compiler options: opt",
+    optCat_(" qe-compiler options: opt",
             "Options that control behaviour inherited from mlir-opt.");
 
 class BytecodeVersionParser : public llvm::cl::parser<std::optional<int64_t>> {
@@ -62,13 +62,13 @@ public:
 };
 
 /// This class is intended to manage the handling of command line options for
-/// creating a qss-compiler mlir-opt based config. This is a singleton.
+/// creating a qe-compiler mlir-opt based config. This is a singleton.
 /// The implementation closely follows that of
 /// https://github.com/llvm/llvm-project/blob/llvmorg-17.0.6/mlir/lib/Tools/mlir-opt/MlirOptMain.cpp
 /// As the implementation is anonymous we recreate the population of the
 /// configuration here.
-struct QSSConfigCLOptions : public QSSConfig {
-  QSSConfigCLOptions() {
+struct QEConfigCLOptions : public QEConfig {
+  QEConfigCLOptions() {
 
     static llvm::cl::opt<enum InputType, /*ExternalStorage=*/true> const
         inputType_(
@@ -115,7 +115,7 @@ struct QSSConfigCLOptions : public QSSConfig {
         llvm::cl::desc(
             "Path to configuration file or directory (depends on the "
             "target), - means use the config service"),
-        llvm::cl::value_desc("path"), llvm::cl::cat(getQSSCCLCategory()));
+        llvm::cl::value_desc("path"), llvm::cl::cat(getQECCLCategory()));
 
     targetConfigPath_.setCallback([&](const std::string &config) {
       if (config != "")
@@ -126,7 +126,7 @@ struct QSSConfigCLOptions : public QSSConfig {
         "target",
         llvm::cl::desc(
             "Target architecture. Required for machine code generation."),
-        llvm::cl::value_desc("targetName"), llvm::cl::cat(getQSSCCLCategory()));
+        llvm::cl::value_desc("targetName"), llvm::cl::cat(getQECCLCategory()));
 
     targetName_.setCallback([&](const std::string &target) {
       if (target != "")
@@ -136,41 +136,41 @@ struct QSSConfigCLOptions : public QSSConfig {
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const addTargetPasses(
         "add-target-passes", llvm::cl::desc("Add target-specific passes"),
         llvm::cl::location(addTargetPassesFlag), llvm::cl::init(true),
-        llvm::cl::cat(getQSSCCLCategory()));
+        llvm::cl::cat(getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const showTargets(
         "show-targets", llvm::cl::desc("Print the list of registered targets"),
         llvm::cl::location(showTargetsFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const showPayloads(
         "show-payloads",
         llvm::cl::desc("Print the list of registered payloads"),
         llvm::cl::location(showPayloadsFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const showConfig(
         "show-config",
         llvm::cl::desc("Print the loaded compiler configuration."),
         llvm::cl::location(showConfigFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const plaintextPayload(
         "plaintext-payload", llvm::cl::desc("Write the payload in plaintext"),
         llvm::cl::location(emitPlaintextPayloadFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const includeSource(
         "include-source",
         llvm::cl::desc("Write the input source into the payload"),
         llvm::cl::location(includeSourceFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const compileTargetIr(
         "compile-target-ir",
         llvm::cl::desc("Apply the target's IR compilation"),
         llvm::cl::location(compileTargetIRFlag), llvm::cl::init(false),
-        llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+        llvm::cl::cat(qec::config::getQECCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const
         bypassPayloadTargetCompilation(
@@ -179,7 +179,7 @@ struct QSSConfigCLOptions : public QSSConfig {
                 "Bypass target compilation during payload generation."),
             llvm::cl::location(bypassPayloadTargetCompilationFlag),
             llvm::cl::init(false),
-            llvm::cl::cat(qssc::config::getQSSCCLCategory()));
+            llvm::cl::cat(qec::config::getQECCLCategory()));
 
     // mlir-opt options
 
@@ -188,13 +188,13 @@ struct QSSConfigCLOptions : public QSSConfig {
             "allow-unregistered-dialect",
             llvm::cl::desc("Allow operation with no registered dialects"),
             llvm::cl::location(allowUnregisteredDialectsFlag),
-            llvm::cl::init(false), llvm::cl::cat(getQSSOptCLCategory()));
+            llvm::cl::init(false), llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const dumpPassPipeline(
         "dump-pass-pipeline",
         llvm::cl::desc("Print the pipeline that will be run"),
         llvm::cl::location(dumpPassPipelineFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<std::optional<int64_t>, /*ExternalStorage=*/true,
                          BytecodeVersionParser> const
@@ -202,20 +202,20 @@ struct QSSConfigCLOptions : public QSSConfig {
             "emit-bytecode-version",
             llvm::cl::desc("Use specified bytecode when generating output"),
             llvm::cl::location(emitBytecodeVersion),
-            llvm::cl::init(std::nullopt), llvm::cl::cat(getQSSOptCLCategory()));
+            llvm::cl::init(std::nullopt), llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<std::string, /*ExternalStorage=*/true> const irdlFile(
         "irdl-file",
         llvm::cl::desc("IRDL file to register before processing the input"),
         llvm::cl::location(irdlFileFlag), llvm::cl::init(""),
-        llvm::cl::value_desc("filename"), llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::value_desc("filename"), llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const
         enableDebuggerHook(
             "mlir-enable-debugger-hook",
             llvm::cl::desc("Enable Debugger hook for debugging MLIR Actions"),
             llvm::cl::location(enableDebuggerActionHookFlag),
-            llvm::cl::init(false), llvm::cl::cat(getQSSOptCLCategory()));
+            llvm::cl::init(false), llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const explicitModule(
         "no-implicit-module",
@@ -223,26 +223,26 @@ struct QSSConfigCLOptions : public QSSConfig {
             "Disable implicit addition of a top-level module op during "
             "parsing"),
         llvm::cl::location(useExplicitModuleFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const runReproducer(
         "run-reproducer",
         llvm::cl::desc("Run the pipeline stored in the reproducer"),
         llvm::cl::location(runReproducerFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const showDialects(
         "show-dialects",
         llvm::cl::desc("Print the list of registered dialects and exit"),
         llvm::cl::location(showDialectsFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const splitInputFile(
         "split-input-file",
         llvm::cl::desc("Split the input file into pieces and process each "
                        "chunk independently"),
         llvm::cl::location(splitInputFileFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const
         verifyDiagnostics(
@@ -250,7 +250,7 @@ struct QSSConfigCLOptions : public QSSConfig {
             llvm::cl::desc("Check that emitted diagnostics match "
                            "expected-* lines on the corresponding line"),
             llvm::cl::location(verifyDiagnosticsFlag), llvm::cl::init(false),
-            llvm::cl::cat(getQSSOptCLCategory()));
+            llvm::cl::cat(getQEOptCLCategory()));
 
 #ifndef NOVERIFY
 #define VERIFY_PASSES_DEFAULT true
@@ -262,21 +262,21 @@ struct QSSConfigCLOptions : public QSSConfig {
         llvm::cl::desc("Run the verifier after each transformation pass"),
         llvm::cl::location(verifyPassesFlag),
         llvm::cl::init(VERIFY_PASSES_DEFAULT),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::opt<bool, /*ExternalStorage=*/true> const verifyRoundtrip(
         "verify-roundtrip",
         llvm::cl::desc(
             "Round-trip the IR after parsing and ensure it succeeds"),
         llvm::cl::location(verifyRoundtripFlag), llvm::cl::init(false),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
 
     static llvm::cl::list<std::string> passPlugins_(
         "load-pass-plugin",
         llvm::cl::desc("Load passes from plugin library. It is required that "
                        "the pass be specified to be loaded before all usages "
                        "of dynamic CL arguments."),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
     /// Set the callback to load a pass plugin.
     passPlugins_.setCallback([&](const std::string &pluginPath) {
       passPlugins.push_back(pluginPath);
@@ -290,27 +290,27 @@ struct QSSConfigCLOptions : public QSSConfig {
         llvm::cl::desc("Load dialects from plugin library. It is required that "
                        "the dialect be specified to be loaded before all "
                        "usages of dynamic CL arguments"),
-        llvm::cl::cat(getQSSOptCLCategory()));
+        llvm::cl::cat(getQEOptCLCategory()));
     this->dialectPlugins_ = std::addressof(dialectPlugins_);
 
     static mlir::PassPipelineCLParser const passPipeline(
         "", "Compiler passes to run", "p");
     setPassPipelineParser(passPipeline);
 
-    static llvm::cl::opt<enum QSSVerbosity, /*ExternalStorage=*/true> const
+    static llvm::cl::opt<enum QEVerbosity, /*ExternalStorage=*/true> const
         verbosity(
             "verbosity", llvm::cl::location(verbosityLevel),
-            llvm::cl::init(QSSVerbosity::_VerbosityCnt),
+            llvm::cl::init(QEVerbosity::_VerbosityCnt),
             llvm::cl::desc("Set verbosity level for output, default is warn"),
             llvm::cl::values(
-                clEnumValN(QSSVerbosity::Error, "error", "Emit only errors")),
+                clEnumValN(QEVerbosity::Error, "error", "Emit only errors")),
             llvm::cl::values(
-                clEnumValN(QSSVerbosity::Warn, "warn", "Also emit warnings")),
-            llvm::cl::values(clEnumValN(QSSVerbosity::Info, "info",
+                clEnumValN(QEVerbosity::Warn, "warn", "Also emit warnings")),
+            llvm::cl::values(clEnumValN(QEVerbosity::Info, "info",
                                         "Also emit informational messages")),
-            llvm::cl::values(clEnumValN(QSSVerbosity::Debug, "debug",
+            llvm::cl::values(clEnumValN(QEVerbosity::Debug, "debug",
                                         "Also emit debug messages")),
-            llvm::cl::cat(qssc::config::getQSSOptCLCategory()));
+            llvm::cl::cat(qec::config::getQEOptCLCategory()));
 
     static llvm::cl::opt<int> maxThreads_(
         "max-threads",
@@ -384,10 +384,10 @@ struct QSSConfigCLOptions : public QSSConfig {
 
 } // anonymous namespace
 
-llvm::ManagedStatic<QSSConfigCLOptions> clOptionsConfig;
+llvm::ManagedStatic<QEConfigCLOptions> clOptionsConfig;
 
-llvm::cl::OptionCategory &qssc::config::getQSSCCLCategory() { return qsscCat_; }
-llvm::cl::OptionCategory &qssc::config::getQSSOptCLCategory() {
+llvm::cl::OptionCategory &qec::config::getQECCLCategory() { return qecCat_; }
+llvm::cl::OptionCategory &qec::config::getQEOptCLCategory() {
   return optCat_;
 }
 
@@ -401,16 +401,16 @@ void CLIConfigBuilder::registerCLOptions(mlir::DialectRegistry &registry) {
   mlir::tracing::DebugConfig::registerCLOptions();
 }
 
-llvm::Error CLIConfigBuilder::populateConfig(QSSConfig &config) {
+llvm::Error CLIConfigBuilder::populateConfig(QEConfig &config) {
 
   config.setDebugConfig(clOptionsConfig->getDebugConfig());
 
   config.setPassPipelineSetupFn(clOptionsConfig->passPipelineCallback);
 
-  if (clOptionsConfig->verbosityLevel != QSSVerbosity::_VerbosityCnt)
+  if (clOptionsConfig->verbosityLevel != QEVerbosity::_VerbosityCnt)
     config.verbosityLevel = clOptionsConfig->verbosityLevel;
 
-  // qss
+  // qe
   if (clOptionsConfig->targetName.has_value())
     config.targetName = clOptionsConfig->targetName;
   if (clOptionsConfig->targetConfigPath.has_value())
@@ -454,7 +454,7 @@ llvm::Error CLIConfigBuilder::populateConfig(QSSConfig &config) {
   return llvm::Error::success();
 }
 
-llvm::Error CLIConfigBuilder::populateConfig(QSSConfig &config,
+llvm::Error CLIConfigBuilder::populateConfig(QEConfig &config,
                                              llvm::StringRef inputFilename,
                                              llvm::StringRef outputFilename) {
 

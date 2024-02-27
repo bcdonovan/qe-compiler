@@ -5,7 +5,7 @@ The qe-compiler is an [MLIR](https://mlir.llvm.org/)-based compiler with support
 
 This repo contains the compiler front-end to convert OpenQASM 3 source files into a collection of four MLIR dialects called QUIR (QUantum Intermediate Representation), OQ3 (OpenQASM 3), Pulse (OpenPulse), and QCS (Quantum Computing System). This set of dialects allows OpenQASM programs to be converted into a form suitable to manipulate with LLVM. This repo also contains tools and compiler passes that are agnostic of details of any control system vendor. For instance, it contains localization passes to split source programs into the qubit or channel-specific groupings required by a target quantum control system.
 
-This repo does not contain a complete compiler. Rather, it is a framework for building compilers. To produce a complete compiler, one needs to implement a qe-compiler **target**. This repo comes with a ["mock" target](https://github.com/Qiskit/qss-compiler/tree/main/targets/systems/mock) to assist developers in understanding how to develop such targets.
+This repo does not contain a complete compiler. Rather, it is a framework for building compilers. To produce a complete compiler, one needs to implement a qe-compiler **target**. This repo comes with a ["mock" target](https://github.com/Qiskit/qe-compiler/tree/main/targets/systems/mock) to assist developers in understanding how to develop such targets.
 
 ## Contents
 - [qe-compiler: An MLIR-based quantum compiler for quantum engines](#qe-compiler-an-mlir-based-quantum-compiler-for-quantum-engines)
@@ -23,7 +23,7 @@ This repo does not contain a complete compiler. Rather, it is a framework for bu
 
 ## Notice
 
-We are in the process of [changing the name of this project](https://github.com/Qiskit/qss-compiler/issues/210) from `qss-compiler` to `qe-compiler`. At present, only the repository name and this README have been updated.
+We are in the process of [changing the name of this project](https://github.com/Qiskit/qe-compiler/issues/210) from `qe-compiler` to `qe-compiler`. At present, only the repository name and this README have been updated.
 
 This open-source version of the qe-compiler is currently lacking documentation. We will add getting started guides and other resources in the near future.
 
@@ -46,7 +46,7 @@ Alternatively instead of steps 6/7, you can build directly with CMake (also from
 3. Check tests - `ninja check-tests`
 
 ### Python library
-The `qss-compiler` Python library will be installed by default to the resolved environment Python when
+The `qe-compiler` Python library will be installed by default to the resolved environment Python when
 installing with conan. To disable add the option `conan build .. -o pythonlib=False`.
 
 ### Platforms
@@ -72,7 +72,7 @@ For more details on usage see the [contribution guide](CONTRIBUTING.md#static-co
 ## Example Use
 
 You can inspect the options available when invoking the `qe-compiler` by passing the `-h` flag. There are **many** options. A basic invocation that will work without implementing a target will convert an OpenQASM source file, `example.qasm` to the MLIR dialect set described above with:
-`qss-compiler --emit=mlir example.qasm`
+`qe-compiler --emit=mlir example.qasm`
 
 ## Contribution Guidelines
 

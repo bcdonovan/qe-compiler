@@ -10,26 +10,26 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-set(QSSC_PAYLOAD_PATHS
-        ${QSSC_PAYLOAD_PATHS}
+set(QEC_PAYLOAD_PATHS
+        ${QEC_PAYLOAD_PATHS}
         ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-qssc_add_plugin(QSSCPayloadZip QSSC_PAYLOAD_PLUGIN
+qec_add_plugin(QECPayloadZip QEC_PAYLOAD_PLUGIN
         PatchableZipPayload.cpp
         ZipPayload.cpp
         ZipUtil.cpp
 
         ADDITIONAL_HEADER_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${QSSC_INCLUDE_DIR}/Payload
+        ${QEC_INCLUDE_DIR}/Payload
 
         LINK_LIBS
-        QSSCPayload
+        QECPayload
         libzip::zip
 
         PLUGIN_REGISTRATION_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/Payload.inc
         )
 
-add_dependencies(QSSCPayloadZip mlir-headers)
+add_dependencies(QECPayloadZip mlir-headers)

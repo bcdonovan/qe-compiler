@@ -1,4 +1,4 @@
-// RUN: qss-compiler -X=mlir -emit=mlir %s --oq3-limit-cbit-width | FileCheck %s
+// RUN: qe-compiler -X=mlir -emit=mlir %s --oq3-limit-cbit-width | FileCheck %s
 //
 // Test that the we can successfully split cbit arrays larger than 32 bits wide
 

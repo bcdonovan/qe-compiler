@@ -58,7 +58,7 @@
 
 using namespace mlir;
 
-namespace qssc::targets::systems::mock::conversion {
+namespace qec::targets::systems::mock::conversion {
 struct ReturnConversionPat : public OpConversionPattern<mlir::func::ReturnOp> {
 
   explicit ReturnConversionPat(MLIRContext *ctx, TypeConverter &typeConverter)
@@ -288,4 +288,4 @@ llvm::StringRef MockQUIRToStdPass::getName() const {
   return "Mock QUIR to Std Pass";
 }
 
-} // namespace qssc::targets::systems::mock::conversion
+} // namespace qec::targets::systems::mock::conversion

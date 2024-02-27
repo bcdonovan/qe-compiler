@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-add_llvm_executable(qss-compiler qss-compiler.cpp)
-llvm_update_compile_flags(qss-compiler)
-target_link_libraries(qss-compiler PRIVATE QSSCLib)
-mlir_check_all_link_libraries(qss-compiler)
+add_llvm_executable(qe-compiler qe-compiler.cpp)
+llvm_update_compile_flags(qe-compiler)
+target_link_libraries(qe-compiler PRIVATE QECLib)
+mlir_check_all_link_libraries(qe-compiler)

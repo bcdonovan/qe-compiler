@@ -1,4 +1,4 @@
-// RUN: qss-opt %s -split-input-file -verify-diagnostics
+// RUN: qe-opt %s -split-input-file -verify-diagnostics
 
 //
 // This code is part of Qiskit.

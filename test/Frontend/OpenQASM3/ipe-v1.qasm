@@ -25,7 +25,7 @@
 //   previous pass, or do we define this behavior in a defcal?
 
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast %s
+// RUN: qe-compiler -X=qasm --emit=ast %s
 
 // include "openpulse.inc";
 // defcalgrammar "openpulse";

@@ -1,5 +1,5 @@
-// RUN: qss-compiler -X=mlir --canonicalize --merge-measures-lexographical %s | FileCheck %s --check-prefix LEX
-// RUN: qss-compiler -X=mlir --canonicalize --merge-measures-topological %s | FileCheck %s --check-prefix TOP
+// RUN: qe-compiler -X=mlir --canonicalize --merge-measures-lexographical %s | FileCheck %s --check-prefix LEX
+// RUN: qe-compiler -X=mlir --canonicalize --merge-measures-topological %s | FileCheck %s --check-prefix TOP
 
 //
 // This code is part of Qiskit.

@@ -198,7 +198,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-/python_lib/qss_compiler/_version.py
+/python_lib/qe_compiler/_version.py
 /include/API/Version.h
 
 # CMake

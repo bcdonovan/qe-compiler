@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-//  Declaration of the QSSC plugin registry.
+//  Declaration of the QEC plugin registry.
 //
 //===----------------------------------------------------------------------===//
 #ifndef PLUGINREGISTRY_H
@@ -19,7 +19,7 @@
 
 #include <optional>
 
-namespace qssc::plugin::registry {
+namespace qec::plugin::registry {
 
 template <typename PluginInfo>
 struct PluginRegistry {
@@ -68,6 +68,6 @@ private:
   llvm::StringMap<PluginInfo> registry;
 };
 
-} // namespace qssc::plugin::registry
+} // namespace qec::plugin::registry
 
 #endif

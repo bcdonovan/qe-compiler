@@ -23,7 +23,7 @@ from qe_compiler import (
     OutputType,
     Severity,
 )
-from qe_compiler.exceptions import QSSCompilationFailure, QSSCompilerEOFFailure
+from qe_compiler.exceptions import QECompilationFailure, QECompilerEOFFailure
 
 
 def check_mlir_string(mlir):
@@ -33,7 +33,7 @@ def check_mlir_string(mlir):
 
 
 def test_attributes():
-    assert qe_compiler.__doc__ == "Python bindings for the QSS Compiler."
+    assert qe_compiler.__doc__ == "Python bindings for the QE Compiler."
 
 
 def test_compile_file_to_mlir(example_qasm3_tmpfile):
@@ -135,7 +135,7 @@ def test_compile_invalid_file(example_invalid_qasm3_tmpfile):
     """Test that we can attempt to compile invalid OpenQASM 3 and receive an
     error"""
 
-    with pytest.raises(QSSCompilationFailure):
+    with pytest.raises(QECompilationFailure):
         compile_file(
             example_invalid_qasm3_tmpfile,
             return_diagnostics=True,  # For testing purposes
@@ -149,7 +149,7 @@ def test_compile_invalid_str(example_invalid_qasm3_str):
     """Test that we can attempt to compile invalid OpenQASM 3 and receive an
     error"""
 
-    with pytest.raises(QSSCompilationFailure) as compfail:
+    with pytest.raises(QECompilationFailure) as compfail:
         compile_str(
             example_invalid_qasm3_str,
             return_diagnostics=True,  # For testing purposes
@@ -178,7 +178,7 @@ def test_compile_invalid_str(example_invalid_qasm3_str):
 
 def test_failure_no_hang():
     """Test no hang on malformed inputs."""
-    with pytest.raises(QSSCompilerEOFFailure):
+    with pytest.raises(QECompilerEOFFailure):
         _ = compile_str(
             "",
             input_type=InputType.QASM3,

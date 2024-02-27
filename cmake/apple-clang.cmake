@@ -50,7 +50,7 @@ if(ENABLE_THREAD_SANITIZER)
 endif()
 
 if(ENABLE_ADDRESS_SANITIZER OR ENABLE_UNDEFINED_SANITIZER OR ENABLE_THREAD_SANITIZER)
-    # require flag to link shared libraries (e.g., py_qssc) with clang/LLVM and -fsanitize
+    # require flag to link shared libraries (e.g., py_qec) with clang/LLVM and -fsanitize
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -shared-libsan")
 endif()
 

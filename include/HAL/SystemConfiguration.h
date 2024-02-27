@@ -17,8 +17,8 @@
 //  This file declares the classes for config data
 //
 //===----------------------------------------------------------------------===//
-#ifndef QSSC_SYSTEMCONFIGURATION_H
-#define QSSC_SYSTEMCONFIGURATION_H
+#ifndef QEC_SYSTEMCONFIGURATION_H
+#define QEC_SYSTEMCONFIGURATION_H
 
 #include "Payload/Payload.h"
 
@@ -28,7 +28,7 @@
 #include <istream>
 #include <memory>
 
-namespace qssc::hal {
+namespace qec::hal {
 
 class SystemConfiguration {
 public:
@@ -41,5 +41,5 @@ protected:
 
   uint numQubits;
 };
-} // namespace qssc::hal
-#endif // QSSC_SYSTEMCONFIGURATION_H
+} // namespace qec::hal
+#endif // QEC_SYSTEMCONFIGURATION_H

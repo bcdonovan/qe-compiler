@@ -31,7 +31,7 @@
 // NOLINTNEXTLINE: Required for payload initializations even if not used
 #include "Payloads.inc"
 
-using namespace qssc::payload;
+using namespace qec::payload;
 namespace fs = std::filesystem;
 
 auto Payload::getFile(const std::string &fName) -> std::string * {

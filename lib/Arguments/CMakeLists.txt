@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-add_library(QSSCArguments Signature.cpp Arguments.cpp)
-add_dependencies(QSSCArguments mlir-headers)
+add_library(QECArguments Signature.cpp Arguments.cpp)
+add_dependencies(QECArguments mlir-headers)
 
-target_link_libraries(QSSCArguments QSSCPayloadZip libzip::zip)
+target_link_libraries(QECArguments QECPayloadZip libzip::zip)

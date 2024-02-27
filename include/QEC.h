@@ -1,4 +1,4 @@
-//===- QSSC.h ---------------------------------------------------*- C++ -*-===//
+//===- QEC.h ---------------------------------------------------*- C++ -*-===//
 //
 // (C) Copyright IBM 2023.
 //
@@ -20,8 +20,8 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef QSSC_H
-#define QSSC_H
+#ifndef QEC_H
+#define QEC_H
 
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringRef.h"
@@ -31,32 +31,32 @@
 #include <optional>
 #include <string>
 
-namespace qssc {
+namespace qec {
 
 namespace hal {
 class Target;
 } // namespace hal
 
-/// Provide the version of the QSS compiler, which follows semantic versioning
+/// Provide the version of the QE compiler, which follows semantic versioning
 /// (see https://semver.org/) and consists of major, minor, and patch version.
 ///
 /// \returns version as StringRef
-llvm::StringRef getQSSCVersion();
+llvm::StringRef getQECVersion();
 
-/// Provide the major version of the QSS compiler
+/// Provide the major version of the QE compiler
 ///
 /// \returns major version as StringRef
-llvm::StringRef getQSSCMajorVersion();
+llvm::StringRef getQECMajorVersion();
 
-/// Provide the minor version of the QSS compiler
+/// Provide the minor version of the QE compiler
 ///
 /// \returns minor version as StringRef
-llvm::StringRef getQSSCMinorVersion();
+llvm::StringRef getQECMinorVersion();
 
-/// Provide the patch level of the QSS compiler
+/// Provide the patch level of the QE compiler
 ///
 /// \returns patch level as StringRef
-llvm::StringRef getQSSCPatchlevel();
+llvm::StringRef getQECPatchlevel();
 
 /// Provide path to static resources (e.g., runtime libs). Note that targets
 /// and other components must not make assumptions about the directory
@@ -74,6 +74,6 @@ llvm::StringRef getResourcesDir();
 /// \returns path to static resources for target.
 llvm::SmallString<128> getTargetResourcesDir(hal::Target const *target);
 
-}; // namespace qssc
+}; // namespace qec
 
-#endif // QSSC_H
+#endif // QEC_H

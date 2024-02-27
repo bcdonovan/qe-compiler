@@ -1,7 +1,7 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast %s | FileCheck %s --check-prefix AST
-// RUN: qss-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
-// RUN: qss-compiler -X=qasm --emit=mlir %s | FileCheck %s --check-prefix MLIR
+// RUN: qe-compiler -X=qasm --emit=ast %s | FileCheck %s --check-prefix AST
+// RUN: qe-compiler -X=qasm --emit=ast-pretty %s | FileCheck %s --match-full-lines --check-prefix AST-PRETTY
+// RUN: qe-compiler -X=qasm --emit=mlir %s | FileCheck %s --check-prefix MLIR
 //
 // Test that bool variables are handled correctly across control flow.
 

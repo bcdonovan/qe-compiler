@@ -41,13 +41,13 @@ config.llvm_use_sanitizer = "@LLVM_USE_SANITIZER@"
 config.llvm_host_triple = '@LLVM_HOST_TRIPLE@'
 config.host_arch = "@HOST_ARCH@"
 
-config.name = "@QSSC_LIT_SUITE_NAME@"
-config.test_source_root = "@QSSC_LIT_SOURCE_DIR@"
-config.test_exec_root = "@QSSC_LIT_EXEC_DIR@"
+config.name = "@QEC_LIT_SUITE_NAME@"
+config.test_source_root = "@QEC_LIT_SOURCE_DIR@"
+config.test_exec_root = "@QEC_LIT_EXEC_DIR@"
 
-config.qss_compiler_src_root = "@CMAKE_SOURCE_DIR@"
-config.qss_compiler_obj_root = "@CMAKE_BINARY_DIR@"
-config.qss_resources_dir = "@QSSC_RESOURCES_OUTPUT_INTDIR@"
+config.qe_compiler_src_root = "@CMAKE_SOURCE_DIR@"
+config.qe_compiler_obj_root = "@CMAKE_BINARY_DIR@"
+config.qe_resources_dir = "@QEC_RESOURCES_OUTPUT_INTDIR@"
 
 # Support substitution of the tools_dir with user parameters. This is
 # used when we can't determine the tool dir at configuration time.
@@ -64,4 +64,4 @@ import lit.llvm
 lit.llvm.initialize(lit_config, config)
 
 # Let the main config do the real work.
-lit_config.load_config(config, "@QSSC_TEST_DIR@/lit.cfg.py")
+lit_config.load_config(config, "@QEC_TEST_DIR@/lit.cfg.py")

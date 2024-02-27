@@ -12,58 +12,58 @@
 namespace py = pybind11;
 
 void addErrorCategory(py::module &m) {
-  py::enum_<qssc::ErrorCategory>(m, "ErrorCategory", py::arithmetic())
+  py::enum_<qec::ErrorCategory>(m, "ErrorCategory", py::arithmetic())
       .value("OpenQASM3ParseFailure",
-             qssc::ErrorCategory::OpenQASM3ParseFailure)
-      .value("QSSCompilerError", qssc::ErrorCategory::QSSCompilerError)
-      .value("QSSCompilerNoInputError",
-             qssc::ErrorCategory::QSSCompilerNoInputError)
-      .value("QSSCompilerCommunicationFailure",
-             qssc::ErrorCategory::QSSCompilerCommunicationFailure)
-      .value("QSSCompilerEOFFailure",
-             qssc::ErrorCategory::QSSCompilerEOFFailure)
-      .value("QSSCompilerNonZeroStatus",
-             qssc::ErrorCategory::QSSCompilerNonZeroStatus)
-      .value("QSSCompilerSequenceTooLong",
-             qssc::ErrorCategory::QSSCompilerSequenceTooLong)
-      .value("QSSCompilationFailure",
-             qssc::ErrorCategory::QSSCompilationFailure)
-      .value("QSSLinkerNotImplemented",
-             qssc::ErrorCategory::QSSLinkerNotImplemented)
-      .value("QSSLinkSignatureWarning",
-             qssc::ErrorCategory::QSSLinkSignatureWarning)
-      .value("QSSLinkSignatureError",
-             qssc::ErrorCategory::QSSLinkSignatureError)
-      .value("QSSLinkAddressError", qssc::ErrorCategory::QSSLinkAddressError)
-      .value("QSSLinkSignatureNotFound",
-             qssc::ErrorCategory::QSSLinkSignatureNotFound)
-      .value("QSSLinkArgumentNotFoundWarning",
-             qssc::ErrorCategory::QSSLinkArgumentNotFoundWarning)
-      .value("QSSLinkInvalidPatchTypeError",
-             qssc::ErrorCategory::QSSLinkInvalidPatchTypeError)
-      .value("QSSControlSystemResourcesExceeded",
-             qssc::ErrorCategory::QSSControlSystemResourcesExceeded)
-      .value("UncategorizedError", qssc::ErrorCategory::UncategorizedError)
+             qec::ErrorCategory::OpenQASM3ParseFailure)
+      .value("QECompilerError", qec::ErrorCategory::QECompilerError)
+      .value("QECompilerNoInputError",
+             qec::ErrorCategory::QECompilerNoInputError)
+      .value("QECompilerCommunicationFailure",
+             qec::ErrorCategory::QECompilerCommunicationFailure)
+      .value("QECompilerEOFFailure",
+             qec::ErrorCategory::QECompilerEOFFailure)
+      .value("QECompilerNonZeroStatus",
+             qec::ErrorCategory::QECompilerNonZeroStatus)
+      .value("QECompilerSequenceTooLong",
+             qec::ErrorCategory::QECompilerSequenceTooLong)
+      .value("QECompilationFailure",
+             qec::ErrorCategory::QECompilationFailure)
+      .value("QELinkerNotImplemented",
+             qec::ErrorCategory::QELinkerNotImplemented)
+      .value("QELinkSignatureWarning",
+             qec::ErrorCategory::QELinkSignatureWarning)
+      .value("QELinkSignatureError",
+             qec::ErrorCategory::QELinkSignatureError)
+      .value("QELinkAddressError", qec::ErrorCategory::QELinkAddressError)
+      .value("QELinkSignatureNotFound",
+             qec::ErrorCategory::QELinkSignatureNotFound)
+      .value("QELinkArgumentNotFoundWarning",
+             qec::ErrorCategory::QELinkArgumentNotFoundWarning)
+      .value("QELinkInvalidPatchTypeError",
+             qec::ErrorCategory::QELinkInvalidPatchTypeError)
+      .value("QEControlSystemResourcesExceeded",
+             qec::ErrorCategory::QEControlSystemResourcesExceeded)
+      .value("UncategorizedError", qec::ErrorCategory::UncategorizedError)
       .export_values();
 }
 
 void addSeverity(py::module &m) {
-  py::enum_<qssc::Severity>(m, "Severity")
-      .value("Info", qssc::Severity::Info)
-      .value("Warning", qssc::Severity::Warning)
-      .value("Error", qssc::Severity::Error)
-      .value("Fatal", qssc::Severity::Fatal)
+  py::enum_<qec::Severity>(m, "Severity")
+      .value("Info", qec::Severity::Info)
+      .value("Warning", qec::Severity::Warning)
+      .value("Error", qec::Severity::Error)
+      .value("Fatal", qec::Severity::Fatal)
       .export_values();
 }
 
 void addDiagnostic(py::module &m) {
-  py::class_<qssc::Diagnostic>(m, "Diagnostic")
-      .def_readonly("severity", &qssc::Diagnostic::severity)
-      .def_readonly("category", &qssc::Diagnostic::category)
-      .def_readonly("message", &qssc::Diagnostic::message)
-      .def("__str__", &qssc::Diagnostic::toString)
+  py::class_<qec::Diagnostic>(m, "Diagnostic")
+      .def_readonly("severity", &qec::Diagnostic::severity)
+      .def_readonly("category", &qec::Diagnostic::category)
+      .def_readonly("message", &qec::Diagnostic::message)
+      .def("__str__", &qec::Diagnostic::toString)
       .def(py::pickle(
-          [](const qssc::Diagnostic &d) {
+          [](const qec::Diagnostic &d) {
             // __getstate__ serializes the C++ object into a tuple
             return py::make_tuple(d.severity, d.category, d.message);
           },
@@ -72,10 +72,10 @@ void addDiagnostic(py::module &m) {
             if (t.size() != 3)
               throw std::runtime_error("invalid state for unpickling");
 
-            auto severity = t[0].cast<qssc::Severity>();
-            auto category = t[1].cast<qssc::ErrorCategory>();
+            auto severity = t[0].cast<qec::Severity>();
+            auto category = t[1].cast<qec::ErrorCategory>();
             auto message = t[2].cast<std::string>();
 
-            return qssc::Diagnostic(severity, category, std::move(message));
+            return qec::Diagnostic(severity, category, std::move(message));
           }));
 }

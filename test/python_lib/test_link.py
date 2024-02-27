@@ -16,7 +16,7 @@ Unit tests for the linker API.
 import pytest
 
 from qe_compiler import link_file
-from qe_compiler.exceptions import QSSLinkerNotImplemented
+from qe_compiler.exceptions import QELinkerNotImplemented
 
 
 def test_linker_not_implemented(tmp_path):
@@ -25,7 +25,7 @@ def test_linker_not_implemented(tmp_path):
     with open(qem_file, "w") as f:
         f.write("dummy")
 
-    with pytest.raises(QSSLinkerNotImplemented) as error:
+    with pytest.raises(QELinkerNotImplemented) as error:
         link_file(
             input_file=qem_file,
             output_file=arg_file,

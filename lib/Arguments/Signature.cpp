@@ -34,7 +34,7 @@
 #include <sys/types.h>
 #include <tuple>
 
-namespace qssc::arguments {
+namespace qec::arguments {
 
 void Signature::addParameterPatchPoint(llvm::StringRef expression,
                                        llvm::StringRef patchType,
@@ -87,7 +87,7 @@ std::string Signature::serialize() const {
 
 llvm::Expected<Signature>
 Signature::deserialize(llvm::StringRef buffer,
-                       const qssc::OptDiagnosticCallback &onDiagnostic,
+                       const qec::OptDiagnosticCallback &onDiagnostic,
                        bool treatWarningsAsErrors) {
 
   Signature sig;
@@ -96,15 +96,15 @@ Signature::deserialize(llvm::StringRef buffer,
 
   std::tie(line, buffer) = buffer.split("\n");
   if (line != "circuit_signature") {
-    return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                          qssc::ErrorCategory::QSSLinkSignatureError,
+    return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                          qec::ErrorCategory::QELinkSignatureError,
                           "Invalid Signature header");
   }
 
   std::tie(line, buffer) = buffer.split("\n");
   if (line != "version 1") {
-    return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                          qssc::ErrorCategory::QSSLinkSignatureError,
+    return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                          qec::ErrorCategory::QELinkSignatureError,
                           "Invalid Signature version: " + line.str());
   }
 
@@ -115,14 +115,14 @@ Signature::deserialize(llvm::StringRef buffer,
 
   std::tie(label, value) = line.split(' ');
   if (label != "num_binaries:") {
-    return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                          qssc::ErrorCategory::QSSLinkSignatureError,
+    return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                          qec::ErrorCategory::QELinkSignatureError,
                           "Expected num_binaries:");
   }
   uint numBinaries;
   if (value.getAsInteger(10, numBinaries)) {
-    return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                          qssc::ErrorCategory::QSSLinkSignatureError,
+    return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                          qec::ErrorCategory::QELinkSignatureError,
                           "Failed to parse number of binaries to integer: " +
                               value.str());
   }
@@ -131,8 +131,8 @@ Signature::deserialize(llvm::StringRef buffer,
     std::tie(line, buffer) = buffer.split("\n");
     std::tie(label, value) = line.split(' ');
     if (label != "binary:") {
-      return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                            qssc::ErrorCategory::QSSLinkSignatureError,
+      return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                            qec::ErrorCategory::QELinkSignatureError,
                             "Expected binary:");
     }
     llvm::StringRef const binaryName = value;
@@ -140,14 +140,14 @@ Signature::deserialize(llvm::StringRef buffer,
     std::tie(line, buffer) = buffer.split("\n");
     std::tie(label, value) = line.split(' ');
     if (label != "num_patchpoints:") {
-      return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                            qssc::ErrorCategory::QSSLinkSignatureError,
+      return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                            qec::ErrorCategory::QELinkSignatureError,
                             "Expected num_patchpoints:");
     }
     uint numEntries;
     if (value.getAsInteger(10, numEntries)) {
-      return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                            qssc::ErrorCategory::QSSLinkSignatureError,
+      return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                            qec::ErrorCategory::QELinkSignatureError,
                             "Failed to parse number of entries to integer: " +
                                 value.str());
     }
@@ -156,14 +156,14 @@ Signature::deserialize(llvm::StringRef buffer,
       llvm::SmallVector<llvm::StringRef, 3> components;
       line.split(components, ' ', 2, false);
       if (components.size() != 3) {
-        return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                              qssc::ErrorCategory::QSSLinkSignatureError,
+        return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                              qec::ErrorCategory::QELinkSignatureError,
                               "Invalid argument entry line: " + line.str());
       }
       uint64_t addr;
       if (components[1].getAsInteger(10, addr)) {
-        return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                              qssc::ErrorCategory::QSSLinkAddressError,
+        return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                              qec::ErrorCategory::QELinkAddressError,
                               "Failed to interpret argument address " +
                                   components[1].str());
       }
@@ -179,16 +179,16 @@ Signature::deserialize(llvm::StringRef buffer,
     if (!treatWarningsAsErrors) {
       // cast to void to discard llvm::Error
       static_cast<void>(
-          emitDiagnostic(onDiagnostic, qssc::Severity::Warning,
-                         qssc::ErrorCategory::QSSLinkSignatureWarning,
+          emitDiagnostic(onDiagnostic, qec::Severity::Warning,
+                         qec::ErrorCategory::QELinkSignatureWarning,
                          "Ignoring extra data at end of signature file"));
     } else {
-      return emitDiagnostic(onDiagnostic, qssc::Severity::Error,
-                            qssc::ErrorCategory::QSSLinkSignatureWarning,
+      return emitDiagnostic(onDiagnostic, qec::Severity::Error,
+                            qec::ErrorCategory::QELinkSignatureWarning,
                             "Ignoring extra data at end of signature file");
     }
   }
   return sig;
 }
 
-} // namespace qssc::arguments
+} // namespace qec::arguments

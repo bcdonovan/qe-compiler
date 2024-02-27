@@ -10,5 +10,5 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-add_subdirectory(qss-compiler)
-add_subdirectory(qss-opt)
+add_subdirectory(qe-compiler)
+add_subdirectory(qe-opt)

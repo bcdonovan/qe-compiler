@@ -32,7 +32,7 @@
 
 #include <optional>
 
-namespace qssc::frontend::openqasm3 {
+namespace qec::frontend::openqasm3 {
 
 /// @brief Parse an OpenQASM 3 source file and emit high-level IR in the
 /// OpenQASM 3 dialect or dump the AST
@@ -49,6 +49,6 @@ llvm::Error parse(llvm::SourceMgr &sourceMgr, bool emitRawAST,
                   OptDiagnosticCallback diagnosticCb,
                   mlir::TimingScope &timing);
 
-}; // namespace qssc::frontend::openqasm3
+}; // namespace qec::frontend::openqasm3
 
 #endif // OPENQASM3_FRONTEND_H

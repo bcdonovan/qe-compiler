@@ -23,7 +23,7 @@
 
 #include "Payload/Payload.h"
 
-namespace qssc::payload {
+namespace qec::payload {
 
 // Register the zip payload.
 int init();
@@ -42,7 +42,7 @@ public:
   virtual void writePlain(std::ostream &stream) override;
   virtual void writePlain(llvm::raw_ostream &stream) override;
   virtual void
-  writeArgumentSignature(qssc::arguments::Signature &&sig) override;
+  writeArgumentSignature(qec::arguments::Signature &&sig) override;
 
   // write all files to a zip archive named fName
   void writeZip(std::string fName);
@@ -59,6 +59,6 @@ private:
 
 }; // class ZipPayload
 
-} // namespace qssc::payload
+} // namespace qec::payload
 
 #endif // PAYLOAD_ZIPPAYLOAD_H

@@ -66,7 +66,7 @@ namespace {
 
 llvm::cl::OptionCategory openqasm3Cat(
     " OpenQASM 3 Frontend Options",
-    "Options that control the OpenQASM 3 frontend of QSS Compiler");
+    "Options that control the OpenQASM 3 frontend of QE Compiler");
 
 llvm::cl::opt<uint>
     numShots("num-shots",
@@ -83,7 +83,7 @@ llvm::cl::list<std::string>
     includeDirs("I", llvm::cl::desc("Add <dir> to the include path"),
                 llvm::cl::value_desc("dir"), llvm::cl::cat(openqasm3Cat));
 
-qssc::DiagnosticCallback *diagnosticCallback_;
+qec::DiagnosticCallback *diagnosticCallback_;
 llvm::SourceMgr *sourceMgr_;
 
 std::mutex qasmParserLock;
@@ -117,10 +117,10 @@ parseDurationStr(const std::string &durationStr) {
 
 } // anonymous namespace
 
-llvm::Error qssc::frontend::openqasm3::parse(
+llvm::Error qec::frontend::openqasm3::parse(
     llvm::SourceMgr &sourceMgr, bool emitRawAST, bool emitPrettyAST,
     bool emitMLIR, mlir::ModuleOp newModule,
-    qssc::OptDiagnosticCallback diagnosticCallback, mlir::TimingScope &timing) {
+    qec::OptDiagnosticCallback diagnosticCallback, mlir::TimingScope &timing) {
 
   const llvm::MemoryBuffer *sourceBuffer =
       sourceMgr.getMemoryBuffer(sourceMgr.getMainFileID());
@@ -146,38 +146,38 @@ llvm::Error qssc::frontend::openqasm3::parse(
       [](const std::string &File, QASM::ASTLocation Loc, // NOLINT
          const std::string &Msg, QASM::QasmDiagnosticEmitter::DiagLevel DL) {
         std::string level = "unknown";
-        qssc::Severity diagLevel = qssc::Severity::Error;
+        qec::Severity diagLevel = qec::Severity::Error;
         llvm::SourceMgr::DiagKind sourceMgrDiagKind =
             llvm::SourceMgr::DiagKind::DK_Error;
 
         switch (DL) {
         case QASM::QasmDiagnosticEmitter::DiagLevel::Error:
           level = "Error";
-          diagLevel = qssc::Severity::Error;
+          diagLevel = qec::Severity::Error;
           sourceMgrDiagKind = llvm::SourceMgr::DiagKind::DK_Error;
           break;
 
         case QASM::QasmDiagnosticEmitter::DiagLevel::ICE:
           level = "ICE";
-          diagLevel = qssc::Severity::Fatal;
+          diagLevel = qec::Severity::Fatal;
           sourceMgrDiagKind = llvm::SourceMgr::DiagKind::DK_Error;
           break;
 
         case QASM::QasmDiagnosticEmitter::DiagLevel::Warning:
           level = "Warning";
-          diagLevel = qssc::Severity::Warning;
+          diagLevel = qec::Severity::Warning;
           sourceMgrDiagKind = llvm::SourceMgr::DiagKind::DK_Warning;
           break;
 
         case QASM::QasmDiagnosticEmitter::DiagLevel::Info:
           level = "Info";
-          diagLevel = qssc::Severity::Info;
+          diagLevel = qec::Severity::Info;
           sourceMgrDiagKind = llvm::SourceMgr::DiagKind::DK_Remark;
           break;
 
         case QASM::QasmDiagnosticEmitter::DiagLevel::Status:
           level = "Status";
-          diagLevel = qssc::Severity::Info;
+          diagLevel = qec::Severity::Info;
           sourceMgrDiagKind = llvm::SourceMgr::DiagKind::DK_Note;
           break;
         }
@@ -200,8 +200,8 @@ llvm::Error qssc::frontend::openqasm3::parse(
                      << sourceString << "\n";
 
         if (diagnosticCallback_) {
-          qssc::Diagnostic const diag{
-              diagLevel, qssc::ErrorCategory::OpenQASM3ParseFailure,
+          qec::Diagnostic const diag{
+              diagLevel, qec::ErrorCategory::OpenQASM3ParseFailure,
               fileLoc.str() + "\n" + Msg + "\n" + sourceString};
           (*diagnosticCallback_)(diag);
         }
@@ -209,7 +209,7 @@ llvm::Error qssc::frontend::openqasm3::parse(
         if (DL == QASM::QasmDiagnosticEmitter::DiagLevel::Error ||
             DL == QASM::QasmDiagnosticEmitter::DiagLevel::ICE) {
           // give up parsing after errors right away
-          // TODO: update to recent qss-qasm to support continuing
+          // TODO: update to recent qe-qasm to support continuing
           throw std::runtime_error("Failure parsing");
         }
       });
@@ -243,7 +243,7 @@ llvm::Error qssc::frontend::openqasm3::parse(
 
   if (emitPrettyAST) {
     auto *statementList = QASM::ASTStatementBuilder::Instance().List();
-    qssc::frontend::openqasm3::PrintQASM3Visitor visitor(std::cout);
+    qec::frontend::openqasm3::PrintQASM3Visitor visitor(std::cout);
 
     visitor.setStatementList(statementList);
     visitor.walkAST();
@@ -263,7 +263,7 @@ llvm::Error qssc::frontend::openqasm3::parse(
     QASM::ASTStatementList *statementList =
         QASM::ASTStatementBuilder::Instance().List();
 
-    qssc::frontend::openqasm3::QUIRGenQASM3Visitor visitor(builder, newModule,
+    qec::frontend::openqasm3::QUIRGenQASM3Visitor visitor(builder, newModule,
                                                            /*filename=*/"");
 
     auto result = parseDurationStr(shotDelay);

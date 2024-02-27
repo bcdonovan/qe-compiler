@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-function(qssc_set_output_directory target)
+function(qec_set_output_directory target)
     cmake_parse_arguments(ARG
         ""
         "BINARY_DIR;LIBRARY_DIR"
@@ -26,7 +26,7 @@ function(qssc_set_output_directory target)
 endfunction()
 
 
-function(qssc_add_library name)
+function(qec_add_library name)
     cmake_parse_arguments(ARG
         "MODULE;SHARED;STATIC"
         "OUTPUT_NAME;"
@@ -36,7 +36,7 @@ function(qssc_add_library name)
     # Sources are unused arguments
     set(ALL_FILES ${ARG_UNPARSED_ARGUMENTS})
 
-    list(APPEND QSSC_COMMON_DEPENDS ${ARG_DEPENDS})
+    list(APPEND QEC_COMMON_DEPENDS ${ARG_DEPENDS})
 
     if(ARG_ADDITIONAL_HEADERS)
         set(ARG_ADDITIONAL_HEADERS ADDITIONAL_HEADERS ${ARG_ADDITIONAL_HEADERS})
@@ -74,7 +74,7 @@ function(qssc_add_library name)
             set(output_name OUTPUT_NAME "${ARG_OUTPUT_NAME}")
         endif()
 
-        qssc_add_library(${name_static} STATIC
+        qec_add_library(${name_static} STATIC
             ${output_name}
             OBJLIBS ${ALL_FILES}
             LINK_LIBS ${ARG_LINK_LIBS}
@@ -90,7 +90,7 @@ function(qssc_add_library name)
         add_library(${name} STATIC ${ALL_FILES})
     endif()
 
-    set_output_directory(${name} BINARY_DIR ${QSSC_RUNTIME_OUTPUT_INTDIR} LIBRARY_DIR ${QSSC_LIBRARY_OUTPUT_INTDIR})
+    set_output_directory(${name} BINARY_DIR ${QEC_RUNTIME_OUTPUT_INTDIR} LIBRARY_DIR ${QEC_LIBRARY_OUTPUT_INTDIR})
 
     if(ARG_OUTPUT_NAME)
         set_target_properties(${name}
@@ -102,7 +102,7 @@ function(qssc_add_library name)
     if(ARG_MODULE)
         set_target_properties(${name} PROPERTIES
             PREFIX ""
-            SUFFIX ${QSSC_PLUGIN_EXT}
+            SUFFIX ${QEC_PLUGIN_EXT}
             )
     endif()
 
@@ -138,62 +138,62 @@ endfunction()
 # each plugin (the number could grow large). However, it is in
 # our better interest--at least, for now--to keep distinct plugin
 # types separate to prevent unecessary linking.
-define_property(GLOBAL PROPERTY QSSC_TARGETS
-    BRIEF_DOCS "QSSC system targets to be built"
-    FULL_DOCS "QSSC system targets to be built")
+define_property(GLOBAL PROPERTY QEC_TARGETS
+    BRIEF_DOCS "QEC system targets to be built"
+    FULL_DOCS "QEC system targets to be built")
 # Initialize property
-set_property(GLOBAL PROPERTY QSSC_TARGETS "")
+set_property(GLOBAL PROPERTY QEC_TARGETS "")
 
-define_property(GLOBAL PROPERTY QSSC_TARGET_REGISTRATION_HEADERS
-        BRIEF_DOCS "QSSC system target registration headers"
-        FULL_DOCS "QSSC system target registration headers")
+define_property(GLOBAL PROPERTY QEC_TARGET_REGISTRATION_HEADERS
+        BRIEF_DOCS "QEC system target registration headers"
+        FULL_DOCS "QEC system target registration headers")
 # Initialize property
-set_property(GLOBAL PROPERTY QSSC_TARGET_REGISTRATION_HEADERS "")
+set_property(GLOBAL PROPERTY QEC_TARGET_REGISTRATION_HEADERS "")
 
-define_property(GLOBAL PROPERTY QSSC_PAYLOADS
-    BRIEF_DOCS "QSSC payload plugins to be built"
-    FULL_DOCS "QSSC payload plugins to be built")
+define_property(GLOBAL PROPERTY QEC_PAYLOADS
+    BRIEF_DOCS "QEC payload plugins to be built"
+    FULL_DOCS "QEC payload plugins to be built")
 # Initialize property
-set_property(GLOBAL PROPERTY QSSC_PAYLOADS "")
+set_property(GLOBAL PROPERTY QEC_PAYLOADS "")
 
-define_property(GLOBAL PROPERTY QSSC_PAYLOAD_REGISTRATION_HEADERS
-        BRIEF_DOCS "QSSC payload plugin registration headers"
-        FULL_DOCS "QSSC payload plugin registration headers")
+define_property(GLOBAL PROPERTY QEC_PAYLOAD_REGISTRATION_HEADERS
+        BRIEF_DOCS "QEC payload plugin registration headers"
+        FULL_DOCS "QEC payload plugin registration headers")
 # Initialize property
-set_property(GLOBAL PROPERTY QSSC_PAYLOAD_REGISTRATION_HEADERS "")
+set_property(GLOBAL PROPERTY QEC_PAYLOAD_REGISTRATION_HEADERS "")
 
-# Add a LIT test suite using the QSS LIT config.
-function(qssc_add_lit_test_suite target_name suite_name tests_directory extra_args)
-    set(QSSC_LIT_SUITE_NAME "${suite_name}")
-    set(QSSC_LIT_SOURCE_DIR "${tests_directory}")
-    set(QSSC_LIT_EXEC_DIR "${CMAKE_CURRENT_BINARY_DIR}/${target_name}")
+# Add a LIT test suite using the QE LIT config.
+function(qec_add_lit_test_suite target_name suite_name tests_directory extra_args)
+    set(QEC_LIT_SUITE_NAME "${suite_name}")
+    set(QEC_LIT_SOURCE_DIR "${tests_directory}")
+    set(QEC_LIT_EXEC_DIR "${CMAKE_CURRENT_BINARY_DIR}/${target_name}")
     configure_lit_site_cfg(
-            "${QSSC_TEST_DIR}/lit.site.cfg.py.in"
-            "${QSSC_LIT_EXEC_DIR}/lit.site.cfg.py"
+            "${QEC_TEST_DIR}/lit.site.cfg.py.in"
+            "${QEC_LIT_EXEC_DIR}/lit.site.cfg.py"
             MAIN_CONFIG
-            "${QSSC_TEST_DIR}/lit.cfg.py"
+            "${QEC_TEST_DIR}/lit.cfg.py"
     )
 
-    set(QSS_COMPILER_TEST_DEPENDS
+    set(QE_COMPILER_TEST_DEPENDS
             FileCheck count not
-            qss-compiler
-            qss-opt
+            qe-compiler
+            qe-opt
             )
 
     add_lit_testsuite(${target_name} "Running the ${suite_name} regression tests"
             "${CMAKE_CURRENT_BINARY_DIR}/${target_name}/"
-            DEPENDS ${QSS_COMPILER_TEST_DEPENDS}
+            DEPENDS ${QE_COMPILER_TEST_DEPENDS}
             ARGS ${extra_args}
             )
 
     set_target_properties(${target_name} PROPERTIES FOLDER "Tests")
-    add_dependencies(check-qss-compiler "${target_name}")
+    add_dependencies(check-qe-compiler "${target_name}")
 
-endfunction(qssc_add_lit_test_suite)
+endfunction(qec_add_lit_test_suite)
 
-# Add a QSS Compiler plugin
+# Add a QE Compiler plugin
 #
-# qssc_add_plugin(plugin_name plugin_type
+# qec_add_plugin(plugin_name plugin_type
 #    <List of sources>
 #
 #    [ADDITIONAL_HEADERS
@@ -219,7 +219,7 @@ endfunction(qssc_add_lit_test_suite)
 #     must be set to true.
 #
 #    [PLUGIN_REGISTRATION_HEADERS
-#     <List of headers to be included by the QSS compiler plugin registry
+#     <List of headers to be included by the QE compiler plugin registry
 #     ...>
 #
 #     Used to register plugins via static initialization.
@@ -229,9 +229,9 @@ endfunction(qssc_add_lit_test_suite)
 #      in path names for resources -- must match <Plugin>::getName()
 #      so that resources can be found at runtime ]
 # )
-function(qssc_add_plugin plugin_name plugin_type)
+function(qec_add_plugin plugin_name plugin_type)
   # Ensure a supported plugin type was specified
-  set(SUPPORTED_PLUGIN_TYPES QSSC_PAYLOAD_PLUGIN QSSC_TARGET_PLUGIN)
+  set(SUPPORTED_PLUGIN_TYPES QEC_PAYLOAD_PLUGIN QEC_TARGET_PLUGIN)
   string(TOUPPER ${plugin_type} PLUGIN_TYPE_TOUPPER)
   if(NOT ${PLUGIN_TYPE_TOUPPER} IN_LIST SUPPORTED_PLUGIN_TYPES)
     string(REPLACE ";" ", " supported "${SUPPORTED_PLUGIN_TYPES}")
@@ -259,7 +259,7 @@ function(qssc_add_plugin plugin_name plugin_type)
     ${ARGN}
   )
 
-  qssc_add_library(${plugin_name} ${ARG_UNPARSED_ARGUMENTS})
+  qec_add_library(${plugin_name} ${ARG_UNPARSED_ARGUMENTS})
 
   message(STATUS "Adding ${PLUGIN_TYPE_TOLOWER} plugin: ${plugin_name}")
 
@@ -274,11 +274,11 @@ function(qssc_add_plugin plugin_name plugin_type)
       if(NOT EXISTS "${REG_HEADER}")
           message(FATAL_ERROR "Missing registration header for plugin ${plugin_name}: ${REG_HEADER}")
       else()
-          set_property(GLOBAL APPEND PROPERTY QSSC_${PLUGIN_TYPE_TOUPPER}_REGISTRATION_HEADERS "${REG_HEADER}")
+          set_property(GLOBAL APPEND PROPERTY QEC_${PLUGIN_TYPE_TOUPPER}_REGISTRATION_HEADERS "${REG_HEADER}")
       endif()
   endforeach()
 
-  set_property(GLOBAL APPEND PROPERTY QSSC_${PLUGIN_TYPE_TOUPPER}S "${plugin_name}")
+  set_property(GLOBAL APPEND PROPERTY QEC_${PLUGIN_TYPE_TOUPPER}S "${plugin_name}")
 
   if(ARG_PLUGIN_SHORT_NAME)
       message(STATUS "Using short name ${ARG_PLUGIN_SHORT_NAME} for ${plugin_name} in resource paths")
@@ -292,9 +292,9 @@ function(qssc_add_plugin plugin_name plugin_type)
 
       # define build directory for the plugin's resources
       # - attach as  property RESOURCE_OUTPUT_DIRECTORY to each resource target
-      set(QSSC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR ${QSSC_RESOURCES_OUTPUT_INTDIR}/${PLUGIN_TYPE_TOLOWER}s/${plugin_name_resources})
-      file(MAKE_DIRECTORY ${QSSC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR})
-      set_target_properties(${ARG_CUSTOM_RESOURCES} PROPERTIES RESOURCE_OUTPUT_DIRECTORY ${QSSC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR})
+      set(QEC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR ${QEC_RESOURCES_OUTPUT_INTDIR}/${PLUGIN_TYPE_TOLOWER}s/${plugin_name_resources})
+      file(MAKE_DIRECTORY ${QEC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR})
+      set_target_properties(${ARG_CUSTOM_RESOURCES} PROPERTIES RESOURCE_OUTPUT_DIRECTORY ${QEC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR})
 
       foreach(resource ${ARG_CUSTOM_RESOURCES})
           get_target_property(RESOURCE_OUTPUT_NAME ${resource} RESOURCE_OUTPUT_NAME)
@@ -302,8 +302,8 @@ function(qssc_add_plugin plugin_name plugin_type)
               set(RESOURCE_OUTPUT_NAME ${resource})
           endif()
           get_target_property(RESOURCE_IS_PROGRAM ${resource} RESOURCE_IS_PROGRAM)
-          set(resource_file ${QSSC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR}/${RESOURCE_OUTPUT_NAME})
-          set(resource_destination ${QSSC_RESOURCES_INSTALL_PREFIX}/${PLUGIN_TYPE_TOLOWER}s/${plugin_name_resources})
+          set(resource_file ${QEC_${PLUGIN_TYPE_TOUPPER}_${plugin_name}_RESOURCE_DIR}/${RESOURCE_OUTPUT_NAME})
+          set(resource_destination ${QEC_RESOURCES_INSTALL_PREFIX}/${PLUGIN_TYPE_TOLOWER}s/${plugin_name_resources})
 
           if(RESOURCE_IS_PROGRAM)
               install(PROGRAMS ${resource_file}
@@ -316,7 +316,7 @@ function(qssc_add_plugin plugin_name plugin_type)
           endif()
       endforeach()
   endif()
-endfunction(qssc_add_plugin plugin_name plugin_type)
+endfunction(qec_add_plugin plugin_name plugin_type)
 
 include(GoogleTest)
 # From: https://cliutils.gitlab.io/modern-cmake/chapters/testing/googletest.html
@@ -335,7 +335,7 @@ macro(package_add_test TESTNAME)
         DISCOVERY_TIMEOUT 300 # Prevent timeout errors on test discovery during build
     )
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
-    list(APPEND QSSC_UNITTESTS ${TESTNAME})
+    list(APPEND QEC_UNITTESTS ${TESTNAME})
 endmacro()
 
 # add a google test with libraries

@@ -1,5 +1,5 @@
 OPENQASM 3.0;
-// RUN: qss-compiler -X=qasm --emit=ast %s
+// RUN: qe-compiler -X=qasm --emit=ast %s
 //
 // This test case validates OpenQASM 3's builtin constants pi, tau, and euler.
 

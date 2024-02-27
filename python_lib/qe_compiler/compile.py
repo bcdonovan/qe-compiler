@@ -37,7 +37,7 @@ we try to compile some input and our python interpreter crashes because
 the input was malformed, and our code raised an error.
 
 To handle this, we call `compile_file/bytes` (which is defined in the shared
-library `py_qssc` as described by `python_lib/lib.cpp`) within a
+library `py_qec` as described by `python_lib/lib.cpp`) within a
 child process. This guarantees the calling process won't be killed,
 even if the call results in a segmentation fault.
 
@@ -61,7 +61,7 @@ from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
 
 from . import exceptions
-from .py_qssc import _compile_bytes, _compile_file, Diagnostic, ErrorCategory
+from .py_qec import _compile_bytes, _compile_file, Diagnostic, ErrorCategory
 
 # use the forkserver context to create a server process
 # for forking new compiler processes
@@ -131,7 +131,7 @@ class CompileOptions:
     def prepare_compiler_option_args(self) -> List[str]:
         """Prepare the compiler option arguments from this dataclass."""
         args = [
-            "qss-compiler",
+            "qe-compiler",
             f"-X={str(self.input_type)}",
             f"--emit={str(self.output_type)}",
         ]
@@ -191,13 +191,13 @@ class _CompilationManager:
         output_as_return = False if options.output_file else True
 
         # The qe-compiler expects the path to static resources in the environment
-        # variable QSSC_RESOURCES. In the python package, those resources are
+        # variable QEC_RESOURCES. In the python package, those resources are
         # bundled under the directory resources/. Since python's functions for
         # looking up resources only treat files as resources, use the generated
         # python source _version.py to look up the path to the python package.
         with importlib_resources.path("qe_compiler", "_version.py") as version_py_path:
             resources_path = version_py_path.parent / "resources"
-            os_environ["QSSC_RESOURCES"] = str(resources_path)
+            os_environ["QEC_RESOURCES"] = str(resources_path)
             success, output = self._compile_call(args, on_diagnostic)
 
         status = _CompilerStatus(success)
@@ -251,7 +251,7 @@ class _CompilationManager:
                     else:
                         childproc.kill()
                         childproc.join()
-                        raise exceptions.QSSCompilerCommunicationFailure(
+                        raise exceptions.QECompilerCommunicationFailure(
                             "The compile process delivered an unexpected object instead of status "
                             "or diagnostic information. "
                             "This points to inconsistencies in the Python "
@@ -271,7 +271,7 @@ class _CompilationManager:
                 # make sure that child process terminates
                 childproc.kill()
                 childproc.join()
-                raise exceptions.QSSCompilerEOFFailure(
+                raise exceptions.QECompilerEOFFailure(
                     "Compile process exited before delivering output.",
                     diagnostics,
                     return_diagnostics=self.return_diagnostics,
@@ -279,7 +279,7 @@ class _CompilationManager:
 
             childproc.join()
             if childproc.exitcode != 0:
-                raise exceptions.QSSCompilerNonZeroStatus(
+                raise exceptions.QECompilerNonZeroStatus(
                     (
                         "Compile process exited with non-zero status "
                         + str(childproc.exitcode)
@@ -292,29 +292,29 @@ class _CompilationManager:
             # Place all higher-level diagnostics related to user input here
             # TODO: Best way to deal with multiple diagnostics?
             for diag in diagnostics:
-                if diag.category == ErrorCategory.QSSCompilerSequenceTooLong:
-                    raise exceptions.QSSCompilerSequenceTooLong(
+                if diag.category == ErrorCategory.QECompilerSequenceTooLong:
+                    raise exceptions.QECompilerSequenceTooLong(
                         diag.message,
                         diagnostics,
                         return_diagnostics=self.return_diagnostics,
                     )
-                if diag.category == ErrorCategory.QSSControlSystemResourcesExceeded:
-                    raise exceptions.QSSControlSystemResourcesExceeded(
+                if diag.category == ErrorCategory.QEControlSystemResourcesExceeded:
+                    raise exceptions.QEControlSystemResourcesExceeded(
                         diag.message,
                         diagnostics,
                         return_diagnostics=self.return_diagnostics,
                     )
 
             if not success:
-                raise exceptions.QSSCompilationFailure(
+                raise exceptions.QECompilationFailure(
                     "Failure during compilation",
                     diagnostics,
                     return_diagnostics=self.return_diagnostics,
                 )
 
         except mp.ProcessError as e:
-            raise exceptions.QSSCompilerError(
-                "It's likely that you've hit a bug in the QSS Compiler. Please "
+            raise exceptions.QECompilerError(
+                "It's likely that you've hit a bug in the QE Compiler. Please "
                 "submit an issue to the team with relevant information "
                 "(https://github.com/openqasm/qe-compiler/issues):\n"
                 f"{e}",

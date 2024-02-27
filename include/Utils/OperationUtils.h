@@ -25,7 +25,7 @@
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/BuiltinOps.h"
 
-namespace qssc::utils {
+namespace qec::utils {
 
 /// Create and return an inline assembly operation, as a convenience wrapper
 /// that does not require all parameter's
@@ -50,6 +50,6 @@ createInlineAsmOp(mlir::OpBuilder builder, mlir::Location loc,
       /*is_align_stack=*/false, mlir::LLVM::AsmDialectAttr(nullptr),
       /*operand_attrs=*/mlir::ArrayAttr());
 }
-} // namespace qssc::utils
+} // namespace qec::utils
 
 #endif

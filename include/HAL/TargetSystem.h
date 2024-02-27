@@ -36,11 +36,11 @@
 #include <string>
 #include <vector>
 
-namespace qssc::payload {
+namespace qec::payload {
 class Payload;
-} // namespace qssc::payload
+} // namespace qec::payload
 
-namespace qssc::hal {
+namespace qec::hal {
 class Target;
 class TargetSystem;
 class TargetInstrument;
@@ -144,7 +144,7 @@ public:
 
   // Diagnostic creation and access
   /// @brief Add a diagnostic to this target
-  void addDiagnostic(const qssc::Diagnostic &diag) {
+  void addDiagnostic(const qec::Diagnostic &diag) {
     const std::lock_guard<std::mutex> lock(diagnosticsMutex_);
     diagnostics_.emplace_back(diag);
   }
@@ -156,9 +156,9 @@ public:
   }
   /// @brief Return the diagnostics from this target and its sub-targets.
   ///        Take and clear the diagnostic lists of the targets.
-  qssc::DiagList takeDiagnostics() {
+  qec::DiagList takeDiagnostics() {
     const std::lock_guard<std::mutex> lock(diagnosticsMutex_);
-    qssc::DiagList retDiagList;
+    qec::DiagList retDiagList;
     // Take the elements of the given list and move them to the calling list
     retDiagList.splice(retDiagList.end(), diagnostics_);
 
@@ -187,7 +187,7 @@ private:
   mlir::TimingScope rootTimer;
 
   /// @brief List of diagnostics generated for this target
-  qssc::DiagList diagnostics_;
+  qec::DiagList diagnostics_;
 
   /// @brief Mutex for adding diagnostics to the diagnostic list
   std::mutex diagnosticsMutex_;
@@ -212,7 +212,7 @@ public:
     children_.push_back(std::move(child));
   }
 
-  virtual std::optional<qssc::arguments::BindArgumentsImplementationFactory *>
+  virtual std::optional<qec::arguments::BindArgumentsImplementationFactory *>
   getBindArgumentsImplementationFactory(config::EmitAction action) {
     return std::nullopt;
   };
@@ -240,5 +240,5 @@ public:
   virtual uint32_t getNodeId() = 0;
 
 }; // class TargetInstrument
-} // namespace qssc::hal
+} // namespace qec::hal
 #endif // TARGETSYSTEM_H

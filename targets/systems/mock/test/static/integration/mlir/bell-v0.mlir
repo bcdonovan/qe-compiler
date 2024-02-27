@@ -1,5 +1,5 @@
-// RUN: qss-compiler %s --target mock --config %TEST_CFG --emit=qem --plaintext-payload | FileCheck %s
-// RUN: cat %s | qss-compiler --include-source -X mlir --target mock --config %TEST_CFG --emit=qem --plaintext-payload | FileCheck %s --match-full-lines --check-prefix CHECK-SOURCE
+// RUN: qe-compiler %s --target mock --config %TEST_CFG --emit=qem --plaintext-payload | FileCheck %s
+// RUN: cat %s | qe-compiler --include-source -X mlir --target mock --config %TEST_CFG --emit=qem --plaintext-payload | FileCheck %s --match-full-lines --check-prefix CHECK-SOURCE
 // (C) Copyright IBM 2023.
 //
 // This code is part of Qiskit.

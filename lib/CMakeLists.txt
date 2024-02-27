@@ -21,26 +21,26 @@ add_subdirectory(Payload)
 add_subdirectory(Utils)
 
 set(SOURCES
-        QSSC.cpp
+        QEC.cpp
 )
-add_library(QSSCCore ${SOURCES})
-add_dependencies(QSSCCore mlir-headers)
+add_library(QECCore ${SOURCES})
+add_dependencies(QECCore mlir-headers)
 
-get_property(qssc_targets GLOBAL PROPERTY QSSC_TARGETS)
+get_property(qec_targets GLOBAL PROPERTY QEC_TARGETS)
 get_property(mlir_dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
 get_property(mlir_conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
 get_property(mlir_extension_libs GLOBAL PROPERTY MLIR_EXTENSION_LIBS)
 
-# All libraries for the QSS-Compiler
-set(qssc_api_libs
-        ${qssc_targets}
-        QSSCAPI
-        QSSCHAL
-        QSSCOpenQASM3Frontend
-        QSSConfig
-        QSSCArguments
-        QSSCPayload
-        QSSCCore
+# All libraries for the QE-Compiler
+set(qec_api_libs
+        ${qec_targets}
+        QECAPI
+        QECHAL
+        QECOpenQASM3Frontend
+        QEConfig
+        QECArguments
+        QECPayload
+        QECCore
         ${mlir_dialect_libs}
         ${mlir_conversion_libs}
         ${mlir_extension_libs}
@@ -57,45 +57,45 @@ set(qssc_api_libs
         mpfr::mpfr
         gmp::gmp
         )
-set_property(GLOBAL PROPERTY QSSC_API_LIBS ${qssc_api_libs})
+set_property(GLOBAL PROPERTY QEC_API_LIBS ${qec_api_libs})
 
 # collect all required components in an "interface library", which exports its
 # INTERFACE and dependencies to all targets that refer to the library yet does
 # not materialize as an artifact by itself
-add_library(QSSCLib INTERFACE)
-add_dependencies(QSSCLib mlir-headers)
-target_link_libraries(QSSCLib INTERFACE ${qssc_api_libs})
+add_library(QECLib INTERFACE)
+add_dependencies(QECLib mlir-headers)
+target_link_libraries(QECLib INTERFACE ${qec_api_libs})
 
 if(INSTALL_BUNDLED_STATIC_LIB)
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        message(FATAL_ERROR "Bundling qss-compiler into a single static library on MacOS is not yet supported.")
+        message(FATAL_ERROR "Bundling qe-compiler into a single static library on MacOS is not yet supported.")
         # If you consider adding that support, MacOS's libtool could be an option since it appears capable of bundling static libraries.
     endif()
-    add_library(QSSCompiler STATIC API/api.cpp)
-    add_dependencies(QSSCompiler mlir-headers)
-    target_link_libraries(QSSCompiler PUBLIC
-           ${qssc_targets}
-            QSSCAPI
-            QSSCHAL
-            QSSCOpenQASM3Frontend
-            QSSConfig
-            QSSCArguments
-            QSSCPayload
-            QSSCPayloadZip
-            QSSCCore
-            QSSCUtils
+    add_library(QECompiler STATIC API/api.cpp)
+    add_dependencies(QECompiler mlir-headers)
+    target_link_libraries(QECompiler PUBLIC
+           ${qec_targets}
+            QECAPI
+            QECHAL
+            QECOpenQASM3Frontend
+            QEConfig
+            QECArguments
+            QECPayload
+            QECPayloadZip
+            QECCore
+            QECUtils
             ${mlir_dialect_libs}
             ${mlir_conversion_libs}
     )
-    bundle_static_library(QSSCompiler QSSCompilerBundled)
+    bundle_static_library(QECompiler QECompilerBundled)
     install(FILES
-        ${CMAKE_BINARY_DIR}/libQSSCompilerBundled.a
+        ${CMAKE_BINARY_DIR}/libQECompilerBundled.a
         DESTINATION
         "${CMAKE_INSTALL_LIBDIR}"
     )
     # install API library and its headers
     install(TARGETS
-            QSSCAPI
+            QECAPI
         LIBRARY DESTINATION
             "${CMAKE_INSTALL_LIBDIR}"
         FILE_SET HEADERS DESTINATION

@@ -16,16 +16,16 @@ enable_testing()
 add_subdirectory(unittest)
 
 # Target for all LIT testing.
-add_custom_target(check-qss-compiler COMMENT "Running LIT suites")
+add_custom_target(check-qe-compiler COMMENT "Running LIT suites")
 
 # Target for all testing.
-add_custom_target(check-tests DEPENDS run-qss-compiler-unittests check-qss-compiler COMMENT "Running all tests")
+add_custom_target(check-tests DEPENDS run-qe-compiler-unittests check-qe-compiler COMMENT "Running all tests")
 
-# Add QSS core LIT suite.
-qssc_add_lit_test_suite(check-qss-core "QSS Compiler Core" "${CMAKE_CURRENT_SOURCE_DIR}" "${LIT_TEST_EXTRA_ARGS}")
+# Add QE core LIT suite.
+qec_add_lit_test_suite(check-qe-core "QE Compiler Core" "${CMAKE_CURRENT_SOURCE_DIR}" "${LIT_TEST_EXTRA_ARGS}")
 
 # Add target LIT suites.
-foreach(lit_dir ${QSSC_TARGET_TEST_DIRS})
+foreach(lit_dir ${QEC_TARGET_TEST_DIRS})
     message(STATUS "Adding LIT directory: ${lit_dir}")
     add_subdirectory("${lit_dir}" "${CMAKE_CURRENT_BINARY_DIR}/Targets/${lit_dir}")
 endforeach()
