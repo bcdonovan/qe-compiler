@@ -35,7 +35,7 @@ using namespace qec;
 using namespace llvm;
 
 #define EXPORT_VERSION_STRING(FN, STR)                                         \
-  llvm::StringRef qec::FN() {                                                 \
+  llvm::StringRef qec::FN() {                                                  \
     static const char *versionString = STR;                                    \
     return versionString;                                                      \
   }

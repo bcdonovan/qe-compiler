@@ -24,8 +24,8 @@
 
 int main(int argc, const char **argv) {
 
-  auto err = qec::compileMain(
-      argc, argv, "Quantum Engine (QE) Backend Compiler\n", {});
+  auto err = qec::compileMain(argc, argv,
+                              "Quantum Engine (QE) Backend Compiler\n", {});
   if (err) {
     llvm::logAllUnhandledErrors(std::move(err), llvm::errs(), "Error: ");
     return EXIT_FAILURE;

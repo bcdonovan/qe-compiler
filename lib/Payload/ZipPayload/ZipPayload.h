@@ -41,8 +41,7 @@ public:
   // write all files in plaintext to the stream
   virtual void writePlain(std::ostream &stream) override;
   virtual void writePlain(llvm::raw_ostream &stream) override;
-  virtual void
-  writeArgumentSignature(qec::arguments::Signature &&sig) override;
+  virtual void writeArgumentSignature(qec::arguments::Signature &&sig) override;
 
   // write all files to a zip archive named fName
   void writeZip(std::string fName);

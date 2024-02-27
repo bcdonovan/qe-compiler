@@ -64,9 +64,9 @@
 
 namespace {
 
-llvm::cl::OptionCategory openqasm3Cat(
-    " OpenQASM 3 Frontend Options",
-    "Options that control the OpenQASM 3 frontend of QE Compiler");
+llvm::cl::OptionCategory
+    openqasm3Cat(" OpenQASM 3 Frontend Options",
+                 "Options that control the OpenQASM 3 frontend of QE Compiler");
 
 llvm::cl::opt<uint>
     numShots("num-shots",
@@ -264,7 +264,7 @@ llvm::Error qec::frontend::openqasm3::parse(
         QASM::ASTStatementBuilder::Instance().List();
 
     qec::frontend::openqasm3::QUIRGenQASM3Visitor visitor(builder, newModule,
-                                                           /*filename=*/"");
+                                                          /*filename=*/"");
 
     auto result = parseDurationStr(shotDelay);
     if (auto err = result.takeError())

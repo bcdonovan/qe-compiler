@@ -25,8 +25,7 @@ namespace qec::hal::registry {
 /// and a description.
 class TargetSystemInfo
     : public qec::plugin::registry::PluginInfo<qec::hal::TargetSystem> {
-  using PluginInfo =
-      qec::plugin::registry::PluginInfo<qec::hal::TargetSystem>;
+  using PluginInfo = qec::plugin::registry::PluginInfo<qec::hal::TargetSystem>;
   using PassesFunction = std::function<llvm::Error()>;
   using PassPipelinesFunction = std::function<llvm::Error()>;
 

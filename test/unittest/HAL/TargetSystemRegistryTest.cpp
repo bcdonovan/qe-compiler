@@ -30,8 +30,7 @@ TEST(TargetSystemRegistry, LookupMockTarget) {
 
   const char *mockName = "mock";
 
-  EXPECT_TRUE(
-      qec::hal::registry::TargetSystemRegistry::pluginExists(mockName));
+  EXPECT_TRUE(qec::hal::registry::TargetSystemRegistry::pluginExists(mockName));
 
   auto targetInfoOpt =
       qec::hal::registry::TargetSystemRegistry::lookupPluginInfo(mockName);

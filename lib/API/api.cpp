@@ -297,11 +297,11 @@ llvm::Error emitMLIR(
 /// @param moduleOp The module operation to process and emit
 /// @param targetCompilationManager The target's compilation scheduler
 /// @return
-llvm::Error emitQEM(
-    const QEConfig &config, llvm::raw_ostream &ostream,
-    std::unique_ptr<qec::payload::Payload> payload, mlir::ModuleOp moduleOp,
-    qec::hal::compile::ThreadedCompilationManager &targetCompilationManager,
-    const llvm::MemoryBuffer *sourceBuffer, mlir::TimingScope &timing) {
+llvm::Error
+emitQEM(const QEConfig &config, llvm::raw_ostream &ostream,
+        std::unique_ptr<qec::payload::Payload> payload, mlir::ModuleOp moduleOp,
+        qec::hal::compile::ThreadedCompilationManager &targetCompilationManager,
+        const llvm::MemoryBuffer *sourceBuffer, mlir::TimingScope &timing) {
   if (config.shouldIncludeSource()) {
     if (config.getInputType() != InputType::Undetected)
       payload->addFile("manifest/input." + to_string(inputTypeToFileExtension(
@@ -347,8 +347,8 @@ void diagEngineHandler(mlir::Diagnostic &diagnostic,
   // emit diagnostic cast to void to discard result as it is not needed here
   if (qec_severity == qec::Severity::Error) {
     (void)qec::emitDiagnostic(diagnosticCb, qec_severity,
-                               qec::ErrorCategory::QECompilationFailure,
-                               diagnostic.str());
+                              qec::ErrorCategory::QECompilationFailure,
+                              diagnostic.str());
   }
 
   // emit to llvm::errs as well to mimic default handler
@@ -613,8 +613,8 @@ llvm::Error performCompileActions(llvm::raw_ostream &outputStream,
   auto errorHandler = [&](const Twine &msg) {
     // format msg to python handler as a compilation failure
     (void)qec::emitDiagnostic(diagnosticCb, qec::Severity::Error,
-                               qec::ErrorCategory::QECompilationFailure,
-                               msg.str());
+                              qec::ErrorCategory::QECompilationFailure,
+                              msg.str());
     emitError(UnknownLoc::get(&context)) << msg;
     return mlir::failure();
   };
@@ -623,13 +623,12 @@ llvm::Error performCompileActions(llvm::raw_ostream &outputStream,
   // QASM/AST or MLIR file
   bool verifyPasses = config.shouldVerifyPasses();
 
-  auto targetCompilationManager =
-      qec::hal::compile::ThreadedCompilationManager(
-          target, &context, [&](mlir::PassManager &pm) -> llvm::Error {
-            if (auto err = buildPassManager_(pm, verifyPasses))
-              return err;
-            return llvm::Error::success();
-          });
+  auto targetCompilationManager = qec::hal::compile::ThreadedCompilationManager(
+      target, &context, [&](mlir::PassManager &pm) -> llvm::Error {
+        if (auto err = buildPassManager_(pm, verifyPasses))
+          return err;
+        return llvm::Error::success();
+      });
   if (mlir::failed(qec::hal::compile::applyTargetCompilationManagerCLOptions(
           targetCompilationManager)))
     return llvm::createStringError(
@@ -674,8 +673,8 @@ llvm::Error performCompileActions(llvm::raw_ostream &outputStream,
 // compatiability more straightforward
 
 void qec::registerAndParseCLIOptions(int argc, const char **argv,
-                                      llvm::StringRef toolName,
-                                      mlir::DialectRegistry &registry) {
+                                     llvm::StringRef toolName,
+                                     mlir::DialectRegistry &registry) {
   // Register all extensions
   mlir::registerAllExtensions(registry);
 
@@ -688,8 +687,8 @@ void qec::registerAndParseCLIOptions(int argc, const char **argv,
 
 std::pair<std::string, std::string>
 qec::registerAndParseCLIToolOptions(int argc, const char **argv,
-                                     llvm::StringRef toolName,
-                                     mlir::DialectRegistry &registry) {
+                                    llvm::StringRef toolName,
+                                    mlir::DialectRegistry &registry) {
 
   static llvm::cl::opt<std::string> inputFilename(
       llvm::cl::Positional, llvm::cl::desc("<input file>"),
@@ -705,11 +704,11 @@ qec::registerAndParseCLIToolOptions(int argc, const char **argv,
 }
 
 llvm::Error qec::compileMain(llvm::raw_ostream &outputStream,
-                              std::unique_ptr<llvm::MemoryBuffer> buffer,
-                              DialectRegistry &registry,
-                              const qec::config::QEConfig &config,
-                              OptDiagnosticCallback diagnosticCb,
-                              mlir::TimingScope &timing) {
+                             std::unique_ptr<llvm::MemoryBuffer> buffer,
+                             DialectRegistry &registry,
+                             const qec::config::QEConfig &config,
+                             OptDiagnosticCallback diagnosticCb,
+                             mlir::TimingScope &timing) {
 
   // The MLIR context for this compilation event.
   // Instantiate after parsing command line options.
@@ -733,10 +732,10 @@ llvm::Error qec::compileMain(llvm::raw_ostream &outputStream,
 }
 
 llvm::Error qec::compileMain(int argc, const char **argv,
-                              llvm::StringRef inputFilename,
-                              llvm::StringRef outputFilename,
-                              mlir::DialectRegistry &registry,
-                              OptDiagnosticCallback diagnosticCb) {
+                             llvm::StringRef inputFilename,
+                             llvm::StringRef outputFilename,
+                             mlir::DialectRegistry &registry,
+                             OptDiagnosticCallback diagnosticCb) {
 
   llvm::InitLLVM const y(argc, argv);
 
@@ -805,9 +804,9 @@ llvm::Error qec::compileMain(int argc, const char **argv,
 }
 
 llvm::Error qec::compileMain(int argc, const char **argv,
-                              llvm::StringRef toolName,
-                              mlir::DialectRegistry &registry,
-                              OptDiagnosticCallback diagnosticCb) {
+                             llvm::StringRef toolName,
+                             mlir::DialectRegistry &registry,
+                             OptDiagnosticCallback diagnosticCb) {
 
   // Register and parse command line options.
   std::string inputFilename, outputFilename;
@@ -819,8 +818,8 @@ llvm::Error qec::compileMain(int argc, const char **argv,
 }
 
 llvm::Error qec::compileMain(int argc, const char **argv,
-                              llvm::StringRef toolName,
-                              OptDiagnosticCallback diagnosticCb) {
+                             llvm::StringRef toolName,
+                             OptDiagnosticCallback diagnosticCb) {
   // Register the standard passes with MLIR.
   // Must precede the command line parsing.
   if (auto err = qec::dialect::registerPasses())
@@ -911,14 +910,14 @@ bindArguments_(std::string_view target, qec::config::EmitAction action,
 
 } // anonymous namespace
 
-int qec::bindArguments(
-    std::string_view target, qec::config::EmitAction action,
-    std::string_view configPath, std::string_view moduleInput,
-    std::string_view payloadOutputPath,
-    std::unordered_map<std::string, double> const &arguments,
-    bool treatWarningsAsErrors, bool enableInMemoryInput,
-    std::string *inMemoryOutput,
-    const qec::OptDiagnosticCallback &onDiagnostic) {
+int qec::bindArguments(std::string_view target, qec::config::EmitAction action,
+                       std::string_view configPath,
+                       std::string_view moduleInput,
+                       std::string_view payloadOutputPath,
+                       std::unordered_map<std::string, double> const &arguments,
+                       bool treatWarningsAsErrors, bool enableInMemoryInput,
+                       std::string *inMemoryOutput,
+                       const qec::OptDiagnosticCallback &onDiagnostic) {
 
   if (auto err =
           bindArguments_(target, action, configPath, moduleInput,

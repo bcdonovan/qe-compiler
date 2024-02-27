@@ -39,7 +39,7 @@ namespace {
 // first
 llvm::cl::OptionCategory
     qecCat_(" qe-compiler options",
-             "Options that control high-level behavior of QE Compiler");
+            "Options that control high-level behavior of QE Compiler");
 
 llvm::cl::OptionCategory
     optCat_(" qe-compiler options: opt",
@@ -387,9 +387,7 @@ struct QEConfigCLOptions : public QEConfig {
 llvm::ManagedStatic<QEConfigCLOptions> clOptionsConfig;
 
 llvm::cl::OptionCategory &qec::config::getQECCLCategory() { return qecCat_; }
-llvm::cl::OptionCategory &qec::config::getQEOptCLCategory() {
-  return optCat_;
-}
+llvm::cl::OptionCategory &qec::config::getQEOptCLCategory() { return optCat_; }
 
 CLIConfigBuilder::CLIConfigBuilder() {
   clOptionsConfig->setDebugConfig(

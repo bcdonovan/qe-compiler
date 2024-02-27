@@ -121,7 +121,7 @@ static llvm::ManagedStatic<llvm::DenseMap<mlir::MLIRContext *, QEConfig>>
 } // anonymous namespace
 
 void qec::config::setContextConfig(mlir::MLIRContext *context,
-                                    const QEConfig &config) {
+                                   const QEConfig &config) {
   (*contextConfigs)[context] = config;
 }
 
@@ -322,7 +322,7 @@ FileExtension qec::config::getExtension(const llvm::StringRef inStr) {
 
 mlir::LogicalResult
 qec::config::loadDialectPlugin(const std::string &pluginPath,
-                                mlir::DialectRegistry &registry) {
+                               mlir::DialectRegistry &registry) {
   auto plugin = mlir::DialectPlugin::load(pluginPath);
   if (!plugin)
     return mlir::failure();
@@ -331,8 +331,7 @@ qec::config::loadDialectPlugin(const std::string &pluginPath,
   return mlir::success();
 }
 
-mlir::LogicalResult
-qec::config::loadPassPlugin(const std::string &pluginPath) {
+mlir::LogicalResult qec::config::loadPassPlugin(const std::string &pluginPath) {
   auto plugin = mlir::PassPlugin::load(pluginPath);
   if (!plugin)
     return mlir::failure();
@@ -342,7 +341,7 @@ qec::config::loadPassPlugin(const std::string &pluginPath) {
 
 llvm::Expected<qec::config::QEConfig>
 qec::config::buildToolConfig(llvm::StringRef inputFilename,
-                              llvm::StringRef outputFilename) {
+                             llvm::StringRef outputFilename) {
   // First populate the configuration from default values then
   // environment variables.
   auto config = EnvVarConfigBuilder().buildConfig();

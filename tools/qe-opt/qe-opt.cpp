@@ -146,10 +146,10 @@ llvm::Error buildTarget_(qec::config::QEConfig &config) {
 } // anonymous namespace
 
 mlir::LogicalResult QECOptMain(int argc, char **argv,
-                                llvm::StringRef inputFilename,
-                                llvm::StringRef outputFilename,
-                                mlir::DialectRegistry &registry,
-                                qec::config::QEConfig &config) {
+                               llvm::StringRef inputFilename,
+                               llvm::StringRef outputFilename,
+                               mlir::DialectRegistry &registry,
+                               qec::config::QEConfig &config) {
 
   llvm::InitLLVM const y(argc, argv);
 
@@ -190,7 +190,7 @@ mlir::LogicalResult QECOptMain(int argc, char **argv,
 }
 
 mlir::LogicalResult QECOptMain(int argc, char **argv,
-                                mlir::DialectRegistry &registry) {
+                               mlir::DialectRegistry &registry) {
 
   // Register and parse command line options.
   // NOLINTNEXTLINE(misc-const-correctness)
@@ -206,7 +206,7 @@ mlir::LogicalResult QECOptMain(int argc, char **argv,
   qec::config::QEConfig config = configResult.get();
 
   return QECOptMain(argc, argv, inputFilename, outputFilename, registry,
-                     config);
+                    config);
 }
 
 auto main(int argc, char **argv) -> int {
